@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Traffic Racer</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -14,7 +13,6 @@
     overflow: hidden; background: #000; 
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
     color: white;
-    touch-action: none;
     user-select: none;
     -webkit-user-select: none;
     width: 100%;
@@ -26,7 +24,7 @@
   #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
   #homeScreen h1 { font-size: 38px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
   #homeScreen .subtitle { font-size: 14px; color: #aaa; margin-bottom: 40px; text-align: center; }
-  .home-btn { padding: 18px 40px; margin: 8px; font-size: 19px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; transition: all 0.2s; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .home-btn { padding: 20px 40px; margin: 10px; font-size: 19px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); touch-action: manipulation; -webkit-tap-highlight-color: rgba(255,255,255,0.2); }
   .home-btn:active { transform: scale(0.96); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
@@ -40,21 +38,21 @@
   .withdraw-section { background: rgba(0,0,0,0.3); border-radius: 14px; padding: 18px; margin: 16px auto; max-width: 500px; width: 100%; }
   .withdraw-section h3 { color: #fff; margin-bottom: 12px; font-size: 16px; }
   .withdraw-section input, .withdraw-section select { width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px; }
-  .withdraw-section button { width: 100%; padding: 15px; margin-top: 8px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
-  .back-btn { padding: 13px 30px; background: #444; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; margin: 20px auto; display: block; }
+  .withdraw-section button { width: 100%; padding: 15px; margin-top: 8px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+  .back-btn { padding: 13px 30px; background: #444; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; margin: 20px auto; display: block; touch-action: manipulation; }
   #hud { position: absolute; top: 12px; left: 12px; color: #fff; font-size: 13px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.35); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
   #speed { color: #ffdd00; font-weight: bold; }
   #moneyHud { color: #4CAF50; font-weight: bold; }
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
   #gameOver h1 { color: #ff4444; font-size: 40px; margin: 10px; }
   #gameOver p { font-size: 17px; margin: 6px; }
-  button.game-btn { padding: 14px 28px; margin: 8px; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; }
+  button.game-btn { padding: 15px 28px; margin: 8px; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
   @media (max-width: 600px) {
     #homeScreen h1 { font-size: 30px; }
-    .home-btn { font-size: 17px; padding: 15px 30px; }
+    .home-btn { font-size: 17px; padding: 16px 30px; }
     #hud { font-size: 12px; }
     .wallet-card .amount { font-size: 32px; }
     #gameOver h1 { font-size: 34px; }
@@ -121,9 +119,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// Debug mesajları KAPALI
-function debugLog() { /* sessiz */ }
-
 // ==================== KASA ====================
 function getWallet() {
   const data = localStorage.getItem('trafficRacerWallet');
@@ -142,7 +137,6 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87CEEB);
 scene.fog = new THREE.Fog(0x87CEEB, 60, 220);
 
-// Kamera — mobil dikey ekran için optimize
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
 camera.position.set(0, 4.5, 9);
 
@@ -250,14 +244,9 @@ function loadCarModel(path, fallbackColor = 0x00cc44) {
   return new Promise((resolve) => {
     gltfLoader.load(
       path,
-      (gltf) => {
-        const model = prepareModel(gltf.scene);
-        resolve(model);
-      },
+      (gltf) => resolve(prepareModel(gltf.scene)),
       undefined,
-      (error) => {
-        resolve(createFallbackCar(fallbackColor));
-      }
+      () => resolve(createFallbackCar(fallbackColor))
     );
   });
 }
@@ -306,7 +295,6 @@ const state = {
   modelLoaded: false
 };
 
-// Kenney model ölçeği ve lane pozisyonları
 const CAR_SCALE = 1.4;
 const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
 
@@ -326,7 +314,9 @@ loadCarModel('models/race-future.glb', 0x00cc44).then((model) => {
 });
 
 // ==================== KONTROL ====================
+// PC klavye
 document.addEventListener('keydown', e => {
+  if (!state.running) return;
   if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
     state.targetLane = Math.max(-1, state.targetLane - 1);
   }
@@ -335,13 +325,15 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Dokunmatik — sol/sağ yarı
-let touchLocked = false;
-function handleTouch(clientX) {
-  if (touchLocked) return;
-  if (!state.running) return;
-  touchLocked = true;
-  setTimeout(() => { touchLocked = false; }, 150);
+// Mobil dokunmatik — SADECE oyun çalışırken
+let lastTouchTime = 0;
+
+function handleGameTouch(clientX) {
+  if (!state.running) return; // Menüdeyken çalışma
+  const now = Date.now();
+  if (now - lastTouchTime < 150) return; // Spam engelle
+  lastTouchTime = now;
+  
   const half = window.innerWidth / 2;
   if (clientX < half) {
     state.targetLane = Math.max(-1, state.targetLane - 1);
@@ -350,14 +342,18 @@ function handleTouch(clientX) {
   }
 }
 
+// Canvas'a özel dinleyici — sadece oyun alanında çalışır
 document.addEventListener('touchstart', e => {
-  handleTouch(e.touches[0].clientX);
-  e.preventDefault();
-}, { passive: false });
-
-document.addEventListener('click', e => {
-  if (state.running) handleTouch(e.clientX);
-});
+  // Eğer hedef buton/input ise dokunma
+  const target = e.target;
+  if (target.tagName === 'BUTTON' || target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.closest('button') || target.closest('input') || target.closest('select')) {
+    return;
+  }
+  // Sadece oyun çalışırken
+  if (state.running) {
+    handleGameTouch(e.touches[0].clientX);
+  }
+}, { passive: true });
 
 // ==================== DÜŞMAN ====================
 const carColors = [0xe74c3c, 0x3498db, 0x9b59b6, 0xe67e22, 0x1abc9c, 0xf39c12, 0x34495e];
@@ -417,7 +413,6 @@ function animate() {
   const shakeX = (Math.random() - 0.5) * state.shake * 0.08;
   const shakeY = (Math.random() - 0.5) * state.shake * 0.08;
   
-  // KAMERA — mobil dikey için optimize
   camera.position.x = player.position.x * 0.5 + shakeX;
   camera.position.y = 4.5 + shakeY;
   camera.position.z = 9;
@@ -605,7 +600,6 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Mobil tarayıcı adres çubuğu yüzünden ekran yüksekliği değişirse
 window.addEventListener('orientationchange', () => {
   setTimeout(() => {
     camera.aspect = window.innerWidth / window.innerHeight;
