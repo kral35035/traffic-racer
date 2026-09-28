@@ -2,18 +2,24 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, height=device-height">
 <meta name="theme-color" content="#000000">
 <title>Traffic Racer</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; color: white; user-select: none; -webkit-user-select: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; }
-  canvas { display: block; width: 100%; height: 100%; }
+  html, body { 
+    overflow: hidden; background: #000; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
+    color: white; user-select: none; -webkit-user-select: none; 
+    width: 100vw; height: 100vh; 
+    position: fixed; top: 0; left: 0;
+  }
+  canvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
   
   #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 15px; overflow-y: auto; }
-  #homeScreen h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
-  #homeScreen .subtitle { font-size: 12px; color: #aaa; margin-bottom: 20px; text-align: center; }
-  .home-btn { padding: 14px 30px; margin: 5px; font-size: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 270px; max-width: 85vw; box-shadow: 0 6px 20px rgba(0,0,0,0.4); touch-action: manipulation; }
+  #homeScreen h1 { font-size: 30px; margin-bottom: 8px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
+  #homeScreen .subtitle { font-size: 12px; color: #aaa; margin-bottom: 18px; text-align: center; }
+  .home-btn { padding: 13px 30px; margin: 5px; font-size: 14px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 270px; max-width: 85vw; box-shadow: 0 6px 20px rgba(0,0,0,0.4); touch-action: manipulation; }
   .home-btn:active { transform: scale(0.96); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   #garageBtn { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
@@ -21,10 +27,10 @@
   #questsBtn { background: linear-gradient(135deg, #9C27B0, #6A1B9A); color: white; }
   #achievementsBtn { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   #settingsBtn { background: linear-gradient(135deg, #607D8B, #37474F); color: white; }
+  #fullscreenBtn { background: linear-gradient(135deg, #00BCD4, #0097A7); color: white; }
   
-  /* MODAL */
   .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 15px; overflow-y: auto; }
-  .modal-screen h2 { font-size: 24px; margin: 15px 0; text-align: center; color: #ffd93d; }
+  .modal-screen h2 { font-size: 22px; margin: 15px 0; text-align: center; color: #ffd93d; }
   .modal-content { max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 40px; }
   
   .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.1); }
@@ -40,7 +46,6 @@
   
   .back-btn { padding: 12px 28px; background: #444; color: white; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; margin: 15px auto; display: block; touch-action: manipulation; }
   
-  /* GARAJ */
   .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
   .car-card.owned { border-color: #4CAF50; }
   .car-card.selected { border-color: #ffd93d; box-shadow: 0 0 20px rgba(255,217,61,0.5); }
@@ -53,16 +58,13 @@
   .car-action.buy { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .car-action.select { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   .car-action.selected { background: linear-gradient(135deg, #ffd93d, #FF6F00); color: #000; }
-  .car-action.locked { background: #555; color: #aaa; cursor: not-allowed; }
   
-  /* SİGORTA */
   .insurance-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 18px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); text-align: center; }
   .insurance-card.active { border-color: #4CAF50; box-shadow: 0 0 20px rgba(76,175,80,0.4); }
   .insurance-card h3 { color: #ffd93d; font-size: 18px; margin-bottom: 8px; }
   .insurance-card .price { font-size: 32px; font-weight: bold; color: #4CAF50; margin: 10px 0; }
   .insurance-card .desc { font-size: 13px; color: #aaa; margin-bottom: 10px; }
   
-  /* AYARLAR */
   .setting-row { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.1); }
   .setting-row label { display: block; font-size: 14px; color: #fff; margin-bottom: 10px; font-weight: bold; }
   .setting-row .value { color: #4CAF50; font-weight: bold; float: right; }
@@ -74,18 +76,15 @@
   .toggle-on { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .toggle-off { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
   
-  /* HUD */
   #hud { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 12px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
   #speed { color: #ffdd00; font-weight: bold; }
   #moneyHud { color: #4CAF50; font-weight: bold; }
   
-  /* OYUN İÇİ BUTONLAR */
   #gameButtons { position: absolute; top: 10px; right: 10px; z-index: 50; display: none; gap: 8px; flex-direction: column; }
   #gameButtons.visible { display: flex; }
   .game-icon-btn { width: 46px; height: 46px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; padding: 0; line-height: 1; }
   .game-icon-btn:active { transform: scale(0.9); background: rgba(0,0,0,1); }
   
-  /* DURAKLATMA */
   #pauseScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px; }
   #pauseScreen h1 { color: #ffd93d; font-size: 38px; margin-bottom: 25px; }
   button.pause-btn { padding: 15px 28px; margin: 6px; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
@@ -93,7 +92,6 @@
   .btn-home { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart2 { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   
-  /* OYUN SONU */
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
   #gameOver h1 { color: #ff4444; font-size: 38px; margin: 10px; }
   #gameOver p { font-size: 16px; margin: 5px; }
@@ -102,27 +100,24 @@
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
   
-  /* GÜNLÜK ÖDÜL */
   #dailyPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
   #dailyPopup .popup-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 40px 30px; max-width: 400px; width: 100%; text-align: center; border: 2px solid #ffd93d; box-shadow: 0 0 40px rgba(255,217,61,0.5); }
   #dailyPopup h1 { font-size: 30px; color: #ffd93d; margin-bottom: 15px; }
   #dailyPopup .reward-amount { font-size: 48px; font-weight: bold; color: #4CAF50; margin: 20px 0; }
   #dailyPopup button { padding: 14px 36px; margin-top: 20px; font-size: 17px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
   
-  /* TOAST */
   #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 12px 22px; border-radius: 12px; font-weight: bold; font-size: 14px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   #toast.gold { background: linear-gradient(135deg, #FFC107, #FF6F00); }
   #toast.info { background: linear-gradient(135deg, #2196F3, #0d47a1); }
   #toast.error { background: linear-gradient(135deg, #f44336, #b71c1c); }
   
-  /* HAVA DURUMU */
   #weatherBadge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10; background: rgba(0,0,0,0.5); padding: 6px 14px; border-radius: 20px; font-size: 13px; color: white; pointer-events: none; display: none; }
   #weatherBadge.visible { display: block; }
   
   @media (max-width: 600px) {
     #homeScreen h1 { font-size: 24px; }
-    .home-btn { font-size: 14px; padding: 13px 25px; }
+    .home-btn { font-size: 13px; padding: 12px 25px; }
     #hud { font-size: 11px; padding: 6px 10px; }
     #gameOver h1 { font-size: 30px; }
     #pauseScreen h1 { font-size: 30px; }
@@ -141,38 +136,34 @@
   <button class="home-btn" id="questsBtn" onclick="showQuests()">🎯 GÖREVLER</button>
   <button class="home-btn" id="achievementsBtn" onclick="showAchievements()">🏆 BAŞARIMLAR</button>
   <button class="home-btn" id="settingsBtn" onclick="showSettings()">⚙️ AYARLAR</button>
+  <button class="home-btn" id="fullscreenBtn" onclick="toggleFullscreen()">⛶ TAM EKRAN</button>
 </div>
 
-<!-- GARAJ -->
 <div id="garageScreen" class="modal-screen">
   <h2>🚗 GARAJ</h2>
   <div class="modal-content" id="garageList"></div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- SİGORTA -->
-<<div id="insuranceScreen" class="modal-screen">
+<div id="insuranceScreen" class="modal-screen">
   <h2>🛡️ SİGORTA</h2>
   <div class="modal-content" id="insuranceList"></div>
   <button class="task-btn" style="width: 280px; max-width: 85vw; margin: 15px auto; display: block; background: linear-gradient(135deg, #FF9800, #e65100); font-size: 16px; padding: 15px;" onclick="startWithoutInsurance()">🚗 SİGORTASIZ DEVAM ET</button>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- GÖREVLER -->
 <div id="questsScreen" class="modal-screen">
   <h2>🎯 GÜNLÜK GÖREVLER</h2>
   <div class="modal-content" id="questsList"></div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- BAŞARIMLAR -->
 <div id="achievementsScreen" class="modal-screen">
   <h2>🏆 BAŞARIMLAR</h2>
   <div class="modal-content" id="achievementsList"></div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- KASAM -->
 <div id="walletScreen" class="modal-screen">
   <h2>💰 KASAM</h2>
   <div class="modal-content">
@@ -202,7 +193,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- AYARLAR -->
 <div id="settingsScreen" class="modal-screen">
   <h2>⚙️ AYARLAR</h2>
   <div class="modal-content">
@@ -228,7 +218,6 @@
     </div>
     <div class="task-card" style="text-align: center;">
       <div class="task-title">🔊 Ses Testi</div>
-      <div class="task-desc">Her sesi ayrı test et</div>
       <button class="task-btn" onclick="testSound('crash')" style="margin: 4px;">💥 Kaza</button>
       <button class="task-btn" onclick="testSound('coin')" style="margin: 4px;">💰 Para</button>
       <button class="task-btn" onclick="testSound('bgmusic')" style="margin: 4px;">🎵 Müzik</button>
@@ -238,7 +227,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- HUD -->
 <div id="hud" style="display:none;">
   <div>💰 <span id="moneyHud">0.00</span> ₺</div>
   <div>📏 <span id="distance">0</span> m</div>
@@ -310,15 +298,8 @@ function getWallet() {
 }
 function saveWallet(w) { localStorage.setItem('trafficRacerWallet', JSON.stringify(w)); }
 function addToWallet(amount) { const w = getWallet(); w.balance += amount; saveWallet(w); }
-function spendFromWallet(amount) {
-  const w = getWallet();
-  if (w.balance < amount) return false;
-  w.balance -= amount;
-  saveWallet(w);
-  return true;
-}
 
-// ==================== GARAJ ====================
+// ==================== ARAÇLAR ====================
 const CARS = {
   'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, desc: 'Dengeli yarış arabası' },
   'police': { name: 'Police', icon: '🚓', price: 75, speed: 2.6, handling: 0.18, desc: 'Hızlı ve çevik' },
@@ -432,10 +413,7 @@ function startEngine() {
     sound.volume = vol;
     sound.loop = true;
     sound.playbackRate = 1.0;
-    if (sound.paused) {
-      const p = sound.play();
-      if (p) p.catch(() => {});
-    }
+    if (sound.paused) { const p = sound.play(); if (p) p.catch(() => {}); }
   } catch (e) {}
 }
 function stopEngine() { if (sounds.engine) { try { sounds.engine.pause(); } catch (e) {} } }
@@ -510,6 +488,22 @@ window.testSound = function(name) {
   } catch (e) {}
 };
 
+// ==================== TAM EKRAN ====================
+window.toggleFullscreen = function() {
+  const doc = document.documentElement;
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {});
+    else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+    else if (doc.mozRequestFullScreen) doc.mozRequestFullScreen();
+    else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
+  } else {
+    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+    else if (document.msExitFullscreen) document.msExitFullscreen();
+  }
+};
+
 // ==================== SAHNE ====================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87CEEB);
@@ -545,7 +539,6 @@ sunLight.shadow.camera.bottom = -30;
 sunLight.shadow.bias = -0.0005;
 scene.add(sunLight);
 
-// Sis katmanı (hava durumu için)
 const fogLayer = new THREE.Mesh(
   new THREE.PlaneGeometry(200, 400),
   new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false })
@@ -598,7 +591,7 @@ const grass2 = grass1.clone();
 grass2.position.x = ROAD_WIDTH/2 + 40;
 scene.add(grass2);
 
-// ==================== YAĞMUR VE KAR PARTİKÜLLERİ ====================
+// ==================== YAĞMUR VE KAR ====================
 const rainCount = 500;
 const rainGeo = new THREE.BufferGeometry();
 const rainPositions = new Float32Array(rainCount * 3);
@@ -683,7 +676,7 @@ const state = {
   handling: 0.15, baseMaxSpeed: 2.8,
   weather: 'sunny', timeOfDay: 'day',
   timeAccumulator: 0, weatherAccumulator: 0,
-  sliding: 0  // kayma miktarı (yağmur/kar için)
+  sliding: 0
 };
 
 const CAR_SCALE = 1.4;
@@ -768,11 +761,9 @@ function moneyPerMeter() {
   else if (state.distance >= 3000) base = 0.035;
   else if (state.distance >= 1500) base = 0.02;
   else if (state.distance >= 500) base = 0.01;
-  // Hava durumu bonusu (kötü havada daha çok para)
   if (state.weather === 'rain') base *= 1.3;
   if (state.weather === 'snow') base *= 1.5;
   if (state.weather === 'fog') base *= 1.4;
-  // Gece bonusu
   if (state.timeOfDay === 'night') base *= 1.2;
   return base;
 }
@@ -785,10 +776,8 @@ function checkCollision(a, b) {
 function randomizeWeatherAndTime() {
   const weathers = ['sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'rain', 'rain', 'snow', 'fog'];
   state.weather = weathers[Math.floor(Math.random() * weathers.length)];
-  
   const times = ['day', 'day', 'day', 'night', 'night', 'sunset'];
   state.timeOfDay = times[Math.floor(Math.random() * times.length)];
-  
   applyWeather();
   applyTimeOfDay();
   updateWeatherBadge();
@@ -856,7 +845,6 @@ function applyTimeOfDay() {
       sunLight.position.set(-15, 20, 15);
     }
   } else {
-    // Yağmur/kar için gece/gündüz ayrımı koyu ton
     if (state.timeOfDay === 'night') {
       scene.background.multiplyScalar(0.3);
       scene.fog.color.multiplyScalar(0.3);
@@ -1042,8 +1030,10 @@ window.renderInsurance = function() {
   const insurance = getInsurance();
   const list = document.getElementById('insuranceList');
   
+  let html = '';
+  
   if (insurance.remaining > 0) {
-    list.innerHTML = `<div class="insurance-card active">
+    html += `<div class="insurance-card active">
       <h3>🛡️ Aktif Sigorta</h3>
       <div style="font-size: 40px; margin: 10px 0;">${insurance.remaining}</div>
       <div class="desc">Kalan kaza hakkın</div>
@@ -1051,7 +1041,7 @@ window.renderInsurance = function() {
     </div>`;
   }
   
-  list.innerHTML += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => {
+  html += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => {
     const plan = INSURANCE_PLANS[key];
     return `<div class="insurance-card">
       <h3>${plan.name}</h3>
@@ -1060,6 +1050,8 @@ window.renderInsurance = function() {
       <button class="task-btn" style="width: 100%;" onclick="buyInsurance('${key}')">SATIN AL</button>
     </div>`;
   }).join('');
+  
+  list.innerHTML = html;
 };
 
 window.buyInsurance = function(planKey) {
@@ -1103,9 +1095,8 @@ function animate() {
     return;
   }
   
-  // Zaman döngüsü (her 30 saniyede bir gece/gündüz değişir)
   state.timeAccumulator += dt;
-  if (state.timeAccumulator > 1800) { // ~30 saniye 60fps'de
+  if (state.timeAccumulator > 1800) {
     state.timeAccumulator = 0;
     const times = ['day', 'sunset', 'night'];
     const currentIdx = times.indexOf(state.timeOfDay);
@@ -1114,7 +1105,6 @@ function animate() {
     updateWeatherBadge();
   }
   
-  // Hava durumu değişimi (her ~60 saniyede bir)
   state.weatherAccumulator += dt;
   if (state.weatherAccumulator > 3600) {
     state.weatherAccumulator = 0;
@@ -1133,7 +1123,6 @@ function animate() {
   
   updateEngineSpeed(state.speed);
   
-  // Yağmur/kar parçacıklarını hareket ettir
   if (state.weather === 'rain') {
     const positions = rainGeo.attributes.position.array;
     for (let i = 0; i < positions.length; i += 3) {
@@ -1403,14 +1392,11 @@ window.goHome = function() {
 
 window.startGame = function() {
   unlockAudio();
-  
-  // Sigorta ekranını göster (her oyun başında)
   const insurance = getInsurance();
   if (insurance.remaining === 0) {
     showInsurance();
     return;
   }
-  
   beginGame();
 };
 
@@ -1452,11 +1438,6 @@ window.showInsurance = function() {
   document.getElementById('homeScreen').style.display = 'none';
   document.getElementById('garageScreen').style.display = 'none';
   document.getElementById('insuranceScreen').style.display = 'flex';
-};
-
-window.startWithInsurance = function() {
-  document.getElementById('insuranceScreen').style.display = 'none';
-  beginGame();
 };
 
 window.showQuests = function() {
@@ -1531,21 +1512,26 @@ function resetGameState() {
   document.getElementById('speed').textContent = '0';
 }
 
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+// ==================== RESIZE ====================
+function resizeRenderer() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+  renderer.setSize(w, h);
+  renderer.domElement.style.width = w + 'px';
+  renderer.domElement.style.height = h + 'px';
+}
 
+window.addEventListener('resize', resizeRenderer);
 window.addEventListener('orientationchange', () => {
-  setTimeout(() => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }, 300);
+  setTimeout(resizeRenderer, 100);
+  setTimeout(resizeRenderer, 300);
+  setTimeout(resizeRenderer, 600);
 });
 
 // ==================== BAŞLAT ====================
+resizeRenderer();
 updateWalletUI();
 updateSettingsUI();
 resetDailyQuestsIfNeeded();
