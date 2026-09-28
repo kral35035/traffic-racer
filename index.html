@@ -1414,6 +1414,11 @@ window.startGame = function() {
   beginGame();
 };
 
+window.startWithoutInsurance = function() {
+  document.getElementById('insuranceScreen').style.display = 'none';
+  beginGame();
+};
+
 window.beginGame = function() {
   resetGameState();
   resetDailyQuestsIfNeeded();
