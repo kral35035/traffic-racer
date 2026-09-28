@@ -24,7 +24,7 @@
   #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
   #homeScreen h1 { font-size: 38px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
   #homeScreen .subtitle { font-size: 14px; color: #aaa; margin-bottom: 40px; text-align: center; }
-  .home-btn { padding: 20px 40px; margin: 10px; font-size: 19px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); touch-action: manipulation; -webkit-tap-highlight-color: rgba(255,255,255,0.2); }
+  .home-btn { padding: 20px 40px; margin: 10px; font-size: 19px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); touch-action: manipulation; }
   .home-btn:active { transform: scale(0.96); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
@@ -40,9 +40,28 @@
   .withdraw-section input, .withdraw-section select { width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px; }
   .withdraw-section button { width: 100%; padding: 15px; margin-top: 8px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
   .back-btn { padding: 13px 30px; background: #444; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; margin: 20px auto; display: block; touch-action: manipulation; }
-  #hud { position: absolute; top: 12px; left: 12px; color: #fff; font-size: 13px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.35); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
+  
+  /* ============ HUD ============ */
+  #hud { position: absolute; top: 12px; left: 12px; color: #fff; font-size: 13px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
   #speed { color: #ffdd00; font-weight: bold; }
   #moneyHud { color: #4CAF50; font-weight: bold; }
+  
+  /* ============ OYUN İÇİ BUTONLAR ============ */
+  #gameButtons { position: absolute; top: 12px; right: 12px; z-index: 11; display: none; gap: 8px; }
+  #gameButtons.visible { display: flex; }
+  .game-icon-btn { width: 46px; height: 46px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.3); color: white; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; backdrop-filter: blur(10px); transition: all 0.15s; }
+  .game-icon-btn:active { transform: scale(0.9); background: rgba(0,0,0,0.85); }
+  .game-icon-btn:hover { background: rgba(0,0,0,0.8); }
+  
+  /* ============ DURAKLATMA EKRANI ============ */
+  #pauseScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px; }
+  #pauseScreen h1 { color: #ffd93d; font-size: 42px; margin-bottom: 30px; }
+  button.pause-btn { padding: 16px 30px; margin: 8px; font-size: 17px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
+  .btn-resume { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
+  .btn-home { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
+  .btn-restart2 { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
+  
+  /* ============ OYUN SONU ============ */
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
   #gameOver h1 { color: #ff4444; font-size: 40px; margin: 10px; }
   #gameOver p { font-size: 17px; margin: 6px; }
@@ -50,12 +69,15 @@
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
+  
   @media (max-width: 600px) {
     #homeScreen h1 { font-size: 30px; }
     .home-btn { font-size: 17px; padding: 16px 30px; }
     #hud { font-size: 12px; }
     .wallet-card .amount { font-size: 32px; }
     #gameOver h1 { font-size: 34px; }
+    #pauseScreen h1 { font-size: 34px; }
+    .game-icon-btn { width: 42px; height: 42px; font-size: 20px; }
   }
 </style>
 </head>
@@ -91,12 +113,28 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
+<!-- HUD -->
 <div id="hud" style="display:none;">
   <div>💰 Para: <span id="moneyHud">0.00</span> ₺</div>
   <div>📏 Mesafe: <span id="distance">0</span> m</div>
   <div>⚡ Hız: <span id="speed">0</span> km/s</div>
 </div>
 
+<!-- OYUN İÇİ BUTONLAR -->
+<div id="gameButtons">
+  <button class="game-icon-btn" onclick="pauseGame()" title="Duraklat">⏸️</button>
+  <button class="game-icon-btn" onclick="goHomeFromGame()" title="Ana Sayfa">🏠</button>
+</div>
+
+<!-- DURAKLATMA EKRANI -->
+<div id="pauseScreen">
+  <h1>⏸️ DURAKLATILDI</h1>
+  <button class="pause-btn btn-resume" onclick="resumeGame()">▶️ DEVAM ET</button>
+  <button class="pause-btn btn-restart2" onclick="restartFromPause()">🔄 YENİDEN BAŞLA</button>
+  <button class="pause-btn btn-home" onclick="goHomeFromGame()">🏠 ANA MENÜ</button>
+</div>
+
+<!-- OYUN SONU -->
 <div id="gameOver">
   <h1>💥 KAZA!</h1>
   <p>Kazanılan: <span id="earned">0</span> ₺</p>
@@ -135,10 +173,11 @@ function addToWallet(amount) {
 // ==================== SAHNE ====================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87CEEB);
-scene.fog = new THREE.Fog(0x87CEEB, 60, 220);
+scene.fog = new THREE.Fog(0x87CEEB, 70, 250);
 
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.set(0, 5.5, 11);
+camera.position.set(0, 6.5, 13);
+camera.lookAt(0, 1.0, -15);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -283,6 +322,7 @@ function createFallbackCar(color) {
 // ==================== DURUM ====================
 const state = {
   running: false,
+  paused: false,
   money: 0,
   distance: 0,
   speed: 0.4,
@@ -314,24 +354,25 @@ loadCarModel('models/race-future.glb', 0x00cc44).then((model) => {
 });
 
 // ==================== KONTROL ====================
-// PC klavye
 document.addEventListener('keydown', e => {
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
     state.targetLane = Math.max(-1, state.targetLane - 1);
   }
   if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
     state.targetLane = Math.min(1, state.targetLane + 1);
   }
+  if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') {
+    pauseGame();
+  }
 });
 
-// Mobil dokunmatik — SADECE oyun çalışırken
 let lastTouchTime = 0;
 
 function handleGameTouch(clientX) {
-  if (!state.running) return; // Menüdeyken çalışma
+  if (!state.running || state.paused) return;
   const now = Date.now();
-  if (now - lastTouchTime < 150) return; // Spam engelle
+  if (now - lastTouchTime < 150) return;
   lastTouchTime = now;
   
   const half = window.innerWidth / 2;
@@ -342,15 +383,12 @@ function handleGameTouch(clientX) {
   }
 }
 
-// Canvas'a özel dinleyici — sadece oyun alanında çalışır
 document.addEventListener('touchstart', e => {
-  // Eğer hedef buton/input ise dokunma
   const target = e.target;
   if (target.tagName === 'BUTTON' || target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.closest('button') || target.closest('input') || target.closest('select')) {
     return;
   }
-  // Sadece oyun çalışırken
-  if (state.running) {
+  if (state.running && !state.paused) {
     handleGameTouch(e.touches[0].clientX);
   }
 }, { passive: true });
@@ -399,7 +437,8 @@ function animate() {
   const dt = Math.min((now - lastTime) / 16.67, 2);
   lastTime = now;
   
-  if (!state.running) {
+  // Duraklatıldıysa sadece render et, oyunu ilerletme
+  if (!state.running || state.paused) {
     renderer.render(scene, camera);
     return;
   }
@@ -414,9 +453,9 @@ function animate() {
   const shakeY = (Math.random() - 0.5) * state.shake * 0.08;
   
   camera.position.x = player.position.x * 0.5 + shakeX;
-  camera.position.y = 4.5 + shakeY;
-  camera.position.z = 9;
-  camera.lookAt(player.position.x * 0.35, 1.5, -12);
+  camera.position.y = 6.5 + shakeY;
+  camera.position.z = 13;
+  camera.lookAt(player.position.x * 0.35, 1.0, -15);
   
   const moveAmount = state.speed * dt * 2;
   laneDashes.forEach(d => {
@@ -466,22 +505,68 @@ function startAnimationLoop() {
   }
 }
 
+// ==================== DURAKLATMA ====================
+window.pauseGame = function() {
+  if (!state.running || state.paused) return;
+  state.paused = true;
+  document.getElementById('pauseScreen').style.display = 'flex';
+  document.getElementById('gameButtons').classList.remove('visible');
+};
+
+window.resumeGame = function() {
+  state.paused = false;
+  document.getElementById('pauseScreen').style.display = 'none';
+  document.getElementById('gameButtons').classList.add('visible');
+  lastTime = performance.now();
+};
+
+window.restartFromPause = function() {
+  state.paused = false;
+  document.getElementById('pauseScreen').style.display = 'none';
+  resetGameState();
+  state.running = true;
+  document.getElementById('gameButtons').classList.add('visible');
+  startAnimationLoop();
+};
+
+window.goHomeFromGame = function() {
+  // Kalan parayı kasaya ekle (duraklatıldıysa kesinti yok)
+  if (state.money > 0) {
+    addToWallet(state.money);
+  }
+  state.running = false;
+  state.paused = false;
+  animationRunning = false;
+  document.getElementById('pauseScreen').style.display = 'none';
+  document.getElementById('gameOver').style.display = 'none';
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('gameButtons').classList.remove('visible');
+  renderer.domElement.style.display = 'none';
+  document.getElementById('homeScreen').style.display = 'flex';
+  document.getElementById('walletScreen').style.display = 'none';
+  resetGameState();
+};
+
 // ==================== OYUN BİTİŞ ====================
 let penaltyAmount = 0;
 
 function endGame() {
   state.running = false;
+  state.paused = false;
   penaltyAmount = state.money / 2;
   document.getElementById('earned').textContent = state.money.toFixed(4);
   document.getElementById('penalty').textContent = penaltyAmount.toFixed(4);
   document.getElementById('gameOver').style.display = 'flex';
+  document.getElementById('gameButtons').classList.remove('visible');
 }
 
 window.watchAd = function() {
   alert('📺 Reklam gösteriliyor... (Gerçek sistemde 30sn video)');
   addToWallet(state.money);
   state.running = true;
+  state.paused = false;
   document.getElementById('gameOver').style.display = 'none';
+  document.getElementById('gameButtons').classList.add('visible');
   player.position.x = 0;
   state.playerLane = 0;
   state.targetLane = 0;
@@ -499,6 +584,7 @@ window.restart = function() {
   addToWallet(remaining);
   resetGameState();
   document.getElementById('gameOver').style.display = 'none';
+  document.getElementById('gameButtons').classList.add('visible');
   state.running = true;
   startAnimationLoop();
 };
@@ -509,9 +595,12 @@ window.goHome = function() {
     addToWallet(remaining);
   }
   state.running = false;
+  state.paused = false;
   animationRunning = false;
   document.getElementById('gameOver').style.display = 'none';
+  document.getElementById('pauseScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'none';
+  document.getElementById('gameButtons').classList.remove('visible');
   renderer.domElement.style.display = 'none';
   document.getElementById('homeScreen').style.display = 'flex';
   document.getElementById('walletScreen').style.display = 'none';
@@ -523,8 +612,10 @@ window.startGame = function() {
   document.getElementById('homeScreen').style.display = 'none';
   document.getElementById('walletScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'block';
+  document.getElementById('gameButtons').classList.add('visible');
   renderer.domElement.style.display = 'block';
   state.running = true;
+  state.paused = false;
   startAnimationLoop();
 };
 
@@ -543,72 +634,4 @@ window.requestWithdraw = async function() {
   if (isNaN(amount) || amount < 10) { alert('⚠️ Minimum çekim tutarı 10₺.'); return; }
   
   const w = getWallet();
-  if (amount > w.balance) { alert('⚠️ Yetersiz bakiye. Bakiyeniz: ' + w.balance.toFixed(2) + '₺'); return; }
-  
-  w.balance -= amount;
-  w.pending += amount;
-  w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
-  saveWallet(w);
-  
-  try {
-    await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() })
-    });
-  } catch (err) {
-    console.error('E-posta hatası:', err);
-  }
-  
-  alert('✅ Çekim talebiniz alındı!\n\nYöntem: ' + (method === 'iban' ? 'IBAN' : 'Payeer') + '\nHesap: ' + account + '\nTutar: ' + amount.toFixed(2) + '₺');
-  
-  updateWalletUI();
-  document.getElementById('withdrawAccount').value = '';
-  document.getElementById('withdrawAmount').value = '';
-};
-
-function updateWalletUI() {
-  const w = getWallet();
-  document.getElementById('walletBalance').textContent = w.balance.toFixed(2);
-  document.getElementById('walletPending').textContent = w.pending.toFixed(2);
-}
-
-function resetGameState() {
-  state.money = 0;
-  state.distance = 0;
-  state.speed = 0.4;
-  state.playerLane = 0;
-  state.targetLane = 0;
-  state.shake = 0;
-  state.lastSpawn = 0;
-  if (player) {
-    player.position.set(0, 0, 4);
-    player.rotation.z = 0;
-  }
-  state.cars.forEach(c => scene.remove(c));
-  state.cars = [];
-  penaltyAmount = 0;
-  camera.position.set(0, 4.5, 9);
-  document.getElementById('moneyHud').textContent = '0.0000';
-  document.getElementById('distance').textContent = '0';
-  document.getElementById('speed').textContent = '0';
-}
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-window.addEventListener('orientationchange', () => {
-  setTimeout(() => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }, 300);
-});
-
-updateWalletUI();
-</script>
-</body>
-</html>
+  if (amount > w.balance) { alert('⚠️ Yetersiz bakiye.
