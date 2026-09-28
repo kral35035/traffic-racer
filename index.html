@@ -6,113 +6,39 @@
 <title>Traffic Racer - Para Kazan</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { 
-    overflow: hidden; background: #000; 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-    color: white;
-  }
+  body { overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; color: white; }
   canvas { display: block; }
-  
-  /* ANA SAYFA */
-  #homeScreen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    z-index: 100; padding: 20px;
-  }
-  #homeScreen h1 {
-    font-size: 52px; margin-bottom: 10px;
-    background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
-  }
-  #homeScreen .subtitle {
-    font-size: 16px; color: #aaa; margin-bottom: 50px; text-align: center;
-  }
-  .home-btn {
-    padding: 20px 60px; margin: 10px; font-size: 22px;
-    border: none; border-radius: 16px; cursor: pointer;
-    font-weight: bold; transition: all 0.25s;
-    min-width: 280px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  }
+  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+  #homeScreen h1 { font-size: 52px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
+  #homeScreen .subtitle { font-size: 16px; color: #aaa; margin-bottom: 50px; text-align: center; }
+  .home-btn { padding: 20px 60px; margin: 10px; font-size: 22px; border: none; border-radius: 16px; cursor: pointer; font-weight: bold; transition: all 0.25s; min-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
   .home-btn:hover { transform: translateY(-3px); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
-  
-  /* KASAM */
-  #walletScreen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    display: none; flex-direction: column;
-    z-index: 100; padding: 20px; overflow-y: auto;
-  }
+  #walletScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 20px; overflow-y: auto; }
   #walletScreen h2 { font-size: 32px; margin: 20px 0; text-align: center; color: #ffd93d; }
-  .wallet-card {
-    background: linear-gradient(135deg, #2d3561, #1e2749);
-    border-radius: 20px; padding: 30px; margin: 10px auto;
-    max-width: 500px; width: 100%;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,217,61,0.2);
-  }
-  .wallet-card .label {
-    color: #aaa; font-size: 14px; margin-bottom: 8px;
-    text-transform: uppercase; letter-spacing: 1px;
-  }
+  .wallet-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 30px; margin: 10px auto; max-width: 500px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,217,61,0.2); }
+  .wallet-card .label { color: #aaa; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
   .wallet-card .amount { font-size: 48px; font-weight: bold; color: #4CAF50; }
   .wallet-card .amount.pending { color: #FF9800; font-size: 32px; }
   .wallet-card .currency { font-size: 24px; color: #aaa; margin-left: 5px; }
-  
-  .withdraw-section {
-    background: rgba(0,0,0,0.3); border-radius: 16px;
-    padding: 20px; margin: 20px auto; max-width: 500px; width: 100%;
-  }
+  .withdraw-section { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin: 20px auto; max-width: 500px; width: 100%; }
   .withdraw-section h3 { color: #fff; margin-bottom: 15px; font-size: 18px; }
-  .withdraw-section input, .withdraw-section select {
-    width: 100%; padding: 12px; margin: 8px 0;
-    background: #1a1a2e; border: 1px solid #444;
-    color: white; border-radius: 8px; font-size: 16px;
-  }
-  .withdraw-section button {
-    width: 100%; padding: 15px; margin-top: 10px;
-    background: linear-gradient(135deg, #4CAF50, #2e7d32);
-    color: white; border: none; border-radius: 10px;
-    font-size: 18px; font-weight: bold; cursor: pointer;
-  }
-  .back-btn {
-    padding: 12px 30px; background: #444; color: white;
-    border: none; border-radius: 10px; font-size: 16px;
-    cursor: pointer; margin: 20px auto; display: block;
-  }
-  
-  /* HUD */
-  #hud {
-    position: absolute; top: 15px; left: 15px;
-    color: #fff; font-size: 16px; text-shadow: 2px 2px 6px #000;
-    pointer-events: none; z-index: 10;
-  }
+  .withdraw-section input, .withdraw-section select { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 16px; }
+  .withdraw-section button { width: 100%; padding: 15px; margin-top: 10px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+  .back-btn { padding: 12px 30px; background: #444; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; margin: 20px auto; display: block; }
+  #hud { position: absolute; top: 15px; left: 15px; color: #fff; font-size: 16px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; }
   #hud div { margin: 6px 0; }
   #speed { color: #ffdd00; font-weight: bold; }
   #moneyHud { color: #4CAF50; font-weight: bold; }
-  
-  /* OYUN SONU */
-  #gameOver {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9); display: none;
-    flex-direction: column; justify-content: center; align-items: center;
-    color: white; z-index: 20; text-align: center; padding: 20px;
-  }
+  #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
   #gameOver h1 { color: #ff4444; font-size: 52px; margin: 10px; }
   #gameOver p { font-size: 20px; margin: 8px; }
-  button.game-btn {
-    padding: 15px 30px; margin: 10px; font-size: 18px;
-    border: none; border-radius: 12px; cursor: pointer;
-    font-weight: bold; min-width: 250px;
-  }
+  button.game-btn { padding: 15px 30px; margin: 10px; font-size: 18px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; min-width: 250px; }
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
+  #loadingMsg { position: fixed; bottom: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 10px 15px; border-radius: 8px; font-size: 13px; color: #0f0; z-index: 999; display: none; max-width: 400px; }
 </style>
 </head>
 <body>
@@ -128,15 +54,11 @@
   <h2>💰 KASAM</h2>
   <div class="wallet-card">
     <div class="label">Toplam Bakiye</div>
-    <div class="amount">
-      <span id="walletBalance">0.00</span><span class="currency">₺</span>
-    </div>
+    <div class="amount"><span id="walletBalance">0.00</span><span class="currency">₺</span></div>
   </div>
   <div class="wallet-card">
     <div class="label">Çekim Bekleyen</div>
-    <div class="amount pending">
-      <span id="walletPending">0.00</span><span class="currency">₺</span>
-    </div>
+    <div class="amount pending"><span id="walletPending">0.00</span><span class="currency">₺</span></div>
   </div>
   <div class="withdraw-section">
     <h3>💸 Para Çek</h3>
@@ -166,6 +88,8 @@
   <button class="game-btn btn-menu" onclick="goHome()">🏠 Ana Menü</button>
 </div>
 
+<div id="loadingMsg"></div>
+
 <script type="importmap">
 {
   "imports": {
@@ -178,6 +102,18 @@
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+// ==================== DEBUG MESAJ ====================
+function debugLog(msg, isError = false) {
+  const el = document.getElementById('loadingMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.color = isError ? '#ff4444' : '#0f0';
+  console.log(msg);
+  if (!isError) {
+    setTimeout(() => { el.style.display = 'none'; }, 3000);
+  }
+}
 
 // ==================== KASA ====================
 function getWallet() {
@@ -211,8 +147,8 @@ document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
 // ==================== IŞIKLAR ====================
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.5);
+scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.6);
 scene.add(hemiLight);
 
 const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -293,23 +229,24 @@ function loadCarModel(path, fallbackColor = 0x00cc44) {
     gltfLoader.load(
       path,
       (gltf) => {
+        debugLog('✅ Model yüklendi: ' + path);
         const model = prepareModel(gltf.scene);
         resolve(model);
       },
-      undefined,
+      (progress) => {
+        // yükleniyor...
+      },
       (error) => {
-        console.warn('⚠️ Model yüklenemedi:', path, '→ yedek kutu kullanılıyor');
+        debugLog('❌ Model YÜKLENEMEDİ: ' + path + ' | ' + error.message, true);
         resolve(createFallbackCar(fallbackColor));
       }
     );
   });
 }
 
-// Model yüklenemezse kutudan araba yap
 function createFallbackCar(color) {
   const car = new THREE.Group();
   car.userData.isFallback = true;
-  
   const body = new THREE.Mesh(
     new THREE.BoxGeometry(2, 0.7, 4),
     new THREE.MeshStandardMaterial({ color, metalness: 0.7, roughness: 0.3 })
@@ -317,7 +254,6 @@ function createFallbackCar(color) {
   body.position.y = 0.6;
   body.castShadow = true;
   car.add(body);
-  
   const cabin = new THREE.Mesh(
     new THREE.BoxGeometry(1.6, 0.6, 1.8),
     new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.9, roughness: 0.1, transparent: true, opacity: 0.85 })
@@ -325,7 +261,6 @@ function createFallbackCar(color) {
   cabin.position.set(0, 1.2, -0.1);
   cabin.castShadow = true;
   car.add(cabin);
-  
   const wheelGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.3, 16);
   const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
   [[-1, 0.4, 1.3], [1, 0.4, 1.3], [-1, 0.4, -1.3], [1, 0.4, -1.3]].forEach(pos => {
@@ -335,7 +270,6 @@ function createFallbackCar(color) {
     wheel.castShadow = true;
     car.add(wheel);
   });
-  
   return car;
 }
 
@@ -363,18 +297,12 @@ scene.add(player);
 
 loadCarModel('models/race-future.glb', 0x00cc44).then((model) => {
   scene.remove(player);
-
-  // Kenney modelleri büyük olduğu için ölçek küçült
   model.scale.set(0.35, 0.35, 0.35);
-
-  // Kenney modelleri +Z yönüne bakar, oyun -Z'ye ilerliyor
   model.rotation.y = Math.PI;
-
   model.position.set(0, 0, 5);
   scene.add(model);
   player = model;
   state.modelLoaded = true;
-  console.log('✅ Oyuncu modeli yüklendi: race-future.glb');
 });
 
 // ==================== KONTROL ====================
@@ -397,13 +325,7 @@ document.addEventListener('touchend', e => {
 
 // ==================== DÜŞMAN ARABALARI ====================
 const carColors = [0xe74c3c, 0x3498db, 0x9b59b6, 0xe67e22, 0x1abc9c, 0xf39c12, 0x34495e];
-
-const enemyModels = [
-  'models/sedan.glb',
-  'models/suv.glb',
-  'models/taxi.glb',
-  'models/van.glb'
-];
+const enemyModels = ['models/sedan.glb', 'models/suv.glb', 'models/taxi.glb', 'models/van.glb'];
 
 async function spawnEnemyCar() {
   const lane = Math.floor(Math.random() * 3) - 1;
@@ -411,23 +333,21 @@ async function spawnEnemyCar() {
   const fallbackColor = carColors[Math.floor(Math.random() * carColors.length)];
   
   const car = await loadCarModel(randomModel, fallbackColor);
-  
   const isFallback = car.userData && car.userData.isFallback;
   
   if (isFallback) {
     car.scale.set(0.5, 0.5, 0.5);
-    car.rotation.y = Math.PI;
   } else {
     car.scale.set(0.35, 0.35, 0.35);
-    car.rotation.y = Math.PI;
   }
+  car.rotation.y = Math.PI;
   
   car.position.set(LANES[lane + 1], 0, -200);
   scene.add(car);
   state.cars.push(car);
 }
 
-// ==================== PARA (KURUŞ KURUŞ) ====================
+// ==================== PARA ====================
 function moneyPerMeter() {
   if (state.distance < 500) return 0.005;
   if (state.distance < 1500) return 0.01;
@@ -443,9 +363,12 @@ function checkCollision(a, b) {
 
 // ==================== DÖNGÜ ====================
 let lastTime = performance.now();
+let animationRunning = false;
 
 function animate() {
+  if (!animationRunning) return;
   requestAnimationFrame(animate);
+  
   const now = performance.now();
   const dt = Math.min((now - lastTime) / 16.67, 2);
   lastTime = now;
@@ -509,6 +432,14 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+function startAnimationLoop() {
+  if (!animationRunning) {
+    animationRunning = true;
+    lastTime = performance.now();
+    animate();
+  }
+}
+
 // ==================== OYUN BİTİŞ ====================
 let penaltyAmount = 0;
 
@@ -534,13 +465,23 @@ window.watchAd = function() {
       state.cars.splice(i, 1);
     }
   }
+  startAnimationLoop();
 };
 
 window.restart = function() {
+  // Kalan parayı kasaya ekle
   const remaining = Math.max(0, state.money - penaltyAmount);
   addToWallet(remaining);
+  
+  // State'i sıfırla
   resetGameState();
+  
+  // Oyun sonu ekranını gizle
   document.getElementById('gameOver').style.display = 'none';
+  
+  // OYUNU BAŞLAT (kritik düzeltme!)
+  state.running = true;
+  startAnimationLoop();
 };
 
 window.goHome = function() {
@@ -549,6 +490,7 @@ window.goHome = function() {
     addToWallet(remaining);
   }
   state.running = false;
+  animationRunning = false;
   document.getElementById('gameOver').style.display = 'none';
   document.getElementById('hud').style.display = 'none';
   renderer.domElement.style.display = 'none';
@@ -564,8 +506,7 @@ window.startGame = function() {
   document.getElementById('hud').style.display = 'block';
   renderer.domElement.style.display = 'block';
   state.running = true;
-  lastTime = performance.now();
-  animate();
+  startAnimationLoop();
 };
 
 window.showWallet = function() {
@@ -587,23 +528,14 @@ window.requestWithdraw = async function() {
   
   w.balance -= amount;
   w.pending += amount;
-  w.history.push({
-    method, account, amount,
-    date: new Date().toISOString(),
-    status: 'pending'
-  });
+  w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
   saveWallet(w);
   
   try {
     const res = await fetch('/api/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        method: method,
-        account: account,
-        amount: amount,
-        username: 'user_' + Date.now()
-      })
+      body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() })
     });
     if (res.ok) console.log('📧 E-posta gönderildi');
   } catch (err) {
@@ -631,8 +563,10 @@ function resetGameState() {
   state.targetLane = 0;
   state.shake = 0;
   state.lastSpawn = 0;
-  player.position.set(0, 0, 5);
-  player.rotation.z = 0;
+  if (player) {
+    player.position.set(0, 0, 5);
+    player.rotation.z = 0;
+  }
   state.cars.forEach(c => scene.remove(c));
   state.cars = [];
   penaltyAmount = 0;
