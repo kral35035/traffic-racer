@@ -3,11 +3,13 @@
   "builds": [
     { "src": "api/*.js", "use": "@vercel/node" },
     { "src": "index.html", "use": "@vercel/static" },
-    { "src": "models/**", "use": "@vercel/static" }
+    { "src": "models/**", "use": "@vercel/static" },
+    { "src": "sounds/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/models/(.*)", "dest": "/models/$1" },
+    { "src": "/sounds/(.*)", "dest": "/sounds/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
