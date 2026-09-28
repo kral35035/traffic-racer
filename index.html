@@ -634,4 +634,72 @@ window.requestWithdraw = async function() {
   if (isNaN(amount) || amount < 10) { alert('⚠️ Minimum çekim tutarı 10₺.'); return; }
   
   const w = getWallet();
-  if (amount > w.balance) { alert('⚠️ Yetersiz bakiye.
+  if (amount > w.balance) { alert('⚠️ Yetersiz bakiye. Bakiyeniz: ' + w.balance.toFixed(2) + '₺'); return; }
+  
+  w.balance -= amount;
+  w.pending += amount;
+  w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
+  saveWallet(w);
+  
+  try {
+    await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() })
+    });
+  } catch (err) {
+    console.error('E-posta hatası:', err);
+  }
+  
+  alert('✅ Çekim talebiniz alındı!\n\nYöntem: ' + (method === 'iban' ? 'IBAN' : 'Payeer') + '\nHesap: ' + account + '\nTutar: ' + amount.toFixed(2) + '₺');
+  
+  updateWalletUI();
+  document.getElementById('withdrawAccount').value = '';
+  document.getElementById('withdrawAmount').value = '';
+};
+
+function updateWalletUI() {
+  const w = getWallet();
+  document.getElementById('walletBalance').textContent = w.balance.toFixed(2);
+  document.getElementById('walletPending').textContent = w.pending.toFixed(2);
+}
+
+function resetGameState() {
+  state.money = 0;
+  state.distance = 0;
+  state.speed = 0.4;
+  state.playerLane = 0;
+  state.targetLane = 0;
+  state.shake = 0;
+  state.lastSpawn = 0;
+  if (player) {
+    player.position.set(0, 0, 4);
+    player.rotation.z = 0;
+  }
+  state.cars.forEach(c => scene.remove(c));
+  state.cars = [];
+  penaltyAmount = 0;
+  camera.position.set(0, 6.5, 13);
+  document.getElementById('moneyHud').textContent = '0.0000';
+  document.getElementById('distance').textContent = '0';
+  document.getElementById('speed').textContent = '0';
+}
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }, 300);
+});
+
+updateWalletUI();
+</script>
+</body>
+</html>
