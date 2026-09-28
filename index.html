@@ -4,89 +4,100 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <title>Traffic Racer</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { 
-    overflow: hidden; background: #000; 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
-    color: white;
-    user-select: none;
-    -webkit-user-select: none;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0; left: 0;
-  }
+  html, body { overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; color: white; user-select: none; -webkit-user-select: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; }
   canvas { display: block; width: 100%; height: 100%; }
   
-  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 20px; overflow-y: auto; }
-  #homeScreen h1 { font-size: 36px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
-  #homeScreen .subtitle { font-size: 13px; color: #aaa; margin-bottom: 25px; text-align: center; }
-  .home-btn { padding: 16px 40px; margin: 7px; font-size: 17px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); touch-action: manipulation; }
+  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 15px; overflow-y: auto; }
+  #homeScreen h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
+  #homeScreen .subtitle { font-size: 12px; color: #aaa; margin-bottom: 20px; text-align: center; }
+  .home-btn { padding: 14px 30px; margin: 5px; font-size: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 270px; max-width: 85vw; box-shadow: 0 6px 20px rgba(0,0,0,0.4); touch-action: manipulation; }
   .home-btn:active { transform: scale(0.96); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
+  #garageBtn { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
   #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   #questsBtn { background: linear-gradient(135deg, #9C27B0, #6A1B9A); color: white; }
   #achievementsBtn { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   #settingsBtn { background: linear-gradient(135deg, #607D8B, #37474F); color: white; }
   
   /* MODAL */
-  .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 20px; overflow-y: auto; }
-  .modal-screen h2 { font-size: 26px; margin: 20px 0; text-align: center; color: #ffd93d; }
-  .modal-content { max-width: 500px; margin: 0 auto; width: 100%; }
+  .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 15px; overflow-y: auto; }
+  .modal-screen h2 { font-size: 24px; margin: 15px 0; text-align: center; color: #ffd93d; }
+  .modal-content { max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 40px; }
   
-  .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 18px; margin: 10px 0; border: 1px solid rgba(255,255,255,0.1); }
+  .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.1); }
   .task-card.completed { border-color: #4CAF50; opacity: 0.7; }
   .task-card.claimed { border-color: #666; opacity: 0.5; }
-  .task-title { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 6px; }
-  .task-desc { font-size: 13px; color: #aaa; margin-bottom: 10px; }
-  .task-reward { font-size: 14px; color: #4CAF50; font-weight: bold; }
-  .task-progress { background: #1a1a2e; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+  .task-title { font-size: 15px; font-weight: bold; color: #fff; margin-bottom: 5px; }
+  .task-desc { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+  .task-reward { font-size: 13px; color: #4CAF50; font-weight: bold; }
+  .task-progress { background: #1a1a2e; height: 8px; border-radius: 4px; overflow: hidden; margin: 6px 0; }
   .task-progress-bar { height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); transition: width 0.3s; }
-  .task-btn { padding: 10px 20px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; touch-action: manipulation; }
+  .task-btn { padding: 10px 18px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 6px; touch-action: manipulation; font-size: 14px; }
   .task-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.5; }
   
-  .back-btn { padding: 13px 30px; background: #444; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; margin: 20px auto; display: block; touch-action: manipulation; }
+  .back-btn { padding: 12px 28px; background: #444; color: white; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; margin: 15px auto; display: block; touch-action: manipulation; }
+  
+  /* GARAJ */
+  .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
+  .car-card.owned { border-color: #4CAF50; }
+  .car-card.selected { border-color: #ffd93d; box-shadow: 0 0 20px rgba(255,217,61,0.5); }
+  .car-card .car-icon { font-size: 42px; min-width: 60px; text-align: center; }
+  .car-card .car-info { flex: 1; }
+  .car-card .car-name { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+  .car-card .car-stats { font-size: 11px; color: #aaa; line-height: 1.4; }
+  .car-card .car-price { font-size: 16px; font-weight: bold; color: #4CAF50; margin-top: 4px; }
+  .car-card .car-action { padding: 8px 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; touch-action: manipulation; }
+  .car-action.buy { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
+  .car-action.select { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
+  .car-action.selected { background: linear-gradient(135deg, #ffd93d, #FF6F00); color: #000; }
+  .car-action.locked { background: #555; color: #aaa; cursor: not-allowed; }
+  
+  /* SİGORTA */
+  .insurance-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 18px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); text-align: center; }
+  .insurance-card.active { border-color: #4CAF50; box-shadow: 0 0 20px rgba(76,175,80,0.4); }
+  .insurance-card h3 { color: #ffd93d; font-size: 18px; margin-bottom: 8px; }
+  .insurance-card .price { font-size: 32px; font-weight: bold; color: #4CAF50; margin: 10px 0; }
+  .insurance-card .desc { font-size: 13px; color: #aaa; margin-bottom: 10px; }
   
   /* AYARLAR */
-  .setting-row { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 18px; margin: 10px 0; border: 1px solid rgba(255,255,255,0.1); }
-  .setting-row label { display: block; font-size: 15px; color: #fff; margin-bottom: 12px; font-weight: bold; }
+  .setting-row { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.1); }
+  .setting-row label { display: block; font-size: 14px; color: #fff; margin-bottom: 10px; font-weight: bold; }
   .setting-row .value { color: #4CAF50; font-weight: bold; float: right; }
   .setting-row input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: #1a1a2e; border-radius: 3px; outline: none; }
   .setting-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #4CAF50; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
   .setting-row input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #4CAF50; cursor: pointer; border: none; }
   
-  .toggle-btn { padding: 12px 24px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 15px; touch-action: manipulation; width: 100%; margin-top: 8px; }
+  .toggle-btn { padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; touch-action: manipulation; width: 100%; margin-top: 8px; }
   .toggle-on { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .toggle-off { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
   
   /* HUD */
-  #hud { position: absolute; top: 12px; left: 12px; color: #fff; font-size: 13px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
+  #hud { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 12px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
   #speed { color: #ffdd00; font-weight: bold; }
   #moneyHud { color: #4CAF50; font-weight: bold; }
   
   /* OYUN İÇİ BUTONLAR */
-  #gameButtons { position: absolute; top: 12px; right: 12px; z-index: 50; display: none; gap: 8px; }
+  #gameButtons { position: absolute; top: 10px; right: 10px; z-index: 50; display: none; gap: 8px; flex-direction: column; }
   #gameButtons.visible { display: flex; }
-  .game-icon-btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; transition: all 0.1s; padding: 0; line-height: 1; }
+  .game-icon-btn { width: 46px; height: 46px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; padding: 0; line-height: 1; }
   .game-icon-btn:active { transform: scale(0.9); background: rgba(0,0,0,1); }
   
   /* DURAKLATMA */
   #pauseScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px; }
-  #pauseScreen h1 { color: #ffd93d; font-size: 42px; margin-bottom: 30px; }
-  button.pause-btn { padding: 16px 30px; margin: 8px; font-size: 17px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
+  #pauseScreen h1 { color: #ffd93d; font-size: 38px; margin-bottom: 25px; }
+  button.pause-btn { padding: 15px 28px; margin: 6px; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
   .btn-resume { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-home { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart2 { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   
   /* OYUN SONU */
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
-  #gameOver h1 { color: #ff4444; font-size: 40px; margin: 10px; }
-  #gameOver p { font-size: 17px; margin: 6px; }
-  button.game-btn { padding: 15px 28px; margin: 8px; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
+  #gameOver h1 { color: #ff4444; font-size: 38px; margin: 10px; }
+  #gameOver p { font-size: 16px; margin: 5px; }
+  button.game-btn { padding: 14px 26px; margin: 6px; font-size: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
@@ -94,24 +105,28 @@
   /* GÜNLÜK ÖDÜL */
   #dailyPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
   #dailyPopup .popup-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 40px 30px; max-width: 400px; width: 100%; text-align: center; border: 2px solid #ffd93d; box-shadow: 0 0 40px rgba(255,217,61,0.5); }
-  #dailyPopup h1 { font-size: 32px; color: #ffd93d; margin-bottom: 15px; }
-  #dailyPopup .reward-amount { font-size: 52px; font-weight: bold; color: #4CAF50; margin: 20px 0; }
-  #dailyPopup button { padding: 15px 40px; margin-top: 20px; font-size: 18px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+  #dailyPopup h1 { font-size: 30px; color: #ffd93d; margin-bottom: 15px; }
+  #dailyPopup .reward-amount { font-size: 48px; font-weight: bold; color: #4CAF50; margin: 20px 0; }
+  #dailyPopup button { padding: 14px 36px; margin-top: 20px; font-size: 17px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
   
   /* TOAST */
-  #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 15px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
+  #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 12px 22px; border-radius: 12px; font-weight: bold; font-size: 14px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   #toast.gold { background: linear-gradient(135deg, #FFC107, #FF6F00); }
   #toast.info { background: linear-gradient(135deg, #2196F3, #0d47a1); }
   #toast.error { background: linear-gradient(135deg, #f44336, #b71c1c); }
   
+  /* HAVA DURUMU */
+  #weatherBadge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10; background: rgba(0,0,0,0.5); padding: 6px 14px; border-radius: 20px; font-size: 13px; color: white; pointer-events: none; display: none; }
+  #weatherBadge.visible { display: block; }
+  
   @media (max-width: 600px) {
-    #homeScreen h1 { font-size: 26px; }
-    .home-btn { font-size: 15px; padding: 14px 30px; }
-    #hud { font-size: 12px; }
-    #gameOver h1 { font-size: 32px; }
-    #pauseScreen h1 { font-size: 32px; }
-    .game-icon-btn { width: 44px; height: 44px; font-size: 20px; }
+    #homeScreen h1 { font-size: 24px; }
+    .home-btn { font-size: 14px; padding: 13px 25px; }
+    #hud { font-size: 11px; padding: 6px 10px; }
+    #gameOver h1 { font-size: 30px; }
+    #pauseScreen h1 { font-size: 30px; }
+    .game-icon-btn { width: 42px; height: 42px; font-size: 18px; }
   }
 </style>
 </head>
@@ -121,10 +136,25 @@
   <h1>🏎️ TRAFFIC RACER</h1>
   <p class="subtitle">Kaza yapmadan ilerle, para kazan!</p>
   <button class="home-btn" id="playBtn" onclick="startGame()">🎮 OYNAMAYA BAŞLA</button>
-  <button class="home-btn" id="questsBtn" onclick="showQuests()">🎯 GÜNLÜK GÖREVLER</button>
-  <button class="home-btn" id="achievementsBtn" onclick="showAchievements()">🏆 BAŞARIMLAR</button>
+  <button class="home-btn" id="garageBtn" onclick="showGarage()">🚗 GARAJ</button>
   <button class="home-btn" id="walletBtn" onclick="showWallet()">💰 KASAM</button>
+  <button class="home-btn" id="questsBtn" onclick="showQuests()">🎯 GÖREVLER</button>
+  <button class="home-btn" id="achievementsBtn" onclick="showAchievements()">🏆 BAŞARIMLAR</button>
   <button class="home-btn" id="settingsBtn" onclick="showSettings()">⚙️ AYARLAR</button>
+</div>
+
+<!-- GARAJ -->
+<div id="garageScreen" class="modal-screen">
+  <h2>🚗 GARAJ</h2>
+  <div class="modal-content" id="garageList"></div>
+  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
+</div>
+
+<!-- SİGORTA -->
+<div id="insuranceScreen" class="modal-screen">
+  <h2>🛡️ SİGORTA</h2>
+  <div class="modal-content" id="insuranceList"></div>
+  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
 <!-- GÖREVLER -->
@@ -147,24 +177,24 @@
   <div class="modal-content">
     <div class="task-card">
       <div class="task-title">Toplam Bakiye</div>
-      <div style="font-size: 42px; font-weight: bold; color: #4CAF50; margin-top: 8px;">
-        <span id="walletBalance">0.00</span> <span style="font-size: 22px; color: #aaa;">₺</span>
+      <div style="font-size: 38px; font-weight: bold; color: #4CAF50; margin-top: 8px;">
+        <span id="walletBalance">0.00</span> <span style="font-size: 20px; color: #aaa;">₺</span>
       </div>
     </div>
     <div class="task-card">
       <div class="task-title">Çekim Bekleyen</div>
-      <div style="font-size: 30px; font-weight: bold; color: #FF9800; margin-top: 8px;">
-        <span id="walletPending">0.00</span> <span style="font-size: 18px; color: #aaa;">₺</span>
+      <div style="font-size: 28px; font-weight: bold; color: #FF9800; margin-top: 8px;">
+        <span id="walletPending">0.00</span> <span style="font-size: 16px; color: #aaa;">₺</span>
       </div>
     </div>
     <div class="task-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size: 16px;">💸 Para Çek</h3>
-      <select id="withdrawMethod" style="width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px;">
+      <h3 style="color: #fff; margin-bottom: 12px; font-size: 15px;">💸 Para Çek</h3>
+      <select id="withdrawMethod" style="width: 100%; padding: 12px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px;">
         <option value="iban">🏦 IBAN</option>
         <option value="payeer">💳 Payeer</option>
       </select>
-      <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px;">
-      <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 10₺)" min="10" step="0.01" style="width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px;">
+      <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 12px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px;">
+      <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 10₺)" min="10" step="0.01" style="width: 100%; padding: 12px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px;">
       <button class="task-btn" style="width: 100%;" onclick="requestWithdraw()">ÇEKİM TALEBİ OLUŞTUR</button>
     </div>
   </div>
@@ -175,55 +205,52 @@
 <div id="settingsScreen" class="modal-screen">
   <h2>⚙️ AYARLAR</h2>
   <div class="modal-content">
-    
     <div class="setting-row">
       <label>🔊 Ana Ses <span class="value" id="masterVal">100%</span></label>
       <input type="range" id="masterVol" min="0" max="100" value="100">
-      <button class="toggle-btn toggle-on" id="masterToggle" onclick="toggleMaster()" style="margin-top: 12px;">AÇIK</button>
+      <button class="toggle-btn toggle-on" id="masterToggle" onclick="toggleMaster()">AÇIK</button>
     </div>
-    
     <div class="setting-row">
       <label>🎵 Müzik <span class="value" id="musicVal">20%</span></label>
       <input type="range" id="musicVol" min="0" max="100" value="20">
-      <button class="toggle-btn toggle-on" id="musicToggle" onclick="toggleMusic()" style="margin-top: 12px;">AÇIK</button>
+      <button class="toggle-btn toggle-on" id="musicToggle" onclick="toggleMusic()">AÇIK</button>
     </div>
-    
     <div class="setting-row">
       <label>🚗 Motor Sesi <span class="value" id="engineVal">30%</span></label>
       <input type="range" id="engineVol" min="0" max="100" value="30">
-      <button class="toggle-btn toggle-on" id="engineToggle" onclick="toggleEngine()" style="margin-top: 12px;">AÇIK</button>
+      <button class="toggle-btn toggle-on" id="engineToggle" onclick="toggleEngine()">AÇIK</button>
     </div>
-    
     <div class="setting-row">
       <label>💥 Efekt Sesleri <span class="value" id="sfxVal">60%</span></label>
       <input type="range" id="sfxVol" min="0" max="100" value="60">
-      <button class="toggle-btn toggle-on" id="sfxToggle" onclick="toggleSfx()" style="margin-top: 12px;">AÇIK</button>
+      <button class="toggle-btn toggle-on" id="sfxToggle" onclick="toggleSfx()">AÇIK</button>
     </div>
-    
     <div class="task-card" style="text-align: center;">
       <div class="task-title">🔊 Ses Testi</div>
-      <div class="task-desc">Ses ayarlarını test etmek için tıkla</div>
-      <button class="task-btn" onclick="testSounds()">SESLERİ ÇAL</button>
+      <div class="task-desc">Her sesi ayrı test et</div>
+      <button class="task-btn" onclick="testSound('crash')" style="margin: 4px;">💥 Kaza</button>
+      <button class="task-btn" onclick="testSound('coin')" style="margin: 4px;">💰 Para</button>
+      <button class="task-btn" onclick="testSound('bgmusic')" style="margin: 4px;">🎵 Müzik</button>
+      <button class="task-btn" onclick="testSound('engine')" style="margin: 4px;">🚗 Motor</button>
     </div>
-    
   </div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
 <!-- HUD -->
 <div id="hud" style="display:none;">
-  <div>💰 Para: <span id="moneyHud">0.00</span> ₺</div>
-  <div>📏 Mesafe: <span id="distance">0</span> m</div>
-  <div>⚡ Hız: <span id="speed">0</span> km/s</div>
+  <div>💰 <span id="moneyHud">0.00</span> ₺</div>
+  <div>📏 <span id="distance">0</span> m</div>
+  <div>⚡ <span id="speed">0</span> km/s</div>
 </div>
 
-<!-- OYUN İÇİ BUTONLAR -->
+<div id="weatherBadge"></div>
+
 <div id="gameButtons">
   <button class="game-icon-btn" id="gameSoundBtn" onclick="toggleMasterFromGame()" title="Ses">🔊</button>
   <button class="game-icon-btn" onclick="pauseGame()" title="Duraklat">⏸️</button>
 </div>
 
-<!-- DURAKLATMA -->
 <div id="pauseScreen">
   <h1>⏸️ DURAKLATILDI</h1>
   <button class="pause-btn btn-resume" onclick="resumeGame()">▶️ DEVAM ET</button>
@@ -231,17 +258,16 @@
   <button class="pause-btn btn-home" onclick="goHomeFromGame()">🏠 ANA MENÜ</button>
 </div>
 
-<!-- OYUN SONU -->
 <div id="gameOver">
   <h1>💥 KAZA!</h1>
   <p>Kazanılan: <span id="earned">0</span> ₺</p>
   <p>Kesilecek: <span id="penalty">0</span> ₺</p>
+  <p id="insuranceMsg" style="color: #4CAF50; font-size: 15px;"></p>
   <button class="game-btn btn-ad" onclick="watchAd()">📺 Reklam İzle (Kesinti Yok)</button>
   <button class="game-btn btn-restart" onclick="restart()">🔄 Yeniden Başla</button>
   <button class="game-btn btn-menu" onclick="goHome()">🏠 Ana Menü</button>
 </div>
 
-<!-- GÜNLÜK ÖDÜL -->
 <div id="dailyPopup">
   <div class="popup-box">
     <h1>🎁 GÜNLÜK ÖDÜL!</h1>
@@ -251,7 +277,6 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script type="importmap">
@@ -267,23 +292,13 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ==================== AYARLAR SİSTEMİ ====================
+// ==================== AYARLAR ====================
 function getSettings() {
   const data = localStorage.getItem('trafficRacerSettings');
   if (data) return JSON.parse(data);
-  return {
-    masterEnabled: true,
-    masterVolume: 100,
-    musicEnabled: true,
-    musicVolume: 20,
-    engineEnabled: true,
-    engineVolume: 30,
-    sfxEnabled: true,
-    sfxVolume: 60
-  };
+  return { masterEnabled: true, masterVolume: 100, musicEnabled: true, musicVolume: 20, engineEnabled: true, engineVolume: 30, sfxEnabled: true, sfxVolume: 60 };
 }
 function saveSettings(s) { localStorage.setItem('trafficRacerSettings', JSON.stringify(s)); }
-
 let settings = getSettings();
 
 // ==================== KASA ====================
@@ -293,11 +308,44 @@ function getWallet() {
   return { balance: 0, pending: 0, history: [] };
 }
 function saveWallet(w) { localStorage.setItem('trafficRacerWallet', JSON.stringify(w)); }
-function addToWallet(amount) {
+function addToWallet(amount) { const w = getWallet(); w.balance += amount; saveWallet(w); }
+function spendFromWallet(amount) {
   const w = getWallet();
-  w.balance += amount;
+  if (w.balance < amount) return false;
+  w.balance -= amount;
   saveWallet(w);
+  return true;
 }
+
+// ==================== GARAJ ====================
+const CARS = {
+  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, desc: 'Dengeli yarış arabası' },
+  'police': { name: 'Police', icon: '🚓', price: 75, speed: 2.6, handling: 0.18, desc: 'Hızlı ve çevik' },
+  'taxi': { name: 'Taxi', icon: '🚕', price: 75, speed: 2.5, handling: 0.16, desc: 'Ekonomik ve stabil' },
+  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150, speed: 3.0, handling: 0.12, desc: 'Güçlü ve hızlı' },
+  'truck': { name: 'Truck', icon: '🚚', price: 300, speed: 3.2, handling: 0.10, desc: 'Maksimum hız, ağır kontrol' }
+};
+
+function getGarage() {
+  const data = localStorage.getItem('trafficRacerGarage');
+  if (data) return JSON.parse(data);
+  return { owned: ['race-future'], selected: 'race-future' };
+}
+function saveGarage(g) { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); }
+
+// ==================== SİGORTA ====================
+const INSURANCE_PLANS = {
+  'none': { name: 'Sigortasız', price: 0, crashes: 0, desc: 'Kaza yaparsan paranın yarısı kesilir' },
+  'basic': { name: 'Temel Sigorta', price: 20, crashes: 1, desc: '1 kaza bedava' },
+  'premium': { name: 'Premium Sigorta', price: 80, crashes: 5, desc: '5 kaza bedava' }
+};
+
+function getInsurance() {
+  const data = localStorage.getItem('trafficRacerInsurance');
+  if (data) return JSON.parse(data);
+  return { plan: 'none', remaining: 0 };
+}
+function saveInsurance(i) { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); }
 
 // ==================== İSTATİSTİK ====================
 function getStats() {
@@ -327,26 +375,14 @@ function showToast(msg, type = '') {
   el._timer = setTimeout(() => { el.className = ''; }, 2500);
 }
 
-// ==================== SES SİSTEMİ ====================
-const sounds = {
-  engine: null,
-  crash: null,
-  coin: null,
-  bgmusic: null
-};
-
+// ==================== SES ====================
+const sounds = { engine: null, crash: null, coin: null, bgmusic: null };
 let audioUnlocked = false;
 
 function getEffectiveVolume(soundName) {
   if (!settings.masterEnabled) return 0;
-  
-  if (soundName === 'engine') {
-    return settings.engineEnabled ? (settings.engineVolume / 100) * (settings.masterVolume / 100) : 0;
-  }
-  if (soundName === 'bgmusic') {
-    return settings.musicEnabled ? (settings.musicVolume / 100) * (settings.masterVolume / 100) : 0;
-  }
-  // crash, coin = sfx
+  if (soundName === 'engine') return settings.engineEnabled ? (settings.engineVolume / 100) * (settings.masterVolume / 100) : 0;
+  if (soundName === 'bgmusic') return settings.musicEnabled ? (settings.musicVolume / 100) * (settings.masterVolume / 100) : 0;
   return settings.sfxEnabled ? (settings.sfxVolume / 100) * (settings.masterVolume / 100) : 0;
 }
 
@@ -356,10 +392,6 @@ function loadSound(name, path, loop = false) {
   audio.loop = loop;
   audio.preload = 'auto';
   audio.playsInline = true;
-  audio.crossOrigin = 'anonymous';
-  audio.addEventListener('error', () => {
-    console.warn('Ses yüklenemedi: ' + path);
-  });
   sounds[name] = audio;
 }
 
@@ -368,29 +400,17 @@ loadSound('crash', 'sounds/crash.mp3', false);
 loadSound('coin', 'sounds/coin.mp3', false);
 loadSound('bgmusic', 'sounds/bgmusic.mp3', true);
 
-// Tarayıcı ses kilidini aç (ilk dokunuşta)
 function unlockAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
-  
-  // Her sesi sessizce başlat-durdur (kilidi aç)
-  Object.values(sounds).forEach(sound => {
+  [sounds.crash, sounds.coin, sounds.bgmusic].forEach(sound => {
     if (!sound) return;
-    const originalVol = sound.volume;
+    const origVol = sound.volume;
     sound.volume = 0;
     const p = sound.play();
-    if (p) {
-      p.then(() => {
-        sound.pause();
-        sound.currentTime = 0;
-        sound.volume = originalVol;
-      }).catch(() => {
-        sound.volume = originalVol;
-      });
-    }
+    if (p) p.then(() => { sound.pause(); sound.currentTime = 0; sound.volume = origVol; }).catch(() => { sound.volume = origVol; });
   });
 }
-
 document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 document.addEventListener('click', unlockAudio, { once: true });
 
@@ -399,12 +419,7 @@ function playSound(name) {
   if (!sound) return;
   const vol = getEffectiveVolume(name);
   if (vol <= 0) return;
-  try {
-    sound.currentTime = 0;
-    sound.volume = vol;
-    const p = sound.play();
-    if (p) p.catch(() => {});
-  } catch (e) {}
+  try { sound.currentTime = 0; sound.volume = vol; const p = sound.play(); if (p) p.catch(() => {}); } catch (e) {}
 }
 
 function startEngine() {
@@ -414,85 +429,50 @@ function startEngine() {
   if (vol <= 0) { stopEngine(); return; }
   try {
     sound.volume = vol;
+    sound.loop = true;
+    sound.playbackRate = 1.0;
     if (sound.paused) {
       const p = sound.play();
       if (p) p.catch(() => {});
     }
   } catch (e) {}
 }
-
-function stopEngine() {
-  if (sounds.engine) {
-    try { sounds.engine.pause(); } catch (e) {}
-  }
-}
-
+function stopEngine() { if (sounds.engine) { try { sounds.engine.pause(); } catch (e) {} } }
 function updateEngineSpeed(speed) {
   if (!sounds.engine) return;
-  const rate = 0.8 + (speed / 2.8) * 1.0;
+  const rate = 0.8 + (speed / 3.2) * 1.0;
   try { sounds.engine.playbackRate = Math.max(0.5, Math.min(2.0, rate)); } catch (e) {}
 }
-
 function startBgMusic() {
   const sound = sounds.bgmusic;
   if (!sound) return;
   const vol = getEffectiveVolume('bgmusic');
   if (vol <= 0) { stopBgMusic(); return; }
-  try {
-    sound.volume = vol;
-    if (sound.paused) {
-      const p = sound.play();
-      if (p) p.catch(() => {});
-    }
-  } catch (e) {}
+  try { sound.volume = vol; if (sound.paused) { const p = sound.play(); if (p) p.catch(() => {}); } } catch (e) {}
 }
-
-function stopBgMusic() {
-  if (sounds.bgmusic) {
-    try { sounds.bgmusic.pause(); } catch (e) {}
-  }
-}
-
+function stopBgMusic() { if (sounds.bgmusic) { try { sounds.bgmusic.pause(); } catch (e) {} } }
 function updateAllVolumes() {
-  // Motor
-  if (sounds.engine) {
-    const vol = getEffectiveVolume('engine');
-    sounds.engine.volume = vol;
-    if (vol <= 0) stopEngine();
-    else if (state.running && !state.paused) startEngine();
-  }
-  // Müzik
-  if (sounds.bgmusic) {
-    const vol = getEffectiveVolume('bgmusic');
-    sounds.bgmusic.volume = vol;
-    if (vol <= 0) stopBgMusic();
-    else if (state.running && !state.paused) startBgMusic();
-  }
+  if (sounds.engine) { const vol = getEffectiveVolume('engine'); sounds.engine.volume = vol; if (vol <= 0) stopEngine(); else if (state.running && !state.paused) startEngine(); }
+  if (sounds.bgmusic) { const vol = getEffectiveVolume('bgmusic'); sounds.bgmusic.volume = vol; if (vol <= 0) stopBgMusic(); else if (state.running && !state.paused) startBgMusic(); }
 }
 
-// ==================== AYARLAR UI ====================
 function updateSettingsUI() {
   document.getElementById('masterVol').value = settings.masterVolume;
   document.getElementById('masterVal').textContent = settings.masterVolume + '%';
   document.getElementById('masterToggle').textContent = settings.masterEnabled ? 'AÇIK' : 'KAPALI';
   document.getElementById('masterToggle').className = 'toggle-btn ' + (settings.masterEnabled ? 'toggle-on' : 'toggle-off');
-  
   document.getElementById('musicVol').value = settings.musicVolume;
   document.getElementById('musicVal').textContent = settings.musicVolume + '%';
   document.getElementById('musicToggle').textContent = settings.musicEnabled ? 'AÇIK' : 'KAPALI';
   document.getElementById('musicToggle').className = 'toggle-btn ' + (settings.musicEnabled ? 'toggle-on' : 'toggle-off');
-  
   document.getElementById('engineVol').value = settings.engineVolume;
   document.getElementById('engineVal').textContent = settings.engineVolume + '%';
   document.getElementById('engineToggle').textContent = settings.engineEnabled ? 'AÇIK' : 'KAPALI';
   document.getElementById('engineToggle').className = 'toggle-btn ' + (settings.engineEnabled ? 'toggle-on' : 'toggle-off');
-  
   document.getElementById('sfxVol').value = settings.sfxVolume;
   document.getElementById('sfxVal').textContent = settings.sfxVolume + '%';
   document.getElementById('sfxToggle').textContent = settings.sfxEnabled ? 'AÇIK' : 'KAPALI';
   document.getElementById('sfxToggle').className = 'toggle-btn ' + (settings.sfxEnabled ? 'toggle-on' : 'toggle-off');
-  
-  // Oyun içi ses butonu
   const gsb = document.getElementById('gameSoundBtn');
   if (gsb) gsb.textContent = settings.masterEnabled ? '🔊' : '🔇';
 }
@@ -504,46 +484,29 @@ document.addEventListener('input', e => {
   if (e.target.id === 'sfxVol') { settings.sfxVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
 });
 
-window.toggleMaster = function() {
-  settings.masterEnabled = !settings.masterEnabled;
-  saveSettings(settings);
-  updateSettingsUI();
-  updateAllVolumes();
-  if (!settings.masterEnabled) {
-    stopEngine();
-    stopBgMusic();
-  }
-  showToast(settings.masterEnabled ? '🔊 Ses Açık' : '🔇 Ses Kapalı', 'info');
-};
-
-window.toggleMusic = function() {
-  settings.musicEnabled = !settings.musicEnabled;
-  saveSettings(settings);
-  updateSettingsUI();
-  updateAllVolumes();
-};
-
-window.toggleEngine = function() {
-  settings.engineEnabled = !settings.engineEnabled;
-  saveSettings(settings);
-  updateSettingsUI();
-  updateAllVolumes();
-};
-
-window.toggleSfx = function() {
-  settings.sfxEnabled = !settings.sfxEnabled;
-  saveSettings(settings);
-  updateSettingsUI();
-};
-
-window.testSounds = function() {
-  playSound('crash');
-  setTimeout(() => playSound('coin'), 400);
-  showToast('🔊 Ses testi çalındı', 'info');
-};
-
-window.toggleMasterFromGame = function() {
-  toggleMaster();
+window.toggleMaster = function() { settings.masterEnabled = !settings.masterEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); if (!settings.masterEnabled) { stopEngine(); stopBgMusic(); } showToast(settings.masterEnabled ? '🔊 Ses Açık' : '🔇 Ses Kapalı', 'info'); };
+window.toggleMusic = function() { settings.musicEnabled = !settings.musicEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
+window.toggleEngine = function() { settings.engineEnabled = !settings.engineEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
+window.toggleSfx = function() { settings.sfxEnabled = !settings.sfxEnabled; saveSettings(settings); updateSettingsUI(); };
+window.toggleMasterFromGame = function() { toggleMaster(); };
+window.testSound = function(name) {
+  unlockAudio();
+  const sound = sounds[name];
+  if (!sound) { showToast('❌ ' + name + ' yüklenemedi', 'error'); return; }
+  const vol = getEffectiveVolume(name);
+  try {
+    sound.currentTime = 0;
+    sound.volume = vol > 0 ? vol : 0.5;
+    const p = sound.play();
+    if (p) {
+      p.then(() => {
+        showToast('✅ ' + name + ' çalıyor', 'info');
+        if (name === 'engine' || name === 'bgmusic') {
+          setTimeout(() => { sound.pause(); sound.currentTime = 0; }, 3000);
+        }
+      }).catch(err => { showToast('❌ ' + name + ': ' + err.message, 'error'); });
+    }
+  } catch (e) {}
 };
 
 // ==================== SAHNE ====================
@@ -565,10 +528,10 @@ renderer.toneMappingExposure = 1.0;
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
-scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+scene.add(ambientLight);
 const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.9);
 scene.add(hemiLight);
-
 const sunLight = new THREE.DirectionalLight(0xffffff, 1.6);
 sunLight.position.set(15, 30, 15);
 sunLight.castShadow = true;
@@ -580,6 +543,16 @@ sunLight.shadow.camera.top = 30;
 sunLight.shadow.camera.bottom = -30;
 sunLight.shadow.bias = -0.0005;
 scene.add(sunLight);
+
+// Sis katmanı (hava durumu için)
+const fogLayer = new THREE.Mesh(
+  new THREE.PlaneGeometry(200, 400),
+  new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false })
+);
+fogLayer.position.set(0, 2, -100);
+fogLayer.rotation.x = -Math.PI/2;
+fogLayer.renderOrder = 999;
+scene.add(fogLayer);
 
 const ROAD_WIDTH = 11;
 const ROAD_LENGTH = 300;
@@ -624,6 +597,35 @@ const grass2 = grass1.clone();
 grass2.position.x = ROAD_WIDTH/2 + 40;
 scene.add(grass2);
 
+// ==================== YAĞMUR VE KAR PARTİKÜLLERİ ====================
+const rainCount = 500;
+const rainGeo = new THREE.BufferGeometry();
+const rainPositions = new Float32Array(rainCount * 3);
+for (let i = 0; i < rainCount * 3; i += 3) {
+  rainPositions[i] = (Math.random() - 0.5) * 60;
+  rainPositions[i+1] = Math.random() * 40;
+  rainPositions[i+2] = (Math.random() - 0.5) * 100;
+}
+rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
+const rainMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.15, transparent: true, opacity: 0.6 });
+const rainParticles = new THREE.Points(rainGeo, rainMat);
+rainParticles.visible = false;
+scene.add(rainParticles);
+
+const snowCount = 300;
+const snowGeo = new THREE.BufferGeometry();
+const snowPositions = new Float32Array(snowCount * 3);
+for (let i = 0; i < snowCount * 3; i += 3) {
+  snowPositions[i] = (Math.random() - 0.5) * 60;
+  snowPositions[i+1] = Math.random() * 40;
+  snowPositions[i+2] = (Math.random() - 0.5) * 100;
+}
+snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions, 3));
+const snowMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.8 });
+const snowParticles = new THREE.Points(snowGeo, snowMat);
+snowParticles.visible = false;
+scene.add(snowParticles);
+
 // ==================== MODEL YÜKLEME ====================
 const gltfLoader = new GLTFLoader();
 let kenneyColormap = null;
@@ -643,10 +645,7 @@ function prepareModel(model) {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
-      if (child.material) {
-        child.material.map = colormap;
-        child.material.needsUpdate = true;
-      }
+      if (child.material) { child.material.map = colormap; child.material.needsUpdate = true; }
     }
   });
   return model;
@@ -654,40 +653,21 @@ function prepareModel(model) {
 
 function loadCarModel(path, fallbackColor = 0x00cc44) {
   return new Promise((resolve) => {
-    gltfLoader.load(
-      path,
-      (gltf) => resolve(prepareModel(gltf.scene)),
-      undefined,
-      () => resolve(createFallbackCar(fallbackColor))
-    );
+    gltfLoader.load(path, (gltf) => resolve(prepareModel(gltf.scene)), undefined, () => resolve(createFallbackCar(fallbackColor)));
   });
 }
 
 function createFallbackCar(color) {
   const car = new THREE.Group();
   car.userData.isFallback = true;
-  const body = new THREE.Mesh(
-    new THREE.BoxGeometry(1.6, 0.6, 3.2),
-    new THREE.MeshStandardMaterial({ color, metalness: 0.7, roughness: 0.3 })
-  );
-  body.position.y = 0.5;
-  body.castShadow = true;
-  car.add(body);
-  const cabin = new THREE.Mesh(
-    new THREE.BoxGeometry(1.3, 0.5, 1.4),
-    new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.9, roughness: 0.1, transparent: true, opacity: 0.85 })
-  );
-  cabin.position.set(0, 1.0, -0.1);
-  cabin.castShadow = true;
-  car.add(cabin);
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.6, 3.2), new THREE.MeshStandardMaterial({ color, metalness: 0.7, roughness: 0.3 }));
+  body.position.y = 0.5; body.castShadow = true; car.add(body);
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.5, 1.4), new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.9, roughness: 0.1, transparent: true, opacity: 0.85 }));
+  cabin.position.set(0, 1.0, -0.1); cabin.castShadow = true; car.add(cabin);
   const wheelGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.25, 16);
   const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
   [[-0.8, 0.32, 1.0], [0.8, 0.32, 1.0], [-0.8, 0.32, -1.0], [0.8, 0.32, -1.0]].forEach(pos => {
-    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
-    wheel.rotation.z = Math.PI/2;
-    wheel.position.set(...pos);
-    wheel.castShadow = true;
-    car.add(wheel);
+    const wheel = new THREE.Mesh(wheelGeo, wheelMat); wheel.rotation.z = Math.PI/2; wheel.position.set(...pos); wheel.castShadow = true; car.add(wheel);
   });
   return car;
 }
@@ -698,7 +678,11 @@ const state = {
   money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8,
   cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0,
   shake: 0, modelLoaded: false, coinTimer: 0,
-  gameCrashes: 0, playerCar: 'race-future'
+  gameCrashes: 0, playerCar: 'race-future',
+  handling: 0.15, baseMaxSpeed: 2.8,
+  weather: 'sunny', timeOfDay: 'day',
+  timeAccumulator: 0, weatherAccumulator: 0,
+  sliding: 0  // kayma miktarı (yağmur/kar için)
 };
 
 const CAR_SCALE = 1.4;
@@ -709,54 +693,55 @@ let player = createFallbackCar(0x00cc44);
 player.position.set(0, 0, 4);
 scene.add(player);
 
-loadCarModel('models/race-future.glb', 0x00cc44).then((model) => {
-  scene.remove(player);
-  model.scale.set(CAR_SCALE, CAR_SCALE, CAR_SCALE);
-  model.rotation.y = Math.PI;
-  model.position.set(0, 0, 4);
-  scene.add(model);
-  player = model;
-  state.modelLoaded = true;
-});
+function loadPlayerCar(carKey) {
+  const carConfig = CARS[carKey] || CARS['race-future'];
+  const modelMap = {
+    'race-future': 'models/race-future.glb',
+    'police': 'models/police.glb',
+    'taxi': 'models/taxi.glb',
+    'suv-luxury': 'models/suv-luxury.glb',
+    'truck': 'models/truck.glb'
+  };
+  const modelPath = modelMap[carKey] || 'models/race-future.glb';
+  
+  loadCarModel(modelPath, 0x00cc44).then((model) => {
+    scene.remove(player);
+    model.scale.set(CAR_SCALE, CAR_SCALE, CAR_SCALE);
+    model.rotation.y = Math.PI;
+    model.position.set(0, 0, 4);
+    scene.add(model);
+    player = model;
+    state.modelLoaded = true;
+    state.baseMaxSpeed = carConfig.speed;
+    state.handling = carConfig.handling;
+  });
+}
+
+loadPlayerCar('race-future');
 
 // ==================== KONTROL ====================
 document.addEventListener('keydown', e => {
   if (!state.running || state.paused) return;
-  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-    state.targetLane = Math.max(-1, state.targetLane - 1);
-  }
-  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-    state.targetLane = Math.min(1, state.targetLane + 1);
-  }
-  if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') {
-    pauseGame();
-  }
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') state.targetLane = Math.max(-1, state.targetLane - 1);
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') state.targetLane = Math.min(1, state.targetLane + 1);
+  if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pauseGame();
 });
 
 let lastTouchTime = 0;
-
 function handleGameTouch(clientX) {
   if (!state.running || state.paused) return;
   const now = Date.now();
   if (now - lastTouchTime < 150) return;
   lastTouchTime = now;
-  
   const half = window.innerWidth / 2;
-  if (clientX < half) {
-    state.targetLane = Math.max(-1, state.targetLane - 1);
-  } else {
-    state.targetLane = Math.min(1, state.targetLane + 1);
-  }
+  if (clientX < half) state.targetLane = Math.max(-1, state.targetLane - 1);
+  else state.targetLane = Math.min(1, state.targetLane + 1);
 }
 
 document.addEventListener('touchstart', e => {
   const target = e.target;
-  if (target.tagName === 'BUTTON' || target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.closest('button') || target.closest('input') || target.closest('select')) {
-    return;
-  }
-  if (state.running && !state.paused) {
-    handleGameTouch(e.touches[0].clientX);
-  }
+  if (target.tagName === 'BUTTON' || target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.closest('button') || target.closest('input') || target.closest('select')) return;
+  if (state.running && !state.paused) handleGameTouch(e.touches[0].clientX);
 }, { passive: true });
 
 // ==================== DÜŞMAN ====================
@@ -777,16 +762,115 @@ async function spawnEnemyCar() {
 
 // ==================== PARA ====================
 function moneyPerMeter() {
-  if (state.distance < 500) return 0.005;
-  if (state.distance < 1500) return 0.01;
-  if (state.distance < 3000) return 0.02;
-  if (state.distance < 5000) return 0.035;
-  return 0.05;
+  let base = 0.005;
+  if (state.distance >= 5000) base = 0.05;
+  else if (state.distance >= 3000) base = 0.035;
+  else if (state.distance >= 1500) base = 0.02;
+  else if (state.distance >= 500) base = 0.01;
+  // Hava durumu bonusu (kötü havada daha çok para)
+  if (state.weather === 'rain') base *= 1.3;
+  if (state.weather === 'snow') base *= 1.5;
+  if (state.weather === 'fog') base *= 1.4;
+  // Gece bonusu
+  if (state.timeOfDay === 'night') base *= 1.2;
+  return base;
 }
 
 function checkCollision(a, b) {
-  return Math.abs(a.position.x - b.position.x) < 1.2 &&
-         Math.abs(a.position.z - b.position.z) < 2.8;
+  return Math.abs(a.position.x - b.position.x) < 1.2 && Math.abs(a.position.z - b.position.z) < 2.8;
+}
+
+// ==================== HAVA & ZAMAN ====================
+function randomizeWeatherAndTime() {
+  const weathers = ['sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'rain', 'rain', 'snow', 'fog'];
+  state.weather = weathers[Math.floor(Math.random() * weathers.length)];
+  
+  const times = ['day', 'day', 'day', 'night', 'night', 'sunset'];
+  state.timeOfDay = times[Math.floor(Math.random() * times.length)];
+  
+  applyWeather();
+  applyTimeOfDay();
+  updateWeatherBadge();
+}
+
+function applyWeather() {
+  rainParticles.visible = false;
+  snowParticles.visible = false;
+  fogLayer.material.opacity = 0;
+  scene.fog.near = 70;
+  scene.fog.far = 250;
+  
+  if (state.weather === 'sunny') {
+    scene.background = new THREE.Color(0x87CEEB);
+    scene.fog.color = new THREE.Color(0x87CEEB);
+    state.sliding = 0;
+  } else if (state.weather === 'rain') {
+    scene.background = new THREE.Color(0x555566);
+    scene.fog.color = new THREE.Color(0x555566);
+    scene.fog.near = 40;
+    scene.fog.far = 180;
+    rainParticles.visible = true;
+    state.sliding = 0.4;
+  } else if (state.weather === 'snow') {
+    scene.background = new THREE.Color(0xccccdd);
+    scene.fog.color = new THREE.Color(0xccccdd);
+    scene.fog.near = 50;
+    scene.fog.far = 200;
+    snowParticles.visible = true;
+    state.sliding = 0.6;
+  } else if (state.weather === 'fog') {
+    scene.background = new THREE.Color(0xcccccc);
+    scene.fog.color = new THREE.Color(0xcccccc);
+    scene.fog.near = 15;
+    scene.fog.far = 80;
+    fogLayer.material.opacity = 0.4;
+    state.sliding = 0.2;
+  }
+}
+
+function applyTimeOfDay() {
+  if (state.weather === 'sunny' || state.weather === 'fog') {
+    if (state.timeOfDay === 'day') {
+      scene.background = new THREE.Color(0x87CEEB);
+      scene.fog.color = new THREE.Color(0x87CEEB);
+      ambientLight.intensity = 1.4;
+      sunLight.intensity = 1.6;
+      hemiLight.intensity = 0.9;
+      sunLight.color.setHex(0xffffff);
+    } else if (state.timeOfDay === 'sunset') {
+      scene.background = new THREE.Color(0xff8844);
+      scene.fog.color = new THREE.Color(0xff8844);
+      ambientLight.intensity = 0.9;
+      sunLight.intensity = 1.0;
+      hemiLight.intensity = 0.6;
+      sunLight.color.setHex(0xffaa66);
+      sunLight.position.set(30, 10, 15);
+    } else if (state.timeOfDay === 'night') {
+      scene.background = new THREE.Color(0x0a0a2e);
+      scene.fog.color = new THREE.Color(0x0a0a2e);
+      ambientLight.intensity = 0.25;
+      sunLight.intensity = 0.15;
+      hemiLight.intensity = 0.15;
+      sunLight.color.setHex(0x4466aa);
+      sunLight.position.set(-15, 20, 15);
+    }
+  } else {
+    // Yağmur/kar için gece/gündüz ayrımı koyu ton
+    if (state.timeOfDay === 'night') {
+      scene.background.multiplyScalar(0.3);
+      scene.fog.color.multiplyScalar(0.3);
+      ambientLight.intensity = 0.4;
+      sunLight.intensity = 0.3;
+    }
+  }
+}
+
+function updateWeatherBadge() {
+  const badge = document.getElementById('weatherBadge');
+  const icons = { sunny: '☀️', rain: '🌧️', snow: '❄️', fog: '🌫️' };
+  const times = { day: '☀️ Gündüz', sunset: '🌅 Gün Batımı', night: '🌙 Gece' };
+  badge.textContent = icons[state.weather] + ' ' + times[state.timeOfDay];
+  badge.classList.add('visible');
 }
 
 // ==================== GÖREV VE BAŞARIM ====================
@@ -794,11 +878,7 @@ function resetDailyQuestsIfNeeded() {
   const stats = getStats();
   const today = new Date().toDateString();
   if (stats.lastQuestResetDate !== today) {
-    stats.quests = {
-      distance5000: { progress: 0, claimed: false },
-      ads5: { progress: 0, claimed: false },
-      cars3: { progress: 0, claimed: false }
-    };
+    stats.quests = { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } };
     stats.lastQuestResetDate = today;
     stats.carsUsed = [];
     saveStats(stats);
@@ -808,9 +888,7 @@ function resetDailyQuestsIfNeeded() {
 function checkDailyLogin() {
   const stats = getStats();
   const today = new Date().toDateString();
-  if (stats.dailyLoginDate !== today) {
-    document.getElementById('dailyPopup').style.display = 'flex';
-  }
+  if (stats.dailyLoginDate !== today) document.getElementById('dailyPopup').style.display = 'flex';
 }
 
 window.claimDailyReward = function() {
@@ -828,27 +906,11 @@ window.claimDailyReward = function() {
 function checkAchievements() {
   const stats = getStats();
   let newAchievements = [];
-  
-  if (stats.bestDistance >= 1000 && !stats.achievements.first1000) {
-    stats.achievements.first1000 = true;
-    addToWallet(5);
-    newAchievements.push('🏆 İlk 1000 Metre! +5 ₺');
-  }
-  if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) {
-    stats.achievements.noCrash5000 = true;
-    addToWallet(20);
-    newAchievements.push('🏆 5000m Kazasız! +20 ₺');
-  }
-  if (stats.totalDistance >= 10000 && !stats.achievements.total10000) {
-    stats.achievements.total10000 = true;
-    addToWallet(10);
-    newAchievements.push('🏆 Toplam 10.000 Metre! +10 ₺');
-  }
-  
+  if (stats.bestDistance >= 1000 && !stats.achievements.first1000) { stats.achievements.first1000 = true; addToWallet(5); newAchievements.push('🏆 İlk 1000 Metre! +5 ₺'); }
+  if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) { stats.achievements.noCrash5000 = true; addToWallet(20); newAchievements.push('🏆 5000m Kazasız! +20 ₺'); }
+  if (stats.totalDistance >= 10000 && !stats.achievements.total10000) { stats.achievements.total10000 = true; addToWallet(10); newAchievements.push('🏆 Toplam 10.000 Metre! +10 ₺'); }
   saveStats(stats);
-  newAchievements.forEach((msg, idx) => {
-    setTimeout(() => { showToast(msg, 'gold'); playSound('coin'); }, idx * 1500);
-  });
+  newAchievements.forEach((msg, idx) => { setTimeout(() => { showToast(msg, 'gold'); playSound('coin'); }, idx * 1500); });
 }
 
 window.claimQuest = function(questKey) {
@@ -857,10 +919,7 @@ window.claimQuest = function(questKey) {
   if (!quest || quest.claimed) return;
   const rewards = { distance5000: 3, ads5: 2, cars3: 1 };
   const requiredProgress = { distance5000: 5000, ads5: 5, cars3: 3 };
-  if (quest.progress < requiredProgress[questKey]) {
-    showToast('Görev henüz tamamlanmadı!', 'info');
-    return;
-  }
+  if (quest.progress < requiredProgress[questKey]) { showToast('Görev henüz tamamlanmadı!', 'info'); return; }
   quest.claimed = true;
   saveStats(stats);
   addToWallet(rewards[questKey]);
@@ -884,17 +943,14 @@ window.renderQuests = function() {
     const percent = (progress / q.max) * 100;
     const isComplete = progress >= q.max;
     const isClaimed = quest.claimed;
-    return `
-      <div class="task-card ${isClaimed ? 'claimed' : (isComplete ? 'completed' : '')}">
-        <div class="task-title">${q.title}</div>
-        <div class="task-desc">${q.desc}</div>
-        <div class="task-progress"><div class="task-progress-bar" style="width: ${percent}%"></div></div>
-        <div class="task-reward">💰 Ödül: ${q.reward} ₺ (${progress}/${q.max})</div>
-        <button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isComplete || isClaimed) ? 'disabled' : ''}>
-          ${isClaimed ? '✅ Alındı' : (isComplete ? '🎁 Ödülü Al' : 'Devam ediyor...')}
-        </button>
-      </div>
-    `;
+    return `<div class="task-card ${isClaimed ? 'claimed' : (isComplete ? 'completed' : '')}">
+      <div class="task-title">${q.title}</div>
+      <div class="task-desc">${q.desc}</div>
+      <div class="task-progress"><div class="task-progress-bar" style="width: ${percent}%"></div></div>
+      <div class="task-reward">💰 Ödül: ${q.reward} ₺ (${progress}/${q.max})</div>
+      <button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isComplete || isClaimed) ? 'disabled' : ''}>
+        ${isClaimed ? '✅ Alındı' : (isComplete ? '🎁 Ödülü Al' : 'Devam ediyor...')}
+      </button></div>`;
   }).join('');
 };
 
@@ -908,17 +964,125 @@ window.renderAchievements = function() {
   ];
   list.innerHTML = achievements.map(a => {
     const unlocked = stats.achievements[a.key];
-    return `
-      <div class="task-card ${unlocked ? 'completed' : ''}">
-        <div class="task-title">${a.title}</div>
-        <div class="task-desc">${a.desc}</div>
-        <div class="task-reward">💰 Ödül: ${a.reward} ₺</div>
-        <div style="margin-top: 8px; font-size: 13px; color: ${unlocked ? '#4CAF50' : '#888'};">
-          ${unlocked ? '✅ Açıldı' : '🔒 Kilitli'}
-        </div>
-      </div>
-    `;
+    return `<div class="task-card ${unlocked ? 'completed' : ''}">
+      <div class="task-title">${a.title}</div>
+      <div class="task-desc">${a.desc}</div>
+      <div class="task-reward">💰 Ödül: ${a.reward} ₺</div>
+      <div style="margin-top: 8px; font-size: 13px; color: ${unlocked ? '#4CAF50' : '#888'};">${unlocked ? '✅ Açıldı' : '🔒 Kilitli'}</div>
+    </div>`;
   }).join('');
+};
+
+// ==================== GARAJ ====================
+window.renderGarage = function() {
+  const garage = getGarage();
+  const list = document.getElementById('garageList');
+  list.innerHTML = Object.keys(CARS).map(key => {
+    const car = CARS[key];
+    const owned = garage.owned.includes(key);
+    const selected = garage.selected === key;
+    
+    let actionBtn = '';
+    if (selected) {
+      actionBtn = '<button class="car-action selected">✅ SEÇİLİ</button>';
+    } else if (owned) {
+      actionBtn = `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>`;
+    } else {
+      actionBtn = `<button class="car-action buy" onclick="buyCar('${key}')">SATIN AL</button>`;
+    }
+    
+    return `<div class="car-card ${selected ? 'selected' : (owned ? 'owned' : '')}">
+      <div class="car-icon">${car.icon}</div>
+      <div class="car-info">
+        <div class="car-name">${car.name}</div>
+        <div class="car-stats">⚡ Hız: ${car.speed} | 🎯 Kontrol: ${(car.handling * 100).toFixed(0)}%</div>
+        <div class="car-stats">${car.desc}</div>
+        ${!owned ? `<div class="car-price">💰 ${car.price} ₺</div>` : ''}
+      </div>
+      ${actionBtn}
+    </div>`;
+  }).join('');
+};
+
+window.buyCar = function(key) {
+  const car = CARS[key];
+  const garage = getGarage();
+  if (garage.owned.includes(key)) { showToast('Bu araba zaten sende!', 'info'); return; }
+  
+  const w = getWallet();
+  if (w.balance < car.price) {
+    showToast('❌ Yetersiz bakiye! ' + car.price + ' ₺ gerekli', 'error');
+    return;
+  }
+  
+  w.balance -= car.price;
+  saveWallet(w);
+  garage.owned.push(key);
+  saveGarage(garage);
+  updateWalletUI();
+  playSound('coin');
+  showToast('✅ ' + car.name + ' satın alındı!', 'gold');
+  renderGarage();
+};
+
+window.selectCar = function(key) {
+  const garage = getGarage();
+  if (!garage.owned.includes(key)) { showToast('Bu arabayı satın almadın!', 'error'); return; }
+  garage.selected = key;
+  saveGarage(garage);
+  loadPlayerCar(key);
+  state.playerCar = key;
+  showToast('🚗 ' + CARS[key].name + ' seçildi!', 'info');
+  renderGarage();
+};
+
+// ==================== SİGORTA ====================
+window.renderInsurance = function() {
+  const insurance = getInsurance();
+  const list = document.getElementById('insuranceList');
+  
+  if (insurance.remaining > 0) {
+    list.innerHTML = `<div class="insurance-card active">
+      <h3>🛡️ Aktif Sigorta</h3>
+      <div style="font-size: 40px; margin: 10px 0;">${insurance.remaining}</div>
+      <div class="desc">Kalan kaza hakkın</div>
+      <div class="desc" style="color: #4CAF50;">Sonraki kazanda para kesilmez</div>
+    </div>`;
+  }
+  
+  list.innerHTML += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => {
+    const plan = INSURANCE_PLANS[key];
+    return `<div class="insurance-card">
+      <h3>${plan.name}</h3>
+      <div class="price">${plan.price} ₺</div>
+      <div class="desc">${plan.desc}</div>
+      <button class="task-btn" style="width: 100%;" onclick="buyInsurance('${key}')">SATIN AL</button>
+    </div>`;
+  }).join('');
+};
+
+window.buyInsurance = function(planKey) {
+  const plan = INSURANCE_PLANS[planKey];
+  if (!plan || plan.price === 0) return;
+  
+  const w = getWallet();
+  if (w.balance < plan.price) {
+    showToast('❌ Yetersiz bakiye! ' + plan.price + ' ₺ gerekli', 'error');
+    return;
+  }
+  
+  w.balance -= plan.price;
+  saveWallet(w);
+  
+  const insurance = getInsurance();
+  insurance.plan = planKey;
+  insurance.remaining = plan.crashes;
+  saveInsurance(insurance);
+  
+  updateWalletUI();
+  playSound('coin');
+  showToast('✅ ' + plan.name + ' aktif! ' + plan.crashes + ' kaza bedava', 'gold');
+  renderInsurance();
 };
 
 // ==================== DÖNGÜ ====================
@@ -938,12 +1102,62 @@ function animate() {
     return;
   }
   
+  // Zaman döngüsü (her 30 saniyede bir gece/gündüz değişir)
+  state.timeAccumulator += dt;
+  if (state.timeAccumulator > 1800) { // ~30 saniye 60fps'de
+    state.timeAccumulator = 0;
+    const times = ['day', 'sunset', 'night'];
+    const currentIdx = times.indexOf(state.timeOfDay);
+    state.timeOfDay = times[(currentIdx + 1) % times.length];
+    applyTimeOfDay();
+    updateWeatherBadge();
+  }
+  
+  // Hava durumu değişimi (her ~60 saniyede bir)
+  state.weatherAccumulator += dt;
+  if (state.weatherAccumulator > 3600) {
+    state.weatherAccumulator = 0;
+    const weathers = ['sunny', 'sunny', 'rain', 'fog'];
+    state.weather = weathers[Math.floor(Math.random() * weathers.length)];
+    applyWeather();
+    applyTimeOfDay();
+    updateWeatherBadge();
+  }
+  
+  state.maxSpeed = state.baseMaxSpeed;
   state.speed = Math.min(state.maxSpeed, state.speed + 0.0004 * dt);
-  state.playerLane += (state.targetLane - state.playerLane) * 0.15 * dt;
+  state.playerLane += (state.targetLane - state.playerLane) * state.handling * dt;
   player.position.x = state.playerLane * (ROAD_WIDTH/3);
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   
   updateEngineSpeed(state.speed);
+  
+  // Yağmur/kar parçacıklarını hareket ettir
+  if (state.weather === 'rain') {
+    const positions = rainGeo.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i+1] -= state.speed * 8 * dt / 2;
+      if (positions[i+1] < 0) {
+        positions[i+1] = 40;
+        positions[i] = (Math.random() - 0.5) * 60;
+        positions[i+2] = (Math.random() - 0.5) * 100;
+      }
+    }
+    rainGeo.attributes.position.needsUpdate = true;
+  }
+  if (state.weather === 'snow') {
+    const positions = snowGeo.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i+1] -= state.speed * 3 * dt / 2;
+      positions[i] += Math.sin(now / 500 + i) * 0.05;
+      if (positions[i+1] < 0) {
+        positions[i+1] = 40;
+        positions[i] = (Math.random() - 0.5) * 60;
+        positions[i+2] = (Math.random() - 0.5) * 100;
+      }
+    }
+    snowGeo.attributes.position.needsUpdate = true;
+  }
   
   state.shake = Math.max(0, state.shake - 0.05 * dt);
   const shakeX = (Math.random() - 0.5) * state.shake * 0.08;
@@ -963,27 +1177,18 @@ function animate() {
   for (let i = state.cars.length - 1; i >= 0; i--) {
     const car = state.cars[i];
     car.position.z += moveAmount;
-    if (car.position.z > 15) {
-      scene.remove(car);
-      state.cars.splice(i, 1);
-    }
+    if (car.position.z > 15) { scene.remove(car); state.cars.splice(i, 1); }
   }
   
   state.lastSpawn += moveAmount;
-  if (state.lastSpawn > 75) {
-    spawnEnemyCar();
-    state.lastSpawn = 0;
-  }
+  if (state.lastSpawn > 75) { spawnEnemyCar(); state.lastSpawn = 0; }
   
   const oldMoney = state.money;
   state.distance += state.speed * dt / 5;
   state.money += moneyPerMeter() * (state.speed * dt / 5);
   
   state.coinTimer += state.money - oldMoney;
-  if (state.coinTimer >= 0.5) {
-    state.coinTimer = 0;
-    playSound('coin');
-  }
+  if (state.coinTimer >= 0.5) { state.coinTimer = 0; playSound('coin'); }
   
   if (state.speed > 1.5) state.shake = Math.min(0.8, state.shake + 0.015 * dt);
   
@@ -995,7 +1200,7 @@ function animate() {
     }
   }
   
-  document.getElementById('moneyHud').textContent = state.money.toFixed(4);
+  document.getElementById('moneyHud').textContent = state.money.toFixed(2);
   document.getElementById('distance').textContent = Math.floor(state.distance);
   document.getElementById('speed').textContent = Math.floor(state.speed * 60);
   
@@ -1035,6 +1240,7 @@ window.restartFromPause = function() {
   resetGameState();
   state.running = true;
   document.getElementById('gameButtons').classList.add('visible');
+  randomizeWeatherAndTime();
   startEngine();
   startBgMusic();
   startAnimationLoop();
@@ -1058,6 +1264,7 @@ window.goHomeFromGame = function() {
   document.getElementById('gameOver').style.display = 'none';
   document.getElementById('hud').style.display = 'none';
   document.getElementById('gameButtons').classList.remove('visible');
+  document.getElementById('weatherBadge').classList.remove('visible');
   renderer.domElement.style.display = 'none';
   document.getElementById('homeScreen').style.display = 'flex';
   resetGameState();
@@ -1070,7 +1277,20 @@ let penaltyAmount = 0;
 function endGame() {
   state.running = false;
   state.paused = false;
-  penaltyAmount = state.money / 2;
+  
+  const insurance = getInsurance();
+  let insuranceUsed = false;
+  
+  if (insurance.remaining > 0) {
+    insurance.remaining -= 1;
+    if (insurance.remaining === 0) insurance.plan = 'none';
+    saveInsurance(insurance);
+    penaltyAmount = 0;
+    insuranceUsed = true;
+  } else {
+    penaltyAmount = state.money / 2;
+  }
+  
   playSound('crash');
   stopEngine();
   stopBgMusic();
@@ -1082,14 +1302,24 @@ function endGame() {
   stats.gamesPlayed += 1;
   if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
   stats.quests.distance5000.progress += Math.floor(state.distance);
-  if (!stats.carsUsed.includes(state.playerCar)) stats.carsUsed.push(state.playerCar);
+  const carKey = getGarage().selected;
+  if (!stats.carsUsed.includes(carKey)) stats.carsUsed.push(carKey);
   stats.quests.cars3.progress = stats.carsUsed.length;
   saveStats(stats);
   
   checkAchievements();
   
-  document.getElementById('earned').textContent = state.money.toFixed(4);
-  document.getElementById('penalty').textContent = penaltyAmount.toFixed(4);
+  document.getElementById('earned').textContent = state.money.toFixed(2);
+  document.getElementById('penalty').textContent = penaltyAmount.toFixed(2);
+  
+  const insMsg = document.getElementById('insuranceMsg');
+  if (insuranceUsed) {
+    insMsg.textContent = '🛡️ Sigorta kullanıldı! Para kesilmedi.';
+    insMsg.style.color = '#4CAF50';
+  } else {
+    insMsg.textContent = '';
+  }
+  
   document.getElementById('gameOver').style.display = 'flex';
   document.getElementById('gameButtons').classList.remove('visible');
 }
@@ -1115,10 +1345,7 @@ window.watchAd = function() {
     state.playerLane = 0;
     state.targetLane = 0;
     for (let i = state.cars.length - 1; i >= 0; i--) {
-      if (state.cars[i].position.z > player.position.z - 20) {
-        scene.remove(state.cars[i]);
-        state.cars.splice(i, 1);
-      }
+      if (state.cars[i].position.z > player.position.z - 20) { scene.remove(state.cars[i]); state.cars.splice(i, 1); }
     }
     startEngine();
     startBgMusic();
@@ -1138,6 +1365,7 @@ window.restart = function() {
   document.getElementById('gameButtons').classList.add('visible');
   state.running = true;
   state.paused = false;
+  randomizeWeatherAndTime();
   startEngine();
   startBgMusic();
   startAnimationLoop();
@@ -1158,10 +1386,13 @@ window.goHome = function() {
   document.getElementById('pauseScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'none';
   document.getElementById('gameButtons').classList.remove('visible');
+  document.getElementById('weatherBadge').classList.remove('visible');
   document.getElementById('questsScreen').style.display = 'none';
   document.getElementById('achievementsScreen').style.display = 'none';
   document.getElementById('walletScreen').style.display = 'none';
   document.getElementById('settingsScreen').style.display = 'none';
+  document.getElementById('garageScreen').style.display = 'none';
+  document.getElementById('insuranceScreen').style.display = 'none';
   renderer.domElement.style.display = 'none';
   document.getElementById('homeScreen').style.display = 'flex';
   resetGameState();
@@ -1171,6 +1402,18 @@ window.goHome = function() {
 
 window.startGame = function() {
   unlockAudio();
+  
+  // Sigorta ekranını göster (her oyun başında)
+  const insurance = getInsurance();
+  if (insurance.remaining === 0) {
+    showInsurance();
+    return;
+  }
+  
+  beginGame();
+};
+
+window.beginGame = function() {
   resetGameState();
   resetDailyQuestsIfNeeded();
   document.getElementById('homeScreen').style.display = 'none';
@@ -1178,15 +1421,36 @@ window.startGame = function() {
   document.getElementById('achievementsScreen').style.display = 'none';
   document.getElementById('walletScreen').style.display = 'none';
   document.getElementById('settingsScreen').style.display = 'none';
+  document.getElementById('garageScreen').style.display = 'none';
+  document.getElementById('insuranceScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'block';
   document.getElementById('gameButtons').classList.add('visible');
   renderer.domElement.style.display = 'block';
   state.running = true;
   state.paused = false;
   state.gameCrashes = 0;
+  randomizeWeatherAndTime();
   startEngine();
   startBgMusic();
   startAnimationLoop();
+};
+
+window.showGarage = function() {
+  renderGarage();
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('garageScreen').style.display = 'flex';
+};
+
+window.showInsurance = function() {
+  renderInsurance();
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('garageScreen').style.display = 'none';
+  document.getElementById('insuranceScreen').style.display = 'flex';
+};
+
+window.startWithInsurance = function() {
+  document.getElementById('insuranceScreen').style.display = 'none';
+  beginGame();
 };
 
 window.showQuests = function() {
@@ -1225,13 +1489,7 @@ window.requestWithdraw = async function() {
   w.pending += amount;
   w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
   saveWallet(w);
-  try {
-    await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() })
-    });
-  } catch (err) { console.error('E-posta hatası:', err); }
+  try { await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() }) }); } catch (err) {}
   alert('✅ Çekim talebiniz alındı!\n\nYöntem: ' + (method === 'iban' ? 'IBAN' : 'Payeer') + '\nHesap: ' + account + '\nTutar: ' + amount.toFixed(2) + '₺');
   updateWalletUI();
   document.getElementById('withdrawAccount').value = '';
@@ -1255,15 +1513,14 @@ function resetGameState() {
   state.shake = 0;
   state.lastSpawn = 0;
   state.coinTimer = 0;
-  if (player) {
-    player.position.set(0, 0, 4);
-    player.rotation.z = 0;
-  }
+  state.timeAccumulator = 0;
+  state.weatherAccumulator = 0;
+  if (player) { player.position.set(0, 0, 4); player.rotation.z = 0; }
   state.cars.forEach(c => scene.remove(c));
   state.cars = [];
   penaltyAmount = 0;
   camera.position.set(0, 6.5, 13);
-  document.getElementById('moneyHud').textContent = '0.0000';
+  document.getElementById('moneyHud').textContent = '0.00';
   document.getElementById('distance').textContent = '0';
   document.getElementById('speed').textContent = '0';
 }
