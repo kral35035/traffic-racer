@@ -1,0 +1,13 @@
+{
+  "name": "traffic-racer",
+  "version": "1.0.0",
+  "description": "3D Traffic Racer - Gerçek para kazandıran araba oyunu",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
