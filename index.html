@@ -21,39 +21,46 @@
     top: 0; left: 0;
   }
   canvas { display: block; width: 100%; height: 100%; }
-  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 20px; overflow-y: auto; }
   #homeScreen h1 { font-size: 38px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
-  #homeScreen .subtitle { font-size: 14px; color: #aaa; margin-bottom: 40px; text-align: center; }
-  .home-btn { padding: 20px 40px; margin: 10px; font-size: 19px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); touch-action: manipulation; }
+  #homeScreen .subtitle { font-size: 14px; color: #aaa; margin-bottom: 30px; text-align: center; }
+  .home-btn { padding: 18px 40px; margin: 8px; font-size: 18px; border: none; border-radius: 14px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 8px 24px rgba(0,0,0,0.4); touch-action: manipulation; }
   .home-btn:active { transform: scale(0.96); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
-  #walletScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 20px; overflow-y: auto; }
-  #walletScreen h2 { font-size: 26px; margin: 20px 0; text-align: center; color: #ffd93d; }
-  .wallet-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 18px; padding: 22px; margin: 10px auto; max-width: 500px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,217,61,0.2); }
-  .wallet-card .label { color: #aaa; font-size: 12px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
-  .wallet-card .amount { font-size: 38px; font-weight: bold; color: #4CAF50; }
-  .wallet-card .amount.pending { color: #FF9800; font-size: 26px; }
-  .wallet-card .currency { font-size: 20px; color: #aaa; margin-left: 5px; }
-  .withdraw-section { background: rgba(0,0,0,0.3); border-radius: 14px; padding: 18px; margin: 16px auto; max-width: 500px; width: 100%; }
-  .withdraw-section h3 { color: #fff; margin-bottom: 12px; font-size: 16px; }
-  .withdraw-section input, .withdraw-section select { width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px; }
-  .withdraw-section button { width: 100%; padding: 15px; margin-top: 8px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+  #questsBtn { background: linear-gradient(135deg, #9C27B0, #6A1B9A); color: white; }
+  #achievementsBtn { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
+  
+  /* MODAL EKRANLAR (Görevler, Başarımlar, Günlük Ödül) */
+  .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 20px; overflow-y: auto; }
+  .modal-screen h2 { font-size: 26px; margin: 20px 0; text-align: center; color: #ffd93d; }
+  .modal-content { max-width: 500px; margin: 0 auto; width: 100%; }
+  
+  .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 18px; margin: 10px 0; border: 1px solid rgba(255,255,255,0.1); }
+  .task-card.completed { border-color: #4CAF50; opacity: 0.7; }
+  .task-card.claimed { border-color: #666; opacity: 0.5; }
+  .task-title { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 6px; }
+  .task-desc { font-size: 13px; color: #aaa; margin-bottom: 10px; }
+  .task-reward { font-size: 14px; color: #4CAF50; font-weight: bold; }
+  .task-progress { background: #1a1a2e; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+  .task-progress-bar { height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); transition: width 0.3s; }
+  .task-btn { padding: 10px 20px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; touch-action: manipulation; }
+  .task-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.5; }
+  
   .back-btn { padding: 13px 30px; background: #444; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; margin: 20px auto; display: block; touch-action: manipulation; }
   
-  /* ============ HUD ============ */
+  /* HUD */
   #hud { position: absolute; top: 12px; left: 12px; color: #fff; font-size: 13px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
   #speed { color: #ffdd00; font-weight: bold; }
   #moneyHud { color: #4CAF50; font-weight: bold; }
   
-  /* ============ OYUN İÇİ BUTONLAR ============ */
-  #gameButtons { position: absolute; top: 12px; right: 12px; z-index: 11; display: none; gap: 8px; }
+  /* OYUN İÇİ BUTONLAR */
+  #gameButtons { position: absolute; top: 12px; right: 12px; z-index: 11; display: none; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 200px; }
   #gameButtons.visible { display: flex; }
-  .game-icon-btn { width: 46px; height: 46px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.3); color: white; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; backdrop-filter: blur(10px); transition: all 0.15s; }
+  .game-icon-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.3); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; backdrop-filter: blur(10px); transition: all 0.15s; }
   .game-icon-btn:active { transform: scale(0.9); background: rgba(0,0,0,0.85); }
-  .game-icon-btn:hover { background: rgba(0,0,0,0.8); }
   
-  /* ============ DURAKLATMA EKRANI ============ */
+  /* DURAKLATMA */
   #pauseScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px; }
   #pauseScreen h1 { color: #ffd93d; font-size: 42px; margin-bottom: 30px; }
   button.pause-btn { padding: 16px 30px; margin: 8px; font-size: 17px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
@@ -61,7 +68,7 @@
   .btn-home { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart2 { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   
-  /* ============ OYUN SONU ============ */
+  /* OYUN SONU */
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
   #gameOver h1 { color: #ff4444; font-size: 40px; margin: 10px; }
   #gameOver p { font-size: 17px; margin: 6px; }
@@ -70,14 +77,28 @@
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
   
+  /* GÜNLÜK ÖDÜL POPUP */
+  #dailyPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
+  #dailyPopup .popup-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 40px 30px; max-width: 400px; width: 100%; text-align: center; border: 2px solid #ffd93d; box-shadow: 0 0 40px rgba(255,217,61,0.5); }
+  #dailyPopup h1 { font-size: 32px; color: #ffd93d; margin-bottom: 15px; }
+  #dailyPopup .reward-amount { font-size: 52px; font-weight: bold; color: #4CAF50; margin: 20px 0; }
+  #dailyPopup button { padding: 15px 40px; margin-top: 20px; font-size: 18px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+  
+  /* TOAST (Bildirim) */
+  #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 15px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  #toast.gold { background: linear-gradient(135deg, #FFC107, #FF6F00); }
+  #toast.info { background: linear-gradient(135deg, #2196F3, #0d47a1); }
+  
   @media (max-width: 600px) {
-    #homeScreen h1 { font-size: 30px; }
-    .home-btn { font-size: 17px; padding: 16px 30px; }
+    #homeScreen h1 { font-size: 28px; }
+    .home-btn { font-size: 16px; padding: 15px 30px; }
     #hud { font-size: 12px; }
-    .wallet-card .amount { font-size: 32px; }
-    #gameOver h1 { font-size: 34px; }
-    #pauseScreen h1 { font-size: 34px; }
-    .game-icon-btn { width: 42px; height: 42px; font-size: 20px; }
+    #gameOver h1 { font-size: 32px; }
+    #pauseScreen h1 { font-size: 32px; }
+    .game-icon-btn { width: 40px; height: 40px; font-size: 18px; }
+    #dailyPopup h1 { font-size: 26px; }
+    #dailyPopup .reward-amount { font-size: 42px; }
   }
 </style>
 </head>
@@ -87,28 +108,51 @@
   <h1>🏎️ TRAFFIC RACER</h1>
   <p class="subtitle">Kaza yapmadan ilerle, para kazan!</p>
   <button class="home-btn" id="playBtn" onclick="startGame()">🎮 OYNAMAYA BAŞLA</button>
+  <button class="home-btn" id="questsBtn" onclick="showQuests()">🎯 GÜNLÜK GÖREVLER</button>
+  <button class="home-btn" id="achievementsBtn" onclick="showAchievements()">🏆 BAŞARIMLAR</button>
   <button class="home-btn" id="walletBtn" onclick="showWallet()">💰 KASAM</button>
 </div>
 
-<div id="walletScreen">
+<!-- GÖREVLER EKRANI -->
+<div id="questsScreen" class="modal-screen">
+  <h2>🎯 GÜNLÜK GÖREVLER</h2>
+  <div class="modal-content" id="questsList"></div>
+  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
+</div>
+
+<!-- BAŞARIMLAR EKRANI -->
+<div id="achievementsScreen" class="modal-screen">
+  <h2>🏆 BAŞARIMLAR</h2>
+  <div class="modal-content" id="achievementsList"></div>
+  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
+</div>
+
+<!-- KASAM EKRANI -->
+<div id="walletScreen" class="modal-screen">
   <h2>💰 KASAM</h2>
-  <div class="wallet-card">
-    <div class="label">Toplam Bakiye</div>
-    <div class="amount"><span id="walletBalance">0.00</span><span class="currency">₺</span></div>
-  </div>
-  <div class="wallet-card">
-    <div class="label">Çekim Bekleyen</div>
-    <div class="amount pending"><span id="walletPending">0.00</span><span class="currency">₺</span></div>
-  </div>
-  <div class="withdraw-section">
-    <h3>💸 Para Çek</h3>
-    <select id="withdrawMethod">
-      <option value="iban">🏦 IBAN</option>
-      <option value="payeer">💳 Payeer</option>
-    </select>
-    <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı">
-    <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 10₺)" min="10" step="0.01">
-    <button id="withdrawBtn" onclick="requestWithdraw()">ÇEKİM TALEBİ OLUŞTUR</button>
+  <div class="modal-content">
+    <div class="task-card">
+      <div class="task-title">Toplam Bakiye</div>
+      <div style="font-size: 42px; font-weight: bold; color: #4CAF50; margin-top: 8px;">
+        <span id="walletBalance">0.00</span> <span style="font-size: 22px; color: #aaa;">₺</span>
+      </div>
+    </div>
+    <div class="task-card">
+      <div class="task-title">Çekim Bekleyen</div>
+      <div style="font-size: 30px; font-weight: bold; color: #FF9800; margin-top: 8px;">
+        <span id="walletPending">0.00</span> <span style="font-size: 18px; color: #aaa;">₺</span>
+      </div>
+    </div>
+    <div class="task-card">
+      <h3 style="color: #fff; margin-bottom: 12px; font-size: 16px;">💸 Para Çek</h3>
+      <select id="withdrawMethod" style="width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px;">
+        <option value="iban">🏦 IBAN</option>
+        <option value="payeer">💳 Payeer</option>
+      </select>
+      <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px;">
+      <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 10₺)" min="10" step="0.01" style="width: 100%; padding: 13px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px;">
+      <button class="task-btn" style="width: 100%;" onclick="requestWithdraw()">ÇEKİM TALEBİ OLUŞTUR</button>
+    </div>
   </div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
@@ -122,11 +166,12 @@
 
 <!-- OYUN İÇİ BUTONLAR -->
 <div id="gameButtons">
+  <button class="game-icon-btn" id="soundBtn" onclick="toggleSound()" title="Ses">🔊</button>
   <button class="game-icon-btn" onclick="pauseGame()" title="Duraklat">⏸️</button>
   <button class="game-icon-btn" onclick="goHomeFromGame()" title="Ana Sayfa">🏠</button>
 </div>
 
-<!-- DURAKLATMA EKRANI -->
+<!-- DURAKLATMA -->
 <div id="pauseScreen">
   <h1>⏸️ DURAKLATILDI</h1>
   <button class="pause-btn btn-resume" onclick="resumeGame()">▶️ DEVAM ET</button>
@@ -143,6 +188,19 @@
   <button class="game-btn btn-restart" onclick="restart()">🔄 Yeniden Başla</button>
   <button class="game-btn btn-menu" onclick="goHome()">🏠 Ana Menü</button>
 </div>
+
+<!-- GÜNLÜK ÖDÜL POPUP -->
+<div id="dailyPopup">
+  <div class="popup-box">
+    <h1>🎁 GÜNLÜK ÖDÜL!</h1>
+    <p style="color: #aaa;">Bugün ilk kez giriş yaptın!</p>
+    <div class="reward-amount">+1.00 ₺</div>
+    <button onclick="claimDailyReward()">ÖDÜLÜ AL</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
 
 <script type="importmap">
 {
@@ -169,6 +227,126 @@ function addToWallet(amount) {
   w.balance += amount;
   saveWallet(w);
 }
+
+// ==================== İSTATİSTİK ====================
+function getStats() {
+  const data = localStorage.getItem('trafficRacerStats');
+  if (data) return JSON.parse(data);
+  return {
+    totalDistance: 0,
+    totalCrashes: 0,
+    totalEarned: 0,
+    bestDistance: 0,
+    gamesPlayed: 0,
+    adsWatched: 0,
+    carsUsed: [],           // ["race-future", "sedan", ...]
+    dailyLoginDate: '',
+    dailyLoginClaimed: false,
+    achievements: {},        // { "first1000": true, ... }
+    quests: {                // { "distance5000": { progress: 0, claimed: false } }
+      distance5000: { progress: 0, claimed: false },
+      ads5: { progress: 0, claimed: false },
+      cars3: { progress: 0, claimed: false }
+    },
+    lastQuestResetDate: ''
+  };
+}
+function saveStats(s) { localStorage.setItem('trafficRacerStats', JSON.stringify(s)); }
+
+// ==================== TOAST BİLDİRİM ====================
+function showToast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show ' + type;
+  setTimeout(() => { el.className = ''; }, 2500);
+}
+
+// ==================== SES SİSTEMİ ====================
+const sounds = {
+  engine: null,
+  crash: null,
+  coin: null,
+  bgmusic: null
+};
+let soundEnabled = true;
+let soundLoaded = { engine: false, crash: false, coin: false, bgmusic: false };
+
+function loadSound(name, path, loop = false, volume = 1) {
+  const audio = new Audio(path);
+  audio.loop = loop;
+  audio.volume = volume;
+  audio.preload = 'auto';
+  audio.addEventListener('canplaythrough', () => {
+    soundLoaded[name] = true;
+  });
+  audio.addEventListener('error', () => {
+    console.warn('Ses yüklenemedi: ' + path);
+  });
+  sounds[name] = audio;
+}
+
+loadSound('engine', 'sounds/engine.mp3', true, 0.3);
+loadSound('crash', 'sounds/crash.mp3', false, 0.6);
+loadSound('coin', 'sounds/coin.mp3', false, 0.4);
+loadSound('bgmusic', 'sounds/bgmusic.mp3', true, 0.2);
+
+function playSound(name) {
+  if (!soundEnabled || !sounds[name] || !soundLoaded[name]) return;
+  try {
+    sounds[name].currentTime = 0;
+    sounds[name].play().catch(() => {});
+  } catch (e) {}
+}
+
+function startEngine() {
+  if (!soundEnabled || !sounds.engine || !soundLoaded.engine) return;
+  try {
+    sounds.engine.currentTime = 0;
+    sounds.engine.play().catch(() => {});
+  } catch (e) {}
+}
+
+function stopEngine() {
+  if (sounds.engine) {
+    try { sounds.engine.pause(); } catch (e) {}
+  }
+}
+
+function updateEngineSpeed(speed) {
+  if (!sounds.engine || !soundLoaded.engine) return;
+  // speed: 0.4 - 2.8 arası, playbackRate: 0.8 - 1.8
+  const rate = 0.8 + (speed / 2.8) * 1.0;
+  try { sounds.engine.playbackRate = Math.max(0.5, Math.min(2.0, rate)); } catch (e) {}
+}
+
+function startBgMusic() {
+  if (!soundEnabled || !sounds.bgmusic || !soundLoaded.bgmusic) return;
+  try {
+    sounds.bgmusic.volume = 0.2;
+    sounds.bgmusic.play().catch(() => {});
+  } catch (e) {}
+}
+
+function stopBgMusic() {
+  if (sounds.bgmusic) {
+    try { sounds.bgmusic.pause(); } catch (e) {}
+  }
+}
+
+window.toggleSound = function() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundBtn').textContent = soundEnabled ? '🔊' : '🔇';
+  if (!soundEnabled) {
+    stopEngine();
+    stopBgMusic();
+  } else {
+    if (state.running && !state.paused) {
+      startEngine();
+      startBgMusic();
+    }
+  }
+  showToast(soundEnabled ? '🔊 Ses Açık' : '🔇 Ses Kapalı', 'info');
+};
 
 // ==================== SAHNE ====================
 const scene = new THREE.Scene();
@@ -332,7 +510,10 @@ const state = {
   playerLane: 0,
   targetLane: 0,
   shake: 0,
-  modelLoaded: false
+  modelLoaded: false,
+  coinTimer: 0,
+  gameCrashes: 0,
+  playerCar: 'race-future'
 };
 
 const CAR_SCALE = 1.4;
@@ -425,6 +606,178 @@ function checkCollision(a, b) {
          Math.abs(a.position.z - b.position.z) < 2.8;
 }
 
+// ==================== GÖREV VE BAŞARIM SİSTEMİ ====================
+function resetDailyQuestsIfNeeded() {
+  const stats = getStats();
+  const today = new Date().toDateString();
+  if (stats.lastQuestResetDate !== today) {
+    stats.quests = {
+      distance5000: { progress: 0, claimed: false },
+      ads5: { progress: 0, claimed: false },
+      cars3: { progress: 0, claimed: false }
+    };
+    stats.lastQuestResetDate = today;
+    stats.carsUsed = [];
+    saveStats(stats);
+  }
+}
+
+function checkDailyLogin() {
+  const stats = getStats();
+  const today = new Date().toDateString();
+  if (stats.dailyLoginDate !== today) {
+    // Yeni gün — günlük ödülü göster
+    document.getElementById('dailyPopup').style.display = 'flex';
+  }
+}
+
+window.claimDailyReward = function() {
+  const stats = getStats();
+  stats.dailyLoginDate = new Date().toDateString();
+  stats.dailyLoginClaimed = true;
+  saveStats(stats);
+  addToWallet(1);
+  updateWalletUI();
+  playSound('coin');
+  document.getElementById('dailyPopup').style.display = 'none';
+  showToast('🎁 +1.00 ₺ Günlük Ödül Alındı!', 'gold');
+};
+
+function updateQuestProgress(questKey, increment) {
+  const stats = getStats();
+  if (!stats.quests[questKey]) return;
+  if (stats.quests[questKey].claimed) return;
+  stats.quests[questKey].progress += increment;
+  saveStats(stats);
+}
+
+function checkAchievements() {
+  const stats = getStats();
+  let newAchievements = [];
+  
+  // İlk 1000 metre
+  if (stats.bestDistance >= 1000 && !stats.achievements.first1000) {
+    stats.achievements.first1000 = true;
+    addToWallet(5);
+    newAchievements.push('🏆 İlk 1000 Metre! +5 ₺');
+  }
+  
+  // 5000m kazasız (tek oyunda)
+  if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) {
+    stats.achievements.noCrash5000 = true;
+    addToWallet(20);
+    newAchievements.push('🏆 5000m Kazasız! +20 ₺');
+  }
+  
+  // Toplam 10000 metre
+  if (stats.totalDistance >= 10000 && !stats.achievements.total10000) {
+    stats.achievements.total10000 = true;
+    addToWallet(10);
+    newAchievements.push('🏆 Toplam 10.000 Metre! +10 ₺');
+  }
+  
+  saveStats(stats);
+  
+  // Bildirimleri sırayla göster
+  newAchievements.forEach((msg, idx) => {
+    setTimeout(() => {
+      showToast(msg, 'gold');
+      playSound('coin');
+    }, idx * 1500);
+  });
+}
+
+window.claimQuest = function(questKey) {
+  const stats = getStats();
+  const quest = stats.quests[questKey];
+  if (!quest || quest.claimed) return;
+  
+  const rewards = {
+    distance5000: 3,
+    ads5: 2,
+    cars3: 1
+  };
+  
+  const requiredProgress = {
+    distance5000: 5000,
+    ads5: 5,
+    cars3: 3
+  };
+  
+  if (quest.progress < requiredProgress[questKey]) {
+    showToast('Görev henüz tamamlanmadı!', 'info');
+    return;
+  }
+  
+  quest.claimed = true;
+  saveStats(stats);
+  addToWallet(rewards[questKey]);
+  updateWalletUI();
+  playSound('coin');
+  showToast('✅ +' + rewards[questKey] + ' ₺ kazandın!', 'gold');
+  renderQuests();
+};
+
+window.renderQuests = function() {
+  const stats = getStats();
+  const list = document.getElementById('questsList');
+  
+  const quests = [
+    { key: 'distance5000', title: '📏 Bugün 5000 metre git', desc: 'Tek oyunda veya toplamda', max: 5000, reward: 3 },
+    { key: 'ads5', title: '📺 5 kez reklam izle', desc: 'Kaza sonrası reklam', max: 5, reward: 2 },
+    { key: 'cars3', title: '🚗 3 farklı arabayla oyna', desc: 'Farklı modeller', max: 3, reward: 1 }
+  ];
+  
+  list.innerHTML = quests.map(q => {
+    const quest = stats.quests[q.key] || { progress: 0, claimed: false };
+    const progress = Math.min(quest.progress, q.max);
+    const percent = (progress / q.max) * 100;
+    const isComplete = progress >= q.max;
+    const isClaimed = quest.claimed;
+    
+    return `
+      <div class="task-card ${isClaimed ? 'claimed' : (isComplete ? 'completed' : '')}">
+        <div class="task-title">${q.title}</div>
+        <div class="task-desc">${q.desc}</div>
+        <div class="task-progress">
+          <div class="task-progress-bar" style="width: ${percent}%"></div>
+        </div>
+        <div class="task-reward">💰 Ödül: ${q.reward} ₺ (${progress}/${q.max})</div>
+        <button class="task-btn" 
+          onclick="claimQuest('${q.key}')" 
+          ${(!isComplete || isClaimed) ? 'disabled' : ''}>
+          ${isClaimed ? '✅ Alındı' : (isComplete ? '🎁 Ödülü Al' : 'Devam ediyor...')}
+        </button>
+      </div>
+    `;
+  }).join('');
+};
+
+window.renderAchievements = function() {
+  const stats = getStats();
+  const list = document.getElementById('achievementsList');
+  
+  const achievements = [
+    { key: 'first1000', title: '🥇 İlk 1000 Metre', desc: 'Tek oyunda 1000m git', reward: 5 },
+    { key: 'noCrash5000', title: '🛡️ Kazasız Sürücü', desc: 'Tek oyunda 5000m kazasız git', reward: 20 },
+    { key: 'total10000', title: '🏁 Uzun Yol', desc: 'Toplam 10.000m git', reward: 10 }
+  ];
+  
+  list.innerHTML = achievements.map(a => {
+    const unlocked = stats.achievements[a.key];
+    return `
+      <div class="task-card ${unlocked ? 'completed' : ''}">
+        <div class="task-title">${a.title}</div>
+        <div class="task-desc">${a.desc}</div>
+        <div class="task-reward">💰 Ödül: ${a.reward} ₺</div>
+        <div style="margin-top: 8px; font-size: 13px; color: ${unlocked ? '#4CAF50' : '#888'};">
+          ${unlocked ? '✅ Açıldı' : '🔒 Kilitli'}
+        </div>
+      </div>
+    `;
+  }).join('');
+};
+
 // ==================== DÖNGÜ ====================
 let lastTime = performance.now();
 let animationRunning = false;
@@ -437,7 +790,6 @@ function animate() {
   const dt = Math.min((now - lastTime) / 16.67, 2);
   lastTime = now;
   
-  // Duraklatıldıysa sadece render et, oyunu ilerletme
   if (!state.running || state.paused) {
     renderer.render(scene, camera);
     return;
@@ -447,6 +799,9 @@ function animate() {
   state.playerLane += (state.targetLane - state.playerLane) * 0.15 * dt;
   player.position.x = state.playerLane * (ROAD_WIDTH/3);
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
+  
+  // Motor sesi hız ile güncelle
+  updateEngineSpeed(state.speed);
   
   state.shake = Math.max(0, state.shake - 0.05 * dt);
   const shakeX = (Math.random() - 0.5) * state.shake * 0.08;
@@ -478,13 +833,22 @@ function animate() {
     state.lastSpawn = 0;
   }
   
+  const oldMoney = state.money;
   state.distance += state.speed * dt / 5;
   state.money += moneyPerMeter() * (state.speed * dt / 5);
+  
+  // Para ding sesi — her 0.5 TL'de bir
+  state.coinTimer += state.money - oldMoney;
+  if (state.coinTimer >= 0.5) {
+    state.coinTimer = 0;
+    playSound('coin');
+  }
   
   if (state.speed > 1.5) state.shake = Math.min(0.8, state.shake + 0.015 * dt);
   
   for (const car of state.cars) {
     if (checkCollision(player, car)) {
+      state.gameCrashes++;
       endGame();
       return;
     }
@@ -511,12 +875,16 @@ window.pauseGame = function() {
   state.paused = true;
   document.getElementById('pauseScreen').style.display = 'flex';
   document.getElementById('gameButtons').classList.remove('visible');
+  stopEngine();
+  stopBgMusic();
 };
 
 window.resumeGame = function() {
   state.paused = false;
   document.getElementById('pauseScreen').style.display = 'none';
   document.getElementById('gameButtons').classList.add('visible');
+  startEngine();
+  startBgMusic();
   lastTime = performance.now();
 };
 
@@ -526,25 +894,34 @@ window.restartFromPause = function() {
   resetGameState();
   state.running = true;
   document.getElementById('gameButtons').classList.add('visible');
+  startEngine();
+  startBgMusic();
   startAnimationLoop();
 };
 
 window.goHomeFromGame = function() {
-  // Kalan parayı kasaya ekle (duraklatıldıysa kesinti yok)
+  // Kalan parayı kasaya ekle
   if (state.money > 0) {
     addToWallet(state.money);
+    const stats = getStats();
+    stats.totalEarned += state.money;
+    stats.totalDistance += state.distance;
+    if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
+    saveStats(stats);
   }
   state.running = false;
   state.paused = false;
   animationRunning = false;
+  stopEngine();
+  stopBgMusic();
   document.getElementById('pauseScreen').style.display = 'none';
   document.getElementById('gameOver').style.display = 'none';
   document.getElementById('hud').style.display = 'none';
   document.getElementById('gameButtons').classList.remove('visible');
   renderer.domElement.style.display = 'none';
   document.getElementById('homeScreen').style.display = 'flex';
-  document.getElementById('walletScreen').style.display = 'none';
   resetGameState();
+  updateWalletUI();
 };
 
 // ==================== OYUN BİTİŞ ====================
@@ -554,6 +931,31 @@ function endGame() {
   state.running = false;
   state.paused = false;
   penaltyAmount = state.money / 2;
+  
+  playSound('crash');
+  stopEngine();
+  stopBgMusic();
+  
+  // İstatistikleri kaydet
+  const stats = getStats();
+  stats.totalDistance += state.distance;
+  stats.totalCrashes += 1;
+  stats.totalEarned += state.money;
+  stats.gamesPlayed += 1;
+  if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
+  
+  // Görev güncelle
+  stats.quests.distance5000.progress += Math.floor(state.distance);
+  if (!stats.carsUsed.includes(state.playerCar)) {
+    stats.carsUsed.push(state.playerCar);
+  }
+  stats.quests.cars3.progress = stats.carsUsed.length;
+  
+  saveStats(stats);
+  
+  // Başarımları kontrol et
+  checkAchievements();
+  
   document.getElementById('earned').textContent = state.money.toFixed(4);
   document.getElementById('penalty').textContent = penaltyAmount.toFixed(4);
   document.getElementById('gameOver').style.display = 'flex';
@@ -561,32 +963,58 @@ function endGame() {
 }
 
 window.watchAd = function() {
-  alert('📺 Reklam gösteriliyor... (Gerçek sistemde 30sn video)');
-  addToWallet(state.money);
-  state.running = true;
-  state.paused = false;
-  document.getElementById('gameOver').style.display = 'none';
-  document.getElementById('gameButtons').classList.add('visible');
-  player.position.x = 0;
-  state.playerLane = 0;
-  state.targetLane = 0;
-  for (let i = state.cars.length - 1; i >= 0; i--) {
-    if (state.cars[i].position.z > player.position.z - 20) {
-      scene.remove(state.cars[i]);
-      state.cars.splice(i, 1);
+  showToast('📺 Reklam gösteriliyor...', 'info');
+  setTimeout(() => {
+    addToWallet(state.money);
+    playSound('coin');
+    
+    // İstatistik
+    const stats = getStats();
+    stats.adsWatched += 1;
+    stats.quests.ads5.progress += 1;
+    stats.totalEarned += state.money;
+    stats.totalDistance += state.distance;
+    if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
+    saveStats(stats);
+    
+    state.running = true;
+    state.paused = false;
+    document.getElementById('gameOver').style.display = 'none';
+    document.getElementById('gameButtons').classList.add('visible');
+    player.position.x = 0;
+    state.playerLane = 0;
+    state.targetLane = 0;
+    for (let i = state.cars.length - 1; i >= 0; i--) {
+      if (state.cars[i].position.z > player.position.z - 20) {
+        scene.remove(state.cars[i]);
+        state.cars.splice(i, 1);
+      }
     }
-  }
-  startAnimationLoop();
+    startEngine();
+    startBgMusic();
+    startAnimationLoop();
+    showToast('✅ Reklam tamam! +' + state.money.toFixed(2) + ' ₺', 'gold');
+  }, 1500);
 };
 
 window.restart = function() {
   const remaining = Math.max(0, state.money - penaltyAmount);
   addToWallet(remaining);
+  
+  // İstatistik
+  const stats = getStats();
+  stats.totalEarned += remaining;
+  saveStats(stats);
+  
   resetGameState();
   document.getElementById('gameOver').style.display = 'none';
   document.getElementById('gameButtons').classList.add('visible');
   state.running = true;
+  state.paused = false;
+  startEngine();
+  startBgMusic();
   startAnimationLoop();
+  updateWalletUI();
 };
 
 window.goHome = function() {
@@ -597,26 +1025,50 @@ window.goHome = function() {
   state.running = false;
   state.paused = false;
   animationRunning = false;
+  stopEngine();
+  stopBgMusic();
   document.getElementById('gameOver').style.display = 'none';
   document.getElementById('pauseScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'none';
   document.getElementById('gameButtons').classList.remove('visible');
+  document.getElementById('questsScreen').style.display = 'none';
+  document.getElementById('achievementsScreen').style.display = 'none';
+  document.getElementById('walletScreen').style.display = 'none';
   renderer.domElement.style.display = 'none';
   document.getElementById('homeScreen').style.display = 'flex';
-  document.getElementById('walletScreen').style.display = 'none';
   resetGameState();
+  updateWalletUI();
+  checkDailyLogin();
 };
 
 window.startGame = function() {
   resetGameState();
+  resetDailyQuestsIfNeeded();
   document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('questsScreen').style.display = 'none';
+  document.getElementById('achievementsScreen').style.display = 'none';
   document.getElementById('walletScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'block';
   document.getElementById('gameButtons').classList.add('visible');
   renderer.domElement.style.display = 'block';
   state.running = true;
   state.paused = false;
+  state.gameCrashes = 0;
+  startEngine();
+  startBgMusic();
   startAnimationLoop();
+};
+
+window.showQuests = function() {
+  renderQuests();
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('questsScreen').style.display = 'flex';
+};
+
+window.showAchievements = function() {
+  renderAchievements();
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('achievementsScreen').style.display = 'flex';
 };
 
 window.showWallet = function() {
@@ -660,8 +1112,10 @@ window.requestWithdraw = async function() {
 
 function updateWalletUI() {
   const w = getWallet();
-  document.getElementById('walletBalance').textContent = w.balance.toFixed(2);
-  document.getElementById('walletPending').textContent = w.pending.toFixed(2);
+  const el1 = document.getElementById('walletBalance');
+  const el2 = document.getElementById('walletPending');
+  if (el1) el1.textContent = w.balance.toFixed(2);
+  if (el2) el2.textContent = w.pending.toFixed(2);
 }
 
 function resetGameState() {
@@ -672,6 +1126,7 @@ function resetGameState() {
   state.targetLane = 0;
   state.shake = 0;
   state.lastSpawn = 0;
+  state.coinTimer = 0;
   if (player) {
     player.position.set(0, 0, 4);
     player.rotation.z = 0;
@@ -699,7 +1154,10 @@ window.addEventListener('orientationchange', () => {
   }, 300);
 });
 
+// ==================== BAŞLANGIÇ ====================
 updateWalletUI();
+resetDailyQuestsIfNeeded();
+setTimeout(checkDailyLogin, 500);
 </script>
 </body>
 </html>
