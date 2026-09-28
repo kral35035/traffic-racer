@@ -38,7 +38,7 @@
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
-  #loadingMsg { position: fixed; bottom: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 10px 15px; border-radius: 8px; font-size: 13px; color: #0f0; z-index: 999; display: none; max-width: 400px; }
+  #loadingMsg { position: fixed; bottom: 20px; left: 20px; background: rgba(0,0,0,0.8); padding: 10px 15px; border-radius: 8px; font-size: 13px; color: #0f0; z-index: 999; display: none; max-width: 500px; }
 </style>
 </head>
 <body>
@@ -147,11 +147,11 @@ document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
 // ==================== IŞIKLAR ====================
-scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.6);
+scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.7);
 scene.add(hemiLight);
 
-const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
+const sunLight = new THREE.DirectionalLight(0xffffff, 1.8);
 sunLight.position.set(20, 40, 20);
 sunLight.castShadow = true;
 sunLight.shadow.mapSize.width = 2048;
@@ -210,14 +210,28 @@ scene.add(grass2);
 // ==================== MODEL YÜKLEME ====================
 const gltfLoader = new GLTFLoader();
 
+// Colormap dokusu (Kenney Car Kit modelleri için ortak)
+let kenneyColormap = null;
+
+function getKenneyColormap() {
+  if (kenneyColormap) return kenneyColormap;
+  kenneyColormap = new THREE.TextureLoader().load('models/colormap.png');
+  kenneyColormap.magFilter = THREE.NearestFilter;
+  kenneyColormap.minFilter = THREE.NearestFilter;
+  kenneyColormap.colorSpace = THREE.SRGBColorSpace;
+  return kenneyColormap;
+}
+
 function prepareModel(model) {
+  const colormap = getKenneyColormap();
   model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
       if (child.material) {
-        child.material.metalness = 0.4;
-        child.material.roughness = 0.5;
+        // Kenney modelleri colormap.png kullanır
+        child.material.map = colormap;
+        child.material.needsUpdate = true;
       }
     }
   });
@@ -233,9 +247,7 @@ function loadCarModel(path, fallbackColor = 0x00cc44) {
         const model = prepareModel(gltf.scene);
         resolve(model);
       },
-      (progress) => {
-        // yükleniyor...
-      },
+      (progress) => {},
       (error) => {
         debugLog('❌ Model YÜKLENEMEDİ: ' + path + ' | ' + error.message, true);
         resolve(createFallbackCar(fallbackColor));
@@ -297,12 +309,19 @@ scene.add(player);
 
 loadCarModel('models/race-future.glb', 0x00cc44).then((model) => {
   scene.remove(player);
-  model.scale.set(0.35, 0.35, 0.35);
+
+  // ÖLÇEK: Kenney modelleri küçük, büyütüyoruz
+  model.scale.set(3, 3, 3);
+
+  // Yön: Kenney modelleri +Z'ye bakar, oyun -Z'ye
   model.rotation.y = Math.PI;
-  model.position.set(0, 0, 5);
+
+  // Başlangıç konumu (y = 0.1, zeminden hafif yukarı)
+  model.position.set(0, 0.1, 5);
   scene.add(model);
   player = model;
   state.modelLoaded = true;
+  debugLog('✅ Oyuncu arabası hazır');
 });
 
 // ==================== KONTROL ====================
@@ -338,11 +357,11 @@ async function spawnEnemyCar() {
   if (isFallback) {
     car.scale.set(0.5, 0.5, 0.5);
   } else {
-    car.scale.set(0.35, 0.35, 0.35);
+    car.scale.set(3, 3, 3);
   }
   car.rotation.y = Math.PI;
   
-  car.position.set(LANES[lane + 1], 0, -200);
+  car.position.set(LANES[lane + 1], 0.1, -200);
   scene.add(car);
   state.cars.push(car);
 }
@@ -469,17 +488,10 @@ window.watchAd = function() {
 };
 
 window.restart = function() {
-  // Kalan parayı kasaya ekle
   const remaining = Math.max(0, state.money - penaltyAmount);
   addToWallet(remaining);
-  
-  // State'i sıfırla
   resetGameState();
-  
-  // Oyun sonu ekranını gizle
   document.getElementById('gameOver').style.display = 'none';
-  
-  // OYUNU BAŞLAT (kritik düzeltme!)
   state.running = true;
   startAnimationLoop();
 };
@@ -564,7 +576,7 @@ function resetGameState() {
   state.shake = 0;
   state.lastSpawn = 0;
   if (player) {
-    player.position.set(0, 0, 5);
+    player.position.set(0, 0.1, 5);
     player.rotation.z = 0;
   }
   state.cars.forEach(c => scene.remove(c));
