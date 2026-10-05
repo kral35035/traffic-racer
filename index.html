@@ -9,25 +9,31 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; color: white; user-select: none; -webkit-user-select: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; }
   canvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
-  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 12px; overflow-y: auto; }
-  #homeScreen h1 { font-size: 26px; margin-bottom: 6px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
-  #homeScreen .subtitle { font-size: 11px; color: #aaa; margin-bottom: 12px; text-align: center; }
-  .home-btn { padding: 11px 28px; margin: 4px; font-size: 13px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 260px; max-width: 85vw; box-shadow: 0 5px 16px rgba(0,0,0,0.4); touch-action: manipulation; position: relative; }
+  
+  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 15px; overflow-y: auto; }
+  #homeScreen h1 { font-size: 28px; margin-bottom: 6px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
+  #homeScreen .subtitle { font-size: 11px; color: #aaa; margin-bottom: 20px; text-align: center; }
+  .home-btn { padding: 13px 30px; margin: 5px; font-size: 14px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; box-shadow: 0 5px 16px rgba(0,0,0,0.4); touch-action: manipulation; position: relative; }
   .home-btn:active { transform: scale(0.96); }
-  #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
-  #kasaBtn { background: linear-gradient(135deg, #FFD700, #FF8F00); color: #000; }
+  #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; font-size: 16px; padding: 16px 30px; }
+  #walletBtn { background: linear-gradient(135deg, #FFD700, #FF8F00); color: #000; }
   #garageBtn { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
-  #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
-  #questsBtn { background: linear-gradient(135deg, #9C27B0, #6A1B9A); color: white; }
-  #achievementsBtn { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   #profileBtn { background: linear-gradient(135deg, #009688, #00695C); color: white; }
   #settingsBtn { background: linear-gradient(135deg, #607D8B, #37474F); color: white; }
   #fullscreenBtn { background: linear-gradient(135deg, #00BCD4, #0097A7); color: white; }
-  .kasa-badge { position: absolute; top: -5px; right: -5px; background: #f44336; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; animation: pulse 1.5s infinite; }
+  .btn-badge { position: absolute; top: -6px; right: -6px; background: #f44336; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 6px; animation: pulse 1.5s infinite; }
   @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  
   .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 12px; overflow-y: auto; }
   .modal-screen h2 { font-size: 20px; margin: 12px 0; text-align: center; color: #ffd93d; }
   .modal-content { max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 40px; }
+  
+  .tabs { display: flex; gap: 6px; margin: 10px 0; }
+  .tab-btn { flex: 1; padding: 12px 8px; background: linear-gradient(135deg, #2d3561, #1e2749); border: 2px solid rgba(255,255,255,0.1); border-radius: 10px; color: #aaa; font-weight: bold; font-size: 13px; cursor: pointer; touch-action: manipulation; transition: all 0.2s; }
+  .tab-btn.active { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border-color: #4CAF50; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  
   .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; margin: 6px 0; border: 1px solid rgba(255,255,255,0.1); }
   .task-card.completed { border-color: #4CAF50; opacity: 0.7; }
   .task-card.claimed { border-color: #666; opacity: 0.5; }
@@ -39,6 +45,7 @@
   .task-btn { padding: 9px 16px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 7px; font-weight: bold; cursor: pointer; margin-top: 5px; touch-action: manipulation; font-size: 13px; }
   .task-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.5; }
   .back-btn { padding: 10px 24px; background: #444; color: white; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; margin: 12px auto; display: block; touch-action: manipulation; }
+  
   .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 12px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
   .car-card.owned { border-color: #4CAF50; }
   .car-card.selected { border-color: #ffd93d; box-shadow: 0 0 16px rgba(255,217,61,0.5); }
@@ -51,11 +58,13 @@
   .car-action.buy { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .car-action.select { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   .car-action.selected { background: linear-gradient(135deg, #ffd93d, #FF6F00); color: #000; }
+  
   .insurance-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); text-align: center; }
   .insurance-card.active { border-color: #4CAF50; box-shadow: 0 0 16px rgba(76,175,80,0.4); }
   .insurance-card h3 { color: #ffd93d; font-size: 16px; margin-bottom: 6px; }
   .insurance-card .price { font-size: 26px; font-weight: bold; color: #4CAF50; margin: 8px 0; }
   .insurance-card .desc { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+  
   .setting-row { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; margin: 6px 0; border: 1px solid rgba(255,255,255,0.1); }
   .setting-row label { display: block; font-size: 13px; color: #fff; margin-bottom: 8px; font-weight: bold; }
   .setting-row .value { color: #4CAF50; font-weight: bold; float: right; }
@@ -66,6 +75,7 @@
   .toggle-off { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
   .lang-btn { padding: 10px; margin: 3px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); font-size: 13px; touch-action: manipulation; background: #1a1a2e; color: white; width: 75px; }
   .lang-btn.active { background: linear-gradient(135deg, #4CAF50, #2e7d32); border-color: #4CAF50; }
+  
   #hud { position: absolute; top: 8px; left: 8px; color: #fff; font-size: 11px; text-shadow: 2px 2px 5px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.45); padding: 7px 11px; border-radius: 9px; line-height: 1.5; }
   #hud .op { color: #FFD700; font-weight: bold; }
   #hud .tl { color: #4CAF50; font-weight: bold; }
@@ -74,12 +84,14 @@
   #gameButtons.visible { display: flex; }
   .game-icon-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; padding: 0; line-height: 1; }
   .game-icon-btn:active { transform: scale(0.9); }
+  
   #pauseScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px; }
   #pauseScreen h1 { color: #ffd93d; font-size: 34px; margin-bottom: 20px; }
   button.pause-btn { padding: 13px 24px; margin: 5px; font-size: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 260px; max-width: 85vw; touch-action: manipulation; }
   .btn-resume { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-home { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart2 { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
+  
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
   #gameOver h1 { color: #ff4444; font-size: 34px; margin: 8px; }
   #gameOver p { font-size: 15px; margin: 4px; }
@@ -87,18 +99,22 @@
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
+  
   #dailyPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
   #dailyPopup .popup-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 35px 25px; max-width: 380px; width: 100%; text-align: center; border: 2px solid #ffd93d; box-shadow: 0 0 40px rgba(255,217,61,0.5); }
   #dailyPopup h1 { font-size: 26px; color: #ffd93d; margin-bottom: 12px; }
   #dailyPopup .reward-amount { font-size: 38px; font-weight: bold; color: #4CAF50; margin: 15px 0; }
   #dailyPopup button { padding: 12px 30px; margin-top: 15px; font-size: 15px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+  
   #toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold; font-size: 13px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   #toast.gold { background: linear-gradient(135deg, #FFC107, #FF6F00); color: #000; }
   #toast.info { background: linear-gradient(135deg, #2196F3, #0d47a1); }
   #toast.error { background: linear-gradient(135deg, #f44336, #b71c1c); }
+  
   #weatherBadge { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 10; background: rgba(0,0,0,0.55); padding: 5px 12px; border-radius: 18px; font-size: 12px; color: white; pointer-events: none; display: none; }
   #weatherBadge.visible { display: block; }
+  
   .profile-avatar { font-size: 70px; text-align: center; margin: 12px 0; cursor: pointer; }
   .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
   .avatar-item { font-size: 30px; padding: 10px; background: #1a1a2e; border-radius: 9px; text-align: center; cursor: pointer; border: 2px solid transparent; }
@@ -107,87 +123,143 @@
   .stat-row:last-child { border-bottom: none; }
   .stat-row .label { color: #aaa; }
   .stat-row .value { color: #4CAF50; font-weight: bold; }
-  .kasa-box { background: linear-gradient(135deg, #3d2b00, #1a1a00); border: 3px solid #FFD700; border-radius: 20px; padding: 25px 18px; text-align: center; margin: 15px 0; box-shadow: 0 0 40px rgba(255,215,0,0.4); }
-  .kasa-icon { font-size: 70px; }
-  .kasa-title { font-size: 20px; color: #FFD700; font-weight: bold; margin: 8px 0; }
-  .kasa-status { font-size: 13px; color: #aaa; margin: 8px 0; }
-  .kasa-timer { font-size: 24px; color: #FFD700; font-weight: bold; margin: 10px 0; letter-spacing: 2px; }
-  .kasa-claim-btn { padding: 15px 28px; background: linear-gradient(135deg, #FFD700, #FF8F00); color: #000; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; touch-action: manipulation; width: 100%; max-width: 320px; margin-top: 12px; box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
+  
+  .kasa-box { background: linear-gradient(135deg, #3d2b00, #1a1a00); border: 3px solid #FFD700; border-radius: 20px; padding: 22px 16px; text-align: center; margin: 12px 0; box-shadow: 0 0 30px rgba(255,215,0,0.4); }
+  .kasa-icon { font-size: 60px; }
+  .kasa-title { font-size: 18px; color: #FFD700; font-weight: bold; margin: 6px 0; }
+  .kasa-status { font-size: 12px; color: #aaa; margin: 6px 0; }
+  .kasa-timer { font-size: 20px; color: #FFD700; font-weight: bold; margin: 8px 0; letter-spacing: 2px; }
+  .kasa-claim-btn { padding: 14px 26px; background: linear-gradient(135deg, #FFD700, #FF8F00); color: #000; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; touch-action: manipulation; width: 100%; max-width: 320px; margin-top: 10px; box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
   .kasa-claim-btn:disabled { background: #555; color: #999; cursor: not-allowed; box-shadow: none; }
-  .kasa-progress-wrap { margin: 15px 0; }
-  .kasa-progress-bar-bg { width: 100%; height: 24px; background: #1a1a00; border-radius: 12px; border: 2px solid #FFD700; overflow: hidden; position: relative; }
-  .kasa-progress-bar-fill { height: 100%; background: linear-gradient(90deg, #FFD700, #FF8F00); border-radius: 10px; transition: width 0.5s ease; box-shadow: 0 0 15px rgba(255,215,0,0.5); }
-  .kasa-progress-text { text-align: center; color: #FFD700; font-weight: bold; font-size: 14px; margin-top: 6px; }
-  .wallet-dual { display: flex; gap: 8px; }
-  .wallet-dual .wallet-half { flex: 1; background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; border: 2px solid rgba(255,217,61,0.3); text-align: center; }
-  .wallet-dual .wallet-half .label { font-size: 11px; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
-  .wallet-dual .wallet-half .val { font-size: 24px; font-weight: bold; }
+  .kasa-progress-wrap { margin: 12px 0; }
+  .kasa-progress-bar-bg { width: 100%; height: 22px; background: #1a1a00; border-radius: 11px; border: 2px solid #FFD700; overflow: hidden; }
+  .kasa-progress-bar-fill { height: 100%; background: linear-gradient(90deg, #FFD700, #FF8F00); border-radius: 9px; transition: width 0.5s ease; box-shadow: 0 0 15px rgba(255,215,0,0.5); }
+  .kasa-progress-text { text-align: center; color: #FFD700; font-weight: bold; font-size: 13px; margin-top: 5px; }
+  
+  .wallet-dual { display: flex; gap: 8px; margin-bottom: 10px; }
+  .wallet-dual .wallet-half { flex: 1; background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; border: 2px solid rgba(255,217,61,0.3); text-align: center; }
+  .wallet-dual .wallet-half .label { font-size: 10px; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
+  .wallet-dual .wallet-half .val { font-size: 22px; font-weight: bold; }
   .wallet-dual .wallet-half .val.op { color: #FFD700; }
   .wallet-dual .wallet-half .val.tl { color: #4CAF50; }
-  .convert-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; margin: 10px 0; border: 2px solid rgba(76,175,80,0.3); }
-  .convert-box h3 { color: #FFD700; font-size: 15px; margin-bottom: 10px; }
-  .convert-box .rate { font-size: 13px; color: #aaa; margin-bottom: 10px; }
-  .convert-input { width: 100%; padding: 12px; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px; margin: 5px 0; }
+  .convert-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; margin: 10px 0; border: 2px solid rgba(76,175,80,0.3); }
+  .convert-box h3 { color: #FFD700; font-size: 14px; margin-bottom: 8px; }
+  .convert-box .rate { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+  .convert-input { width: 100%; padding: 11px; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 13px; margin: 4px 0; }
+  
   @media (max-width: 600px) {
-    #homeScreen h1 { font-size: 22px; }
-    .home-btn { font-size: 12px; padding: 10px 22px; }
+    #homeScreen h1 { font-size: 24px; }
+    .home-btn { font-size: 13px; padding: 12px 24px; }
+    #playBtn { font-size: 15px; padding: 15px 28px; }
     #hud { font-size: 10px; padding: 5px 9px; }
     #gameOver h1 { font-size: 28px; }
     #pauseScreen h1 { font-size: 26px; }
     .game-icon-btn { width: 38px; height: 38px; font-size: 16px; }
-    .kasa-icon { font-size: 60px; }
-    .kasa-timer { font-size: 20px; }
+    .kasa-icon { font-size: 50px; }
+    .kasa-timer { font-size: 18px; }
   }
 </style>
 </head>
 <body>
 
+<!-- ==================== ANA SAYFA ==================== -->
 <div id="homeScreen">
   <h1 id="t_home_title">🏎️ TRAFFIC RACER</h1>
   <p class="subtitle" id="t_home_subtitle">Kaza yapmadan ilerle, para kazan!</p>
   <button class="home-btn" id="playBtn" onclick="startGame()">🎮 OYNAMAYA BAŞLA</button>
-  <button class="home-btn" id="kasaBtn" onclick="showKasa()">🎁 KASA<span class="kasa-badge" id="kasaBadge" style="display:none;">!</span></button>
+  <button class="home-btn" id="walletBtn" onclick="showWallet()">💰 CÜZDAN<span class="btn-badge" id="kasaBadge" style="display:none;">!</span></button>
   <button class="home-btn" id="garageBtn" onclick="showGarage()">🚗 GARAJ</button>
-  <button class="home-btn" id="walletBtn" onclick="showWallet()">💰 CÜZDAN</button>
-  <button class="home-btn" id="questsBtn" onclick="showQuests()">🎯 GÖREVLER</button>
-  <button class="home-btn" id="achievementsBtn" onclick="showAchievements()">🏆 BAŞARIMLAR</button>
   <button class="home-btn" id="profileBtn" onclick="showProfile()">👤 PROFİL</button>
   <button class="home-btn" id="settingsBtn" onclick="showSettings()">⚙️ AYARLAR</button>
   <button class="home-btn" id="fullscreenBtn" onclick="toggleFullscreen()">⛶ TAM EKRAN</button>
 </div>
 
-<div id="kasaScreen" class="modal-screen">
-  <h2 id="t_kasa_title">🎁 GÜNLÜK KASA</h2>
+<!-- ==================== CÜZDAN (KASA + CÜZDAN + ÇEKİM) ==================== -->
+<div id="walletScreen" class="modal-screen">
+  <h2>💰 CÜZDAN</h2>
   <div class="modal-content">
-    <div class="kasa-box" id="kasaBox">
-      <div class="kasa-icon" id="kasaIcon">🎁</div>
-      <div class="kasa-title" id="kasaTitle">Kasa Hazırlanıyor...</div>
-      <div class="kasa-status" id="kasaStatus">5 saatte bir dolar</div>
-      <div class="kasa-progress-wrap">
-        <div class="kasa-progress-bar-bg">
-          <div class="kasa-progress-bar-fill" id="kasaProgressBar" style="width: 0%;"></div>
+    
+    <div class="tabs">
+      <button class="tab-btn active" id="tabKasa" onclick="switchWalletTab('kasa')">🎁 Kasa</button>
+      <button class="tab-btn" id="tabBakiye" onclick="switchWalletTab('bakiye')">💰 Bakiye</button>
+      <button class="tab-btn" id="tabCekim" onclick="switchWalletTab('cekim')">💸 Çekim</button>
+    </div>
+    
+    <!-- KASA TAB -->
+    <div class="tab-content active" id="tabContentKasa">
+      <div class="kasa-box">
+        <div class="kasa-icon" id="kasaIcon">🎁</div>
+        <div class="kasa-title" id="kasaTitle">Kasa Hazırlanıyor...</div>
+        <div class="kasa-status">5 saatte bir dolar</div>
+        <div class="kasa-progress-wrap">
+          <div class="kasa-progress-bar-bg">
+            <div class="kasa-progress-bar-fill" id="kasaProgressBar" style="width: 0%;"></div>
+          </div>
+          <div class="kasa-progress-text" id="kasaProgressText">0%</div>
         </div>
-        <div class="kasa-progress-text" id="kasaProgressText">0%</div>
+        <div class="kasa-timer" id="kasaTimer">--:--:--</div>
+        <button class="kasa-claim-btn" id="kasaClaimBtn" onclick="watchKasaAd()" disabled>📺 REKLAM İZLE (+2000 OP)</button>
       </div>
-      <div class="kasa-timer" id="kasaTimer">--:--:--</div>
-      <button class="kasa-claim-btn" id="kasaClaimBtn" onclick="watchKasaAd()" disabled>📺 REKLAM İZLE (+2000 OP)</button>
-    </div>
-    <div class="task-card">
-      <div class="task-title">📌 Kasa Bilgisi</div>
-      <div style="font-size: 12px; color: #aaa; line-height: 1.6; margin-top: 8px;">
-        <div>• Kasa 5 saatte bir dolar</div>
-        <div>• Ödüllü reklamı izle → 2.000 OP kazan</div>
-        <div>• Bazen ekstra nakit (5-10 kuruş) verir</div>
-        <div>• Her 5 saatte tekrar dolabilir</div>
+      <div class="task-card">
+        <div class="task-title">📌 Kasa Bilgisi</div>
+        <div style="font-size: 12px; color: #aaa; line-height: 1.6; margin-top: 8px;">
+          <div>• Kasa 5 saatte bir dolar</div>
+          <div>• Ödüllü reklamı izle → 2.000 OP kazan</div>
+          <div>• Bazen ekstra nakit (5-10 kuruş) verir</div>
+          <div>• Her 5 saatte tekrar dolabilir</div>
+        </div>
       </div>
     </div>
+    
+    <!-- BAKİYE TAB -->
+    <div class="tab-content" id="tabContentBakiye">
+      <div class="wallet-dual">
+        <div class="wallet-half">
+          <div class="label">🎮 OYUN PARASI</div>
+          <div class="val op" id="walletOP">0</div>
+        </div>
+        <div class="wallet-half">
+          <div class="label">💵 NAKİT</div>
+          <div class="val tl" id="walletTL">0.00 ₺</div>
+        </div>
+      </div>
+      <div class="convert-box">
+        <h3>🔄 OP → TL Çevrim</h3>
+        <div class="rate">📌 100.000 OP = 1 TL</div>
+        <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">Oyun paranı nakde çevir, 100 TL'ye ulaşınca çek!</div>
+        <input type="number" class="convert-input" id="convertAmount" placeholder="Çevrilecek OP miktarı" min="100000" step="10000">
+        <button class="task-btn" style="width: 100%; margin-top: 8px;" onclick="convertToCash()">💱 ÇEVİR</button>
+      </div>
+    </div>
+    
+    <!-- ÇEKİM TAB -->
+    <div class="tab-content" id="tabContentCekim">
+      <div class="task-card">
+        <div class="task-title">💸 Para Çek (min 100 TL)</div>
+        <div style="font-size: 11px; color: #aaa; margin: 6px 0;">100 TL'ye ulaşınca çekebilirsin</div>
+        <select id="withdrawMethod" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
+          <option value="iban">🏦 IBAN</option>
+          <option value="payeer">💳 Payeer</option>
+        </select>
+        <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
+        <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 100₺)" min="100" step="1" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
+        <button class="task-btn" style="width: 100%;" onclick="requestWithdraw()">ÇEKİM TALEBİ OLUŞTUR</button>
+      </div>
+      <div class="task-card">
+        <div class="task-title">📜 Çekim Geçmişi</div>
+        <div id="withdrawHistory" style="font-size: 12px; color: #aaa; margin-top: 8px;">Henüz çekim yok</div>
+      </div>
+    </div>
+    
   </div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
+<!-- ==================== PROFİL (İSTATİSTİK + GÖREV + BAŞARIM) ==================== -->
 <div id="profileScreen" class="modal-screen">
   <h2>👤 PROFİL</h2>
   <div class="modal-content">
+    
     <div class="task-card" style="text-align: center;">
       <div class="profile-avatar" id="profileAvatar" onclick="showAvatarPicker()">🏎️</div>
       <div style="font-size: 11px; color: #aaa;">Avatar değiştirmek için tıkla</div>
@@ -196,30 +268,48 @@
       <div class="task-title">Avatar Seç</div>
       <div class="avatar-grid" id="avatarGrid"></div>
     </div>
-    <div class="task-card">
-      <div class="task-title">📊 İstatistikler</div>
-      <div class="stat-row"><span class="label">Toplam Mesafe</span><span class="value" id="statDistance">0 m</span></div>
-      <div class="stat-row"><span class="label">Toplam Kaza</span><span class="value" id="statCrashes">0</span></div>
-      <div class="stat-row"><span class="label">Toplam Kazanç (OP)</span><span class="value" id="statEarned">0</span></div>
-      <div class="stat-row"><span class="label">Kazanılan Nakit</span><span class="value" id="statTL">0.00 ₺</span></div>
-      <div class="stat-row"><span class="label">En İyi Mesafe</span><span class="value" id="statBest">0 m</span></div>
-      <div class="stat-row"><span class="label">Oynanan Oyun</span><span class="value" id="statGames">0</span></div>
-      <div class="stat-row"><span class="label">İzlenen Reklam</span><span class="value" id="statAds">0</span></div>
+    
+    <div class="tabs">
+      <button class="tab-btn active" id="tabStats" onclick="switchProfileTab('stats')">📊 İstatistik</button>
+      <button class="tab-btn" id="tabQuests" onclick="switchProfileTab('quests')">🎯 Görevler</button>
+      <button class="tab-btn" id="tabAch" onclick="switchProfileTab('ach')">🏆 Başarımlar</button>
     </div>
-    <div class="task-card">
-      <div class="task-title">🏆 Açılan Başarımlar</div>
-      <div id="unlockedAchievements" style="font-size: 28px; text-align: center; margin-top: 10px;">🔒</div>
+    
+    <!-- İSTATİSTİK TAB -->
+    <div class="tab-content active" id="tabContentStats">
+      <div class="task-card">
+        <div class="stat-row"><span class="label">Toplam Mesafe</span><span class="value" id="statDistance">0 m</span></div>
+        <div class="stat-row"><span class="label">Toplam Kaza</span><span class="value" id="statCrashes">0</span></div>
+        <div class="stat-row"><span class="label">Toplam Kazanç (OP)</span><span class="value" id="statEarned">0</span></div>
+        <div class="stat-row"><span class="label">Kazanılan Nakit</span><span class="value" id="statTL">0.00 ₺</span></div>
+        <div class="stat-row"><span class="label">En İyi Mesafe</span><span class="value" id="statBest">0 m</span></div>
+        <div class="stat-row"><span class="label">Oynanan Oyun</span><span class="value" id="statGames">0</span></div>
+        <div class="stat-row"><span class="label">İzlenen Reklam</span><span class="value" id="statAds">0</span></div>
+      </div>
     </div>
+    
+    <!-- GÖREV TAB -->
+    <div class="tab-content" id="tabContentQuests">
+      <div id="questsList"></div>
+    </div>
+    
+    <!-- BAŞARIM TAB -->
+    <div class="tab-content" id="tabContentAch">
+      <div id="achievementsList"></div>
+    </div>
+    
   </div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
+<!-- ==================== GARAJ ==================== -->
 <div id="garageScreen" class="modal-screen">
   <h2>🚗 GARAJ</h2>
   <div class="modal-content" id="garageList"></div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
+<!-- ==================== SİGORTA ==================== -->
 <div id="insuranceScreen" class="modal-screen">
   <h2>🛡️ SİGORTA</h2>
   <div class="modal-content" id="insuranceList"></div>
@@ -227,57 +317,7 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<div id="questsScreen" class="modal-screen">
-  <h2>🎯 GÜNLÜK GÖREVLER</h2>
-  <div class="modal-content" id="questsList"></div>
-  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
-</div>
-
-<div id="achievementsScreen" class="modal-screen">
-  <h2>🏆 BAŞARIMLAR</h2>
-  <div class="modal-content" id="achievementsList"></div>
-  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
-</div>
-
-<div id="walletScreen" class="modal-screen">
-  <h2>💰 CÜZDAN</h2>
-  <div class="modal-content">
-    <div class="wallet-dual">
-      <div class="wallet-half">
-        <div class="label">🎮 OYUN PARASI</div>
-        <div class="val op" id="walletOP">0</div>
-      </div>
-      <div class="wallet-half">
-        <div class="label">💵 NAKİT</div>
-        <div class="val tl" id="walletTL">0.00 ₺</div>
-      </div>
-    </div>
-    <div class="convert-box">
-      <h3>🔄 OP → TL Çevrim</h3>
-      <div class="rate">📌 100.000 OP = 1 TL</div>
-      <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">Oyun paranı nakde çevir, 100 TL'ye ulaşınca çek!</div>
-      <input type="number" class="convert-input" id="convertAmount" placeholder="Çevrilecek OP miktarı" min="100000" step="10000">
-      <button class="task-btn" style="width: 100%; margin-top: 8px;" onclick="convertToCash()">💱 ÇEVİR</button>
-    </div>
-    <div class="task-card">
-      <div class="task-title">💸 Para Çek (min 100 TL)</div>
-      <div style="font-size: 11px; color: #aaa; margin: 6px 0;">100 TL'ye ulaşınca çekebilirsin</div>
-      <select id="withdrawMethod" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
-        <option value="iban">🏦 IBAN</option>
-        <option value="payeer">💳 Payeer</option>
-      </select>
-      <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
-      <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 100₺)" min="100" step="1" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
-      <button class="task-btn" style="width: 100%;" onclick="requestWithdraw()">ÇEKİM TALEBİ OLUŞTUR</button>
-    </div>
-    <div class="task-card">
-      <div class="task-title">📜 Çekim Geçmişi</div>
-      <div id="withdrawHistory" style="font-size: 12px; color: #aaa; margin-top: 8px;">Henüz çekim yok</div>
-    </div>
-  </div>
-  <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
-</div>
-
+<!-- ==================== AYARLAR ==================== -->
 <div id="settingsScreen" class="modal-screen">
   <h2>⚙️ AYARLAR</h2>
   <div class="modal-content">
@@ -320,6 +360,7 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
+<!-- ==================== HUD ==================== -->
 <div id="hud" style="display:none;">
   <div>🎮 <span class="op" id="moneyHud">0</span> OP</div>
   <div>💵 <span class="tl" id="cashHud">0.00</span> ₺</div>
@@ -334,6 +375,7 @@
   <button class="game-icon-btn" onclick="pauseGame()" title="Duraklat">⏸️</button>
 </div>
 
+<!-- ==================== DURAKLATMA ==================== -->
 <div id="pauseScreen">
   <h1>⏸️ DURAKLATILDI</h1>
   <button class="pause-btn btn-resume" onclick="resumeGame()">▶️ DEVAM ET</button>
@@ -341,6 +383,7 @@
   <button class="pause-btn btn-home" onclick="goHomeFromGame()">🏠 ANA MENÜ</button>
 </div>
 
+<!-- ==================== OYUN SONU ==================== -->
 <div id="gameOver">
   <h1>💥 KAZA!</h1>
   <p>Kazanılan: <span id="earned">0</span> OP</p>
@@ -379,187 +422,81 @@ const OP_TO_TL_RATE = 100000;
 const MIN_WITHDRAW_TL = 100;
 const KASA_COOLDOWN_MS = 5 * 60 * 60 * 1000;
 const KASA_REWARD_OP = 2000;
-const AD_REWARD_OP = 500;
 const DAILY_AD_LIMIT = 15;
 
 // ==================== ÇOKLU DİL ====================
-const TRANSLATIONS = {
-  tr: {
-    home_title: "🏎️ TRAFFIC RACER", home_subtitle: "Kaza yapmadan ilerle, para kazan!",
-    play: "🎮 OYNAMAYA BAŞLA", kasa: "🎁 KASA", garage: "🚗 GARAJ", wallet: "💰 CÜZDAN",
-    quests: "🎯 GÖREVLER", achievements: "🏆 BAŞARIMLAR", profile: "👤 PROFİL",
-    settings: "⚙️ AYARLAR", fullscreen: "⛶ TAM EKRAN", kasa_title: "🎁 GÜNLÜK KASA",
-    kasa_ready: "🎁 KASA DOLDU!", kasa_waiting: "⏳ Kasa Doluyor...",
-    lang_changed: "🌍 Dil değiştirildi", avatar_changed: "Avatar değiştirildi!",
-    ins_used: "🛡️ Sigorta kullanıldı! Para kesilmedi."
-  },
-  en: {
-    home_title: "🏎️ TRAFFIC RACER", home_subtitle: "Race without crashing, earn rewards!",
-    play: "🎮 START GAME", kasa: "🎁 CHEST", garage: "🚗 GARAGE", wallet: "💰 WALLET",
-    quests: "🎯 QUESTS", achievements: "🏆 ACHIEVEMENTS", profile: "👤 PROFILE",
-    settings: "⚙️ SETTINGS", fullscreen: "⛶ FULLSCREEN", kasa_title: "🎁 DAILY CHEST",
-    kasa_ready: "🎁 CHEST READY!", kasa_waiting: "⏳ Chest Filling...",
-    lang_changed: "🌍 Language changed", avatar_changed: "Avatar changed!",
-    ins_used: "🛡️ Insurance used! No penalty."
-  },
-  ru: {
-    home_title: "🏎️ TRAFFIC RACER", home_subtitle: "Гоняй без аварий, зарабатывай!",
-    play: "🎮 НАЧАТЬ ИГРУ", kasa: "🎁 СУНДУК", garage: "🚗 ГАРАЖ", wallet: "💰 КОШЕЛЁК",
-    quests: "🎯 ЗАДАНИЯ", achievements: "🏆 ДОСТИЖЕНИЯ", profile: "👤 ПРОФИЛЬ",
-    settings: "⚙️ НАСТРОЙКИ", fullscreen: "⛶ ПОЛНЫЙ ЭКРАН", kasa_title: "🎁 ЕЖЕДНЕВНЫЙ СУНДУК",
-    kasa_ready: "🎁 СУНДУК ГОТОВ!", kasa_waiting: "⏳ Заполняется...",
-    lang_changed: "🌍 Язык изменён", avatar_changed: "Аватар изменён!",
-    ins_used: "🛡️ Страховка использована!"
-  }
-};
-function getLanguage() { const s = localStorage.getItem('trafficRacerLang'); if (s && TRANSLATIONS[s]) return s; const bl = (navigator.language || 'tr').slice(0, 2).toLowerCase(); return TRANSLATIONS[bl] ? bl : 'tr'; }
+let currentLang = (function() { const s = localStorage.getItem('trafficRacerLang'); if (s) return s; const bl = (navigator.language || 'tr').slice(0,2).toLowerCase(); return ['tr','en','ru'].includes(bl) ? bl : 'tr'; })();
 function saveLanguage(l) { localStorage.setItem('trafficRacerLang', l); }
-let currentLang = getLanguage();
-function t(key) { return TRANSLATIONS[currentLang][key] || TRANSLATIONS.tr[key] || key; }
-function applyTranslations() {
-  const el = document.getElementById('t_home_title'); if (el) el.textContent = t('home_title');
-  const el2 = document.getElementById('t_home_subtitle'); if (el2) el2.textContent = t('home_subtitle');
-  const btnMap = { playBtn:'play', kasaBtn:'kasa', garageBtn:'garage', walletBtn:'wallet', questsBtn:'quests', achievementsBtn:'achievements', profileBtn:'profile', settingsBtn:'settings', fullscreenBtn:'fullscreen' };
-  Object.keys(btnMap).forEach(id => { const el = document.getElementById(id); if (el) { const badge = el.querySelector('.kasa-badge'); el.textContent = t(btnMap[id]); if (badge) el.appendChild(badge); } });
-  const kt = document.getElementById('t_kasa_title'); if (kt) kt.textContent = t('kasa_title');
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  const lm = { tr: 'langTR', en: 'langEN', ru: 'langRU' };
-  const a = document.getElementById(lm[currentLang]); if (a) a.classList.add('active');
-}
-window.setLanguage = function(lang) { if (!TRANSLATIONS[lang]) return; currentLang = lang; saveLanguage(lang); applyTranslations(); showToast(t('lang_changed'), 'info'); try { renderQuests(); renderAchievements(); renderGarage(); renderInsurance(); renderProfile(); renderWallet(); updateKasaUI(); } catch(e){} };
+function t(k) { return k; } // Basitleştirildi
 
 // ==================== AYARLAR ====================
-function getSettings() { const d = localStorage.getItem('trafficRacerSettings'); if (d) return JSON.parse(d); return { masterEnabled: true, masterVolume: 100, musicEnabled: true, musicVolume: 20, engineEnabled: true, engineVolume: 30, sfxEnabled: true, sfxVolume: 60 }; }
+function getSettings() { const d = localStorage.getItem('trafficRacerSettings'); if (d) { try { return JSON.parse(d); } catch(e) {} } return { masterEnabled: true, masterVolume: 100, musicEnabled: true, musicVolume: 20, engineEnabled: true, engineVolume: 30, sfxEnabled: true, sfxVolume: 60 }; }
 function saveSettings(s) { localStorage.setItem('trafficRacerSettings', JSON.stringify(s)); }
 let settings = getSettings();
 
-// ==================== ÇİFT CÜZDAN ====================
-function getWallet() { const d = localStorage.getItem('trafficRacerWallet'); if (d) return JSON.parse(d); return { op: 0, tl: 0, pending: 0, history: [], totalOPEarned: 0, totalTLEarned: 0 }; }
-function saveWallet(w) { localStorage.setItem('trafficRacerWallet', JSON.stringify(w)); }
-function addOP(amount) { const w = getWallet(); w.op += amount; w.totalOPEarned += amount; saveWallet(w); updateHUD(); }
-function addTL(amount) { const w = getWallet(); w.tl += amount; w.totalTLEarned += amount; saveWallet(w); updateHUD(); }
-function spendOP(amount) { const w = getWallet(); if (w.op < amount) return false; w.op -= amount; saveWallet(w); updateHUD(); return true; }
-function spendTL(amount) { const w = getWallet(); if (w.tl < amount) return false; w.tl -= amount; saveWallet(w); updateHUD(); return true; }
-function updateHUD() { const w = getWallet(); const opEl = document.getElementById('moneyHud'); if (opEl) opEl.textContent = Math.floor(w.op); const tlEl = document.getElementById('cashHud'); if (tlEl) tlEl.textContent = w.tl.toFixed(2); }
+// ==================== CÜZDAN (SAFE) ====================
+function getWallet() { try { const d = localStorage.getItem('trafficRacerWallet'); if (d) { const p = JSON.parse(d); return { op: Number(p.op)||0, tl: Number(p.tl)||0, pending: Number(p.pending)||0, history: Array.isArray(p.history)?p.history:[], totalOPEarned: Number(p.totalOPEarned)||0, totalTLEarned: Number(p.totalTLEarned)||0 }; } } catch(e) { console.error('getWallet error:', e); } return { op: 0, tl: 0, pending: 0, history: [], totalOPEarned: 0, totalTLEarned: 0 }; }
+function saveWallet(w) { try { localStorage.setItem('trafficRacerWallet', JSON.stringify(w)); } catch(e) {} }
+function addOP(amount) { try { const w = getWallet(); w.op = Number(w.op||0) + Number(amount||0); w.totalOPEarned = Number(w.totalOPEarned||0) + Number(amount||0); saveWallet(w); updateHUD(); } catch(e) { console.error('addOP:', e); } }
+function addTL(amount) { try { const w = getWallet(); w.tl = Number(w.tl||0) + Number(amount||0); w.totalTLEarned = Number(w.totalTLEarned||0) + Number(amount||0); saveWallet(w); updateHUD(); } catch(e) { console.error('addTL:', e); } }
+function spendOP(amount) { try { const w = getWallet(); if (w.op < amount) return false; w.op -= amount; saveWallet(w); updateHUD(); return true; } catch(e) { return false; } }
+function spendTL(amount) { try { const w = getWallet(); if (w.tl < amount) return false; w.tl -= amount; saveWallet(w); updateHUD(); return true; } catch(e) { return false; } }
+function updateHUD() { try { const w = getWallet(); const opEl = document.getElementById('moneyHud'); if (opEl) opEl.textContent = Math.floor(w.op||0); const tlEl = document.getElementById('cashHud'); if (tlEl) tlEl.textContent = (w.tl||0).toFixed(2); } catch(e) {} }
 
-// ==================== KASA ====================
-function getKasaState() {
-  const d = localStorage.getItem('trafficRacerKasa');
-  if (d) return JSON.parse(d);
-  const firstReady = Date.now() + KASA_COOLDOWN_MS;
-  const s = { readyAt: firstReady };
-  localStorage.setItem('trafficRacerKasa', JSON.stringify(s));
-  return s;
-}
-function saveKasaState(k) { localStorage.setItem('trafficRacerKasa', JSON.stringify(k)); }
-function getKasaRemainingMs() { const k = getKasaState(); return Math.max(0, k.readyAt - Date.now()); }
-function getKasaProgress() { const r = getKasaRemainingMs(); return 1 - (r / KASA_COOLDOWN_MS); }
+// ==================== KASA (SAFE) ====================
+function getKasaState() { try { const d = localStorage.getItem('trafficRacerKasa'); if (d) { const p = JSON.parse(d); if (p && typeof p.readyAt === 'number') return p; } } catch(e) {} const firstReady = Date.now() + KASA_COOLDOWN_MS; const s = { readyAt: firstReady }; try { localStorage.setItem('trafficRacerKasa', JSON.stringify(s)); } catch(e) {} return s; }
+function saveKasaState(k) { try { localStorage.setItem('trafficRacerKasa', JSON.stringify(k)); } catch(e) {} }
+function getKasaRemainingMs() { const k = getKasaState(); return Math.max(0, (k.readyAt||0) - Date.now()); }
+function getKasaProgress() { const r = getKasaRemainingMs(); return Math.max(0, Math.min(1, 1 - (r / KASA_COOLDOWN_MS))); }
 function isKasaReady() { return getKasaRemainingMs() === 0; }
 function formatKasaTime(ms) { const s = Math.floor(ms/1000); const h = Math.floor(s/3600); const m = Math.floor((s%3600)/60); const sc = s%60; return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0'); }
 
 function updateKasaUI() {
-  const timerEl = document.getElementById('kasaTimer');
-  const btnEl = document.getElementById('kasaClaimBtn');
-  const titleEl = document.getElementById('kasaTitle');
-  const iconEl = document.getElementById('kasaIcon');
-  const badge = document.getElementById('kasaBadge');
-  const pBar = document.getElementById('kasaProgressBar');
-  const pText = document.getElementById('kasaProgressText');
-  if (!timerEl || !btnEl) return;
-  const progress = getKasaProgress();
-  if (pBar) pBar.style.width = Math.min(100, progress * 100).toFixed(1) + '%';
-  if (pText) pText.textContent = (progress * 100).toFixed(0) + '%';
-  if (isKasaReady()) {
-    iconEl.textContent = '🎉';
-    titleEl.textContent = t('kasa_ready');
-    titleEl.style.color = '#FFD700';
-    timerEl.textContent = 'DOLDU!';
-    timerEl.style.color = '#4CAF50';
-    btnEl.disabled = false;
-    btnEl.textContent = '📺 REKLAM İZLE (+2000 OP)';
-    if (badge) badge.style.display = 'flex';
-  } else {
-    iconEl.textContent = '🎁';
-    titleEl.textContent = t('kasa_waiting');
-    titleEl.style.color = '#aaa';
-    timerEl.textContent = formatKasaTime(getKasaRemainingMs());
-    timerEl.style.color = '#FFD700';
-    btnEl.disabled = true;
-    btnEl.textContent = '⏳ ' + formatKasaTime(getKasaRemainingMs());
-    if (badge) badge.style.display = 'none';
-  }
+  try {
+    const timerEl = document.getElementById('kasaTimer');
+    const btnEl = document.getElementById('kasaClaimBtn');
+    const titleEl = document.getElementById('kasaTitle');
+    const iconEl = document.getElementById('kasaIcon');
+    const badge = document.getElementById('kasaBadge');
+    const pBar = document.getElementById('kasaProgressBar');
+    const pText = document.getElementById('kasaProgressText');
+    const ready = isKasaReady();
+    const progress = getKasaProgress();
+    if (pBar) pBar.style.width = (progress * 100).toFixed(1) + '%';
+    if (pText) pText.textContent = (progress * 100).toFixed(0) + '%';
+    if (ready) {
+      if (iconEl) iconEl.textContent = '🎉';
+      if (titleEl) { titleEl.textContent = '🎁 KASA DOLDU!'; titleEl.style.color = '#FFD700'; }
+      if (timerEl) { timerEl.textContent = 'DOLDU!'; timerEl.style.color = '#4CAF50'; }
+      if (btnEl) { btnEl.disabled = false; btnEl.textContent = '📺 REKLAM İZLE (+2000 OP)'; }
+      if (badge) badge.style.display = 'flex';
+    } else {
+      if (iconEl) iconEl.textContent = '🎁';
+      if (titleEl) { titleEl.textContent = '⏳ Kasa Doluyor...'; titleEl.style.color = '#aaa'; }
+      if (timerEl) { timerEl.textContent = formatKasaTime(getKasaRemainingMs()); timerEl.style.color = '#FFD700'; }
+      if (btnEl) { btnEl.disabled = true; btnEl.textContent = '⏳ ' + formatKasaTime(getKasaRemainingMs()); }
+      if (badge) badge.style.display = 'none';
+    }
+  } catch(e) { console.error('updateKasaUI:', e); }
 }
 
-setInterval(() => {
-  const kasaScreen = document.getElementById('kasaScreen');
-  if (kasaScreen && kasaScreen.style.display === 'flex') updateKasaUI();
-}, 1000);
-setInterval(() => {
-  const badge = document.getElementById('kasaBadge');
-  if (badge) badge.style.display = isKasaReady() ? 'flex' : 'none';
-}, 1000);
-
-window.showKasa = function() {
-  try {
-    updateKasaUI();
-    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-    document.getElementById('homeScreen').style.display = 'none';
-    document.getElementById('kasaScreen').style.display = 'flex';
-  } catch(e) { console.error('showKasa error:', e); showToast('Hata: ' + e.message, 'error'); }
-};
-
-window.watchKasaAd = function() {
-  try {
-    if (!isKasaReady()) { showToast('⏳ ' + formatKasaTime(getKasaRemainingMs()), 'info'); return; }
-    showToast('📺 Reklam oynatılıyor...', 'info');
-    const btn = document.getElementById('kasaClaimBtn');
-    btn.disabled = true;
-    let sec = 10;
-    btn.textContent = '📺 Reklam... ' + sec + 's';
-    const interval = setInterval(() => {
-      sec--;
-      btn.textContent = '📺 Reklam... ' + sec + 's';
-      if (sec <= 0) {
-        clearInterval(interval);
-        addOP(KASA_REWARD_OP);
-        const rand = Math.random();
-        if (rand < 0.10) { addTL(0.10); showToast('🎁 +2000 OP + 0.10 ₺!', 'gold'); }
-        else if (rand < 0.40) { addTL(0.05); showToast('🎁 +2000 OP + 0.05 ₺!', 'gold'); }
-        else { showToast('✅ +2000 OP!', 'gold'); }
-        playSound('coin');
-        const k = getKasaState(); k.readyAt = Date.now() + KASA_COOLDOWN_MS; saveKasaState(k);
-        const stats = getStats(); stats.adsWatched += 1; saveStats(stats);
-        updateKasaUI(); updateWalletUI(); updateHUD();
-      }
-    }, 1000);
-  } catch(e) { console.error('watchKasaAd error:', e); showToast('Hata: ' + e.message, 'error'); }
-};
+setInterval(() => { try { if (document.getElementById('walletScreen').style.display === 'flex') updateKasaUI(); } catch(e){} }, 1000);
+setInterval(() => { try { const b = document.getElementById('kasaBadge'); if (b) b.style.display = isKasaReady() ? 'flex' : 'none'; } catch(e){} }, 1000);
 
 // ==================== İSTATİSTİK ====================
-function getStats() {
-  const d = localStorage.getItem('trafficRacerStats');
-  if (d) return JSON.parse(d);
-  return { totalDistance: 0, totalCrashes: 0, bestDistance: 0, gamesPlayed: 0, adsWatched: 0, carsUsed: [], dailyLoginDate: '', dailyLoginClaimed: false, achievements: {}, quests: { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }, lastQuestResetDate: '', dailyAdsCount: 0, dailyAdsDate: '' };
-}
-function saveStats(s) { localStorage.setItem('trafficRacerStats', JSON.stringify(s)); }
-function checkDailyAdLimit() { const stats = getStats(); const today = new Date().toDateString(); if (stats.dailyAdsDate !== today) { stats.dailyAdsCount = 0; stats.dailyAdsDate = today; saveStats(stats); } return stats.dailyAdsCount < DAILY_AD_LIMIT; }
+function getStats() { try { const d = localStorage.getItem('trafficRacerStats'); if (d) return JSON.parse(d); } catch(e) {} return { totalDistance: 0, totalCrashes: 0, bestDistance: 0, gamesPlayed: 0, adsWatched: 0, carsUsed: [], dailyLoginDate: '', dailyLoginClaimed: false, achievements: {}, quests: { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }, lastQuestResetDate: '', dailyAdsCount: 0, dailyAdsDate: '' }; }
+function saveStats(s) { try { localStorage.setItem('trafficRacerStats', JSON.stringify(s)); } catch(e) {} }
+function checkDailyAdLimit() { const stats = getStats(); const today = new Date().toDateString(); if (stats.dailyAdsDate !== today) { stats.dailyAdsCount = 0; stats.dailyAdsDate = today; saveStats(stats); } return (stats.dailyAdsCount || 0) < DAILY_AD_LIMIT; }
 function incrementDailyAds() { const stats = getStats(); stats.dailyAdsCount = (stats.dailyAdsCount || 0) + 1; saveStats(stats); }
 
 // ==================== TOAST ====================
-function showToast(msg, type = '') {
-  const el = document.getElementById('toast');
-  if (!el) return;
-  el.textContent = msg;
-  el.className = 'show ' + type;
-  clearTimeout(el._timer);
-  el._timer = setTimeout(() => { el.className = ''; }, 2500);
-}
+function showToast(msg, type = '') { try { const el = document.getElementById('toast'); if (!el) return; el.textContent = msg; el.className = 'show ' + (type || ''); clearTimeout(el._timer); el._timer = setTimeout(() => { el.className = ''; }, 2500); } catch(e) {} }
 
 // ==================== SES ====================
 const sounds = { engine: null, crash: null, coin: null, bgmusic: null };
 let audioUnlocked = false;
 function getEffectiveVolume(n) { if (!settings.masterEnabled) return 0; if (n==='engine') return settings.engineEnabled?(settings.engineVolume/100)*(settings.masterVolume/100):0; if (n==='bgmusic') return settings.musicEnabled?(settings.musicVolume/100)*(settings.masterVolume/100):0; return settings.sfxEnabled?(settings.sfxVolume/100)*(settings.masterVolume/100):0; }
-function loadSound(n, p, l=false) { const a = new Audio(); a.src = p; a.loop = l; a.preload='auto'; a.playsInline=true; sounds[n]=a; }
+function loadSound(n, p, l=false) { try { const a = new Audio(); a.src = p; a.loop = l; a.preload='auto'; a.playsInline=true; sounds[n]=a; } catch(e) {} }
 loadSound('engine','sounds/engine.mp3',true);
 loadSound('crash','sounds/crash.mp3',false);
 loadSound('coin','sounds/coin.mp3',false);
@@ -573,35 +510,37 @@ function stopEngine(){if(sounds.engine){try{sounds.engine.pause();}catch(e){}}}
 function updateEngineSpeed(sp){if(!sounds.engine)return;const r=0.8+(sp/3.2)*1.0;try{sounds.engine.playbackRate=Math.max(0.5,Math.min(2.0,r));}catch(e){}}
 function startBgMusic(){const s=sounds.bgmusic;if(!s)return;const v=getEffectiveVolume('bgmusic');if(v<=0){stopBgMusic();return;}try{s.volume=v;if(s.paused){const p=s.play();if(p)p.catch(()=>{});}}catch(e){}}
 function stopBgMusic(){if(sounds.bgmusic){try{sounds.bgmusic.pause();}catch(e){}}}
-function updateAllVolumes(){if(sounds.engine){const v=getEffectiveVolume('engine');sounds.engine.volume=v;if(v<=0)stopEngine();else if(state.running&&!state.paused)startEngine();}if(sounds.bgmusic){const v=getEffectiveVolume('bgmusic');sounds.bgmusic.volume=v;if(v<=0)stopBgMusic();else if(state.running&&!state.paused)startBgMusic();}}
-function updateSettingsUI(){const mv=document.getElementById('masterVal');if(mv)mv.textContent=settings.masterVolume+'%';const mu=document.getElementById('musicVal');if(mu)mu.textContent=settings.musicVolume+'%';const ev=document.getElementById('engineVal');if(ev)ev.textContent=settings.engineVolume+'%';const sv=document.getElementById('sfxVal');if(sv)sv.textContent=settings.sfxVolume+'%';const mt=document.getElementById('masterToggle');if(mt){mt.textContent=settings.masterEnabled?'AÇIK':'KAPALI';mt.className='toggle-btn '+(settings.masterEnabled?'toggle-on':'toggle-off');}const mut=document.getElementById('musicToggle');if(mut){mut.textContent=settings.musicEnabled?'AÇIK':'KAPALI';mut.className='toggle-btn '+(settings.musicEnabled?'toggle-on':'toggle-off');}const et=document.getElementById('engineToggle');if(et){et.textContent=settings.engineEnabled?'AÇIK':'KAPALI';et.className='toggle-btn '+(settings.engineEnabled?'toggle-on':'toggle-off');}const st=document.getElementById('sfxToggle');if(st){st.textContent=settings.sfxEnabled?'AÇIK':'KAPALI';st.className='toggle-btn '+(settings.sfxEnabled?'toggle-on':'toggle-off');}const gsb=document.getElementById('gameSoundBtn');if(gsb)gsb.textContent=settings.masterEnabled?'🔊':'🔇';}
+function updateAllVolumes(){try{if(sounds.engine){const v=getEffectiveVolume('engine');sounds.engine.volume=v;if(v<=0)stopEngine();else if(state.running&&!state.paused)startEngine();}if(sounds.bgmusic){const v=getEffectiveVolume('bgmusic');sounds.bgmusic.volume=v;if(v<=0)stopBgMusic();else if(state.running&&!state.paused)startBgMusic();}}catch(e){}}
+function updateSettingsUI(){try{const mv=document.getElementById('masterVal');if(mv)mv.textContent=settings.masterVolume+'%';const mu=document.getElementById('musicVal');if(mu)mu.textContent=settings.musicVolume+'%';const ev=document.getElementById('engineVal');if(ev)ev.textContent=settings.engineVolume+'%';const sv=document.getElementById('sfxVal');if(sv)sv.textContent=settings.sfxVolume+'%';const mt=document.getElementById('masterToggle');if(mt){mt.textContent=settings.masterEnabled?'AÇIK':'KAPALI';mt.className='toggle-btn '+(settings.masterEnabled?'toggle-on':'toggle-off');}const mut=document.getElementById('musicToggle');if(mut){mut.textContent=settings.musicEnabled?'AÇIK':'KAPALI';mut.className='toggle-btn '+(settings.musicEnabled?'toggle-on':'toggle-off');}const et=document.getElementById('engineToggle');if(et){et.textContent=settings.engineEnabled?'AÇIK':'KAPALI';et.className='toggle-btn '+(settings.engineEnabled?'toggle-on':'toggle-off');}const st=document.getElementById('sfxToggle');if(st){st.textContent=settings.sfxEnabled?'AÇIK':'KAPALI';st.className='toggle-btn '+(settings.sfxEnabled?'toggle-on':'toggle-off');}const gsb=document.getElementById('gameSoundBtn');if(gsb)gsb.textContent=settings.masterEnabled?'🔊':'🔇';}catch(e){}}
 document.addEventListener('input', e => {
-  if (e.target.id === 'masterVol') { settings.masterVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-  if (e.target.id === 'musicVol') { settings.musicVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-  if (e.target.id === 'engineVol') { settings.engineVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-  if (e.target.id === 'sfxVol') { settings.sfxVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
+  try {
+    if (e.target.id === 'masterVol') { settings.masterVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
+    if (e.target.id === 'musicVol') { settings.musicVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
+    if (e.target.id === 'engineVol') { settings.engineVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
+    if (e.target.id === 'sfxVol') { settings.sfxVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
+  } catch(e) {}
 });
-window.toggleMaster = function() { settings.masterEnabled = !settings.masterEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); if (!settings.masterEnabled) { stopEngine(); stopBgMusic(); } showToast(settings.masterEnabled ? '🔊' : '🔇', 'info'); };
+window.toggleMaster = function() { try { settings.masterEnabled = !settings.masterEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); if (!settings.masterEnabled) { stopEngine(); stopBgMusic(); } showToast(settings.masterEnabled ? '🔊' : '🔇', 'info'); } catch(e) {} };
 window.toggleMusic = function() { settings.musicEnabled = !settings.musicEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
 window.toggleEngine = function() { settings.engineEnabled = !settings.engineEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
 window.toggleSfx = function() { settings.sfxEnabled = !settings.sfxEnabled; saveSettings(settings); updateSettingsUI(); };
 window.toggleMasterFromGame = function() { toggleMaster(); };
-window.testSound = function(name) { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); try { s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
-
-window.toggleFullscreen = function() { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } };
+window.testSound = function(name) { try { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
+window.setLanguage = function(lang) { try { if (!['tr','en','ru'].includes(lang)) return; currentLang = lang; saveLanguage(lang); showToast('🌍 Dil: ' + lang.toUpperCase(), 'info'); } catch(e) {} };
+window.toggleFullscreen = function() { try { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) {} };
 
 // ==================== ARAÇLAR ====================
 const CARS = {
-  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, desc: 'Dengeli yarış arabası' },
-  'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18, desc: 'Hızlı ve çevik' },
-  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, desc: 'Ekonomik ve stabil' },
-  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150000, speed: 3.0, handling: 0.12, desc: 'Güçlü ve hızlı' },
-  'truck': { name: 'Truck', icon: '🚚', price: 300000, speed: 3.2, handling: 0.10, desc: 'Maksimum hız, ağır kontrol' }
+  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15 },
+  'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18 },
+  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16 },
+  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150000, speed: 3.0, handling: 0.12 },
+  'truck': { name: 'Truck', icon: '🚚', price: 300000, speed: 3.2, handling: 0.10 }
 };
-function getGarage() { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); return { owned: ['race-future'], selected: 'race-future' }; }
-function saveGarage(g) { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); }
+function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race-future'], selected: 'race-future' }; }
+function saveGarage(g) { try { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); } catch(e) {} }
 
-const MAPS = { city: { name: '🏙️ Şehir', icon: '🏙️', bonus: 1.0 }, highway: { name: '🛣️ Otoban', icon: '🛣️', bonus: 1.1 }, mountain: { name: '⛰️ Dağ Yolu', icon: '⛰️', bonus: 1.3 } };
+const MAPS = { city: { name: '🏙️ Şehir', bonus: 1.0 }, highway: { name: '🛣️ Otoban', bonus: 1.1 }, mountain: { name: '⛰️ Dağ', bonus: 1.3 } };
 const AVATARS = ['🏎️','🚗','🚓','🚕','🚙','🚚','🏁','🏆','👑','⭐','🔥','⚡','🎯','💎','🚀','🐎'];
 function getAvatar() { return localStorage.getItem('trafficRacerAvatar') || '🏎️'; }
 function saveAvatar(a) { localStorage.setItem('trafficRacerAvatar', a); }
@@ -611,139 +550,82 @@ const INSURANCE_PLANS = {
   'basic': { name: 'Temel Sigorta', price: 5, crashes: 1, desc: '1 kaza bedava (5 TL)' },
   'premium': { name: 'Premium Sigorta', price: 20, crashes: 5, desc: '5 kaza bedava (20 TL)' }
 };
-function getInsurance() { const d = localStorage.getItem('trafficRacerInsurance'); if (d) return JSON.parse(d); return { plan: 'none', remaining: 0 }; }
-function saveInsurance(i) { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); }
+function getInsurance() { try { const d = localStorage.getItem('trafficRacerInsurance'); if (d) return JSON.parse(d); } catch(e) {} return { plan: 'none', remaining: 0 }; }
+function saveInsurance(i) { try { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); } catch(e) {} }
+
+// ==================== SEKME YÖNETİMİ ====================
+window.switchWalletTab = function(tab) {
+  try {
+    ['Kasa','Bakiye','Cekim'].forEach(x => {
+      const btn = document.getElementById('tab' + x);
+      const content = document.getElementById('tabContent' + x);
+      if (btn) btn.classList.remove('active');
+      if (content) content.classList.remove('active');
+    });
+    const map = { kasa: 'Kasa', bakiye: 'Bakiye', cekim: 'Cekim' };
+    const btn = document.getElementById('tab' + map[tab]);
+    const content = document.getElementById('tabContent' + map[tab]);
+    if (btn) btn.classList.add('active');
+    if (content) content.classList.add('active');
+    if (tab === 'kasa') updateKasaUI();
+    if (tab === 'bakiye') renderWallet();
+  } catch(e) { console.error('switchWalletTab:', e); }
+};
+
+window.switchProfileTab = function(tab) {
+  try {
+    ['Stats','Quests','Ach'].forEach(x => {
+      const btn = document.getElementById('tab' + x);
+      const content = document.getElementById('tabContent' + x);
+      if (btn) btn.classList.remove('active');
+      if (content) content.classList.remove('active');
+    });
+    const map = { stats: 'Stats', quests: 'Quests', ach: 'Ach' };
+    const btn = document.getElementById('tab' + map[tab]);
+    const content = document.getElementById('tabContent' + map[tab]);
+    if (btn) btn.classList.add('active');
+    if (content) content.classList.add('active');
+    if (tab === 'stats') renderProfile();
+    if (tab === 'quests') renderQuests();
+    if (tab === 'ach') renderAchievements();
+  } catch(e) { console.error('switchProfileTab:', e); }
+};
 
 // ==================== PROFİL ====================
-window.showProfile = function() { 
-  try {
-    renderProfile(); 
-    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-    document.getElementById('homeScreen').style.display='none'; 
-    document.getElementById('profileScreen').style.display='flex'; 
-  } catch(e) { console.error('Profile error:', e); showToast('Hata: ' + e.message, 'error'); }
-};
-window.renderProfile = function() {
-  try {
-    const stats = getStats(); const w = getWallet();
-    document.getElementById('profileAvatar').textContent = getAvatar();
-    document.getElementById('statDistance').textContent = Math.floor(stats.totalDistance) + ' m';
-    document.getElementById('statCrashes').textContent = stats.totalCrashes;
-    document.getElementById('statEarned').textContent = Math.floor(w.totalOPEarned).toLocaleString();
-    document.getElementById('statTL').textContent = w.totalTLEarned.toFixed(2) + ' ₺';
-    document.getElementById('statBest').textContent = Math.floor(stats.bestDistance) + ' m';
-    document.getElementById('statGames').textContent = stats.gamesPlayed;
-    document.getElementById('statAds').textContent = stats.adsWatched;
-    let ae = [];
-    if (stats.achievements.first1000) ae.push('🥇');
-    if (stats.achievements.noCrash5000) ae.push('🛡️');
-    if (stats.achievements.total10000) ae.push('🏁');
-    document.getElementById('unlockedAchievements').textContent = ae.length > 0 ? ae.join(' ') : '🔒';
-  } catch(e) { console.error('renderProfile error:', e); }
-};
-window.showAvatarPicker = function() { const p = document.getElementById('avatarPicker'); const g = document.getElementById('avatarGrid'); if (p.style.display === 'none') { p.style.display='block'; const c = getAvatar(); g.innerHTML = AVATARS.map(a => `<div class="avatar-item ${a===c?'selected':''}" onclick="selectAvatar('${a}')">${a}</div>`).join(''); } else { p.style.display='none'; } };
-window.selectAvatar = function(a) { saveAvatar(a); renderProfile(); showToast(t('avatar_changed') + ' ' + a, 'info'); };
+window.showProfile = function() { try { renderProfile(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('profileScreen').style.display='flex'; } catch(e) { console.error(e); } };
+window.renderProfile = function() { try { const stats = getStats(); const w = getWallet(); const pa = document.getElementById('profileAvatar'); if (pa) pa.textContent = getAvatar(); const sd = document.getElementById('statDistance'); if (sd) sd.textContent = Math.floor(stats.totalDistance||0) + ' m'; const sc = document.getElementById('statCrashes'); if (sc) sc.textContent = stats.totalCrashes||0; const se = document.getElementById('statEarned'); if (se) se.textContent = Math.floor(w.totalOPEarned||0).toLocaleString(); const st = document.getElementById('statTL'); if (st) st.textContent = (w.totalTLEarned||0).toFixed(2) + ' ₺'; const sb = document.getElementById('statBest'); if (sb) sb.textContent = Math.floor(stats.bestDistance||0) + ' m'; const sg = document.getElementById('statGames'); if (sg) sg.textContent = stats.gamesPlayed||0; const sa = document.getElementById('statAds'); if (sa) sa.textContent = stats.adsWatched||0; } catch(e) { console.error('renderProfile:', e); } };
+window.showAvatarPicker = function() { try { const p = document.getElementById('avatarPicker'); const g = document.getElementById('avatarGrid'); if (p.style.display === 'none') { p.style.display='block'; const c = getAvatar(); g.innerHTML = AVATARS.map(a => `<div class="avatar-item ${a===c?'selected':''}" onclick="selectAvatar('${a}')">${a}</div>`).join(''); } else { p.style.display='none'; } } catch(e) {} };
+window.selectAvatar = function(a) { saveAvatar(a); renderProfile(); showToast('Avatar: ' + a, 'info'); };
 
 // ==================== CÜZDAN ====================
-window.renderWallet = function() {
-  try {
-    const w = getWallet();
-    const opEl = document.getElementById('walletOP'); if (opEl) opEl.textContent = Math.floor(w.op).toLocaleString();
-    const tlEl = document.getElementById('walletTL'); if (tlEl) tlEl.textContent = w.tl.toFixed(2) + ' ₺';
-    const h = document.getElementById('withdrawHistory');
-    if (h) {
-      if (w.history.length === 0) h.textContent = 'Henüz çekim yok';
-      else h.innerHTML = w.history.slice(-5).reverse().map(x => `<div style="padding:6px 0; border-bottom:1px solid #333;">${x.method === 'iban' ? '🏦' : '💳'} ${x.amount.toFixed(2)} ₺ — ${new Date(x.date).toLocaleDateString('tr-TR')} <span style="color:${x.status==='pending'?'#FF9800':'#4CAF50'}">${x.status==='pending'?'Beklemede':'Ödendi'}</span></div>`).join('');
-    }
-  } catch(e) { console.error('renderWallet error:', e); }
-};
-window.showWallet = function() { 
-  try {
-    updateWalletUI(); 
-    renderWallet(); 
-    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-    document.getElementById('homeScreen').style.display='none'; 
-    document.getElementById('walletScreen').style.display='flex'; 
-  } catch(e) { console.error('Wallet error:', e); showToast('Hata: ' + e.message, 'error'); }
-};
+window.renderWallet = function() { try { const w = getWallet(); const opEl = document.getElementById('walletOP'); if (opEl) opEl.textContent = Math.floor(w.op||0).toLocaleString(); const tlEl = document.getElementById('walletTL'); if (tlEl) tlEl.textContent = (w.tl||0).toFixed(2) + ' ₺'; const h = document.getElementById('withdrawHistory'); if (h) { if (!w.history || w.history.length === 0) h.textContent = 'Henüz çekim yok'; else h.innerHTML = w.history.slice(-5).reverse().map(x => `<div style="padding:6px 0; border-bottom:1px solid #333;">${x.method === 'iban' ? '🏦' : '💳'} ${(x.amount||0).toFixed(2)} ₺ — ${new Date(x.date).toLocaleDateString('tr-TR')} <span style="color:${x.status==='pending'?'#FF9800':'#4CAF50'}">${x.status==='pending'?'Beklemede':'Ödendi'}</span></div>`).join(''); } } catch(e) { console.error('renderWallet:', e); } };
+window.showWallet = function() { try { updateKasaUI(); renderWallet(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('walletScreen').style.display='flex'; switchWalletTab('kasa'); } catch(e) { console.error('showWallet:', e); showToast('Hata: ' + e.message, 'error'); } };
 
-window.convertToCash = function() {
-  try {
-    const amount = parseInt(document.getElementById('convertAmount').value);
-    if (isNaN(amount) || amount < OP_TO_TL_RATE) { showToast('⚠️ Minimum ' + OP_TO_TL_RATE.toLocaleString() + ' OP', 'error'); return; }
-    const w = getWallet();
-    if (w.op < amount) { showToast('⚠️ Yetersiz OP', 'error'); return; }
-    const tl = amount / OP_TO_TL_RATE;
-    w.op -= amount; w.tl += tl;
-    saveWallet(w);
-    updateWalletUI(); renderWallet();
-    playSound('coin');
-    showToast('💱 ' + amount.toLocaleString() + ' OP → ' + tl.toFixed(2) + ' TL', 'gold');
-    document.getElementById('convertAmount').value = '';
-  } catch(e) { console.error('convertToCash error:', e); }
-};
+window.convertToCash = function() { try { const amount = parseInt(document.getElementById('convertAmount').value); if (isNaN(amount) || amount < OP_TO_TL_RATE) { showToast('⚠️ Minimum ' + OP_TO_TL_RATE.toLocaleString() + ' OP', 'error'); return; } const w = getWallet(); if (w.op < amount) { showToast('⚠️ Yetersiz OP', 'error'); return; } const tl = amount / OP_TO_TL_RATE; w.op -= amount; w.tl += tl; saveWallet(w); updateHUD(); renderWallet(); playSound('coin'); showToast('💱 ' + amount.toLocaleString() + ' OP → ' + tl.toFixed(2) + ' TL', 'gold'); document.getElementById('convertAmount').value = ''; } catch(e) { console.error(e); } };
 
-window.requestWithdraw = async function() {
-  try {
-    const method = document.getElementById('withdrawMethod').value;
-    const account = document.getElementById('withdrawAccount').value.trim();
-    const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (!account) { alert('⚠️ Hesap bilgisi gerekli'); return; }
-    if (isNaN(amount) || amount < MIN_WITHDRAW_TL) { alert('⚠️ Minimum çekim 100 TL'); return; }
-    const w = getWallet();
-    if (amount > w.tl) { alert('⚠️ Yetersiz nakit'); return; }
-    w.tl -= amount; w.pending += amount;
-    w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
-    saveWallet(w);
-    try { await fetch('/api/notify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() }) }); } catch(e){}
-    alert('✅ Çekim talebiniz alındı!');
-    renderWallet(); updateWalletUI();
-    document.getElementById('withdrawAccount').value = '';
-    document.getElementById('withdrawAmount').value = '';
-  } catch(e) { console.error('requestWithdraw error:', e); }
-};
+window.requestWithdraw = async function() { try { const method = document.getElementById('withdrawMethod').value; const account = document.getElementById('withdrawAccount').value.trim(); const amount = parseFloat(document.getElementById('withdrawAmount').value); if (!account) { alert('⚠️ Hesap bilgisi gerekli'); return; } if (isNaN(amount) || amount < MIN_WITHDRAW_TL) { alert('⚠️ Minimum çekim 100 TL'); return; } const w = getWallet(); if (amount > w.tl) { alert('⚠️ Yetersiz nakit'); return; } w.tl -= amount; w.pending += amount; w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' }); saveWallet(w); try { await fetch('/api/notify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() }) }); } catch(e){} alert('✅ Çekim talebiniz alındı!'); renderWallet(); updateHUD(); document.getElementById('withdrawAccount').value = ''; document.getElementById('withdrawAmount').value = ''; } catch(e) { console.error(e); } };
 
-function updateWalletUI() {
-  const w = getWallet();
-  const el1 = document.getElementById('walletBalance'); if (el1) el1.textContent = w.tl.toFixed(2);
-  const el2 = document.getElementById('walletPending'); if (el2) el2.textContent = w.pending.toFixed(2);
-  updateHUD();
-}
+window.showGarage = function() { try { renderGarage(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('garageScreen').style.display='flex'; } catch(e) {} };
+window.showInsurance = function() { try { renderInsurance(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('insuranceScreen').style.display='flex'; } catch(e) {} };
+window.showSettings = function() { try { updateSettingsUI(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('settingsScreen').style.display='flex'; } catch(e) {} };
 
 // ==================== GÖREV VE BAŞARIM ====================
-function resetDailyQuestsIfNeeded() { const stats = getStats(); const today = new Date().toDateString(); if (stats.lastQuestResetDate !== today) { stats.quests = { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }; stats.lastQuestResetDate = today; stats.carsUsed = []; saveStats(stats); } }
-function checkDailyLogin() { const stats = getStats(); const today = new Date().toDateString(); if (stats.dailyLoginDate !== today) { const dp = document.getElementById('dailyPopup'); if (dp) dp.style.display = 'flex'; } }
+function resetDailyQuestsIfNeeded() { try { const stats = getStats(); const today = new Date().toDateString(); if (stats.lastQuestResetDate !== today) { stats.quests = { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }; stats.lastQuestResetDate = today; stats.carsUsed = []; saveStats(stats); } } catch(e) {} }
+function checkDailyLogin() { try { const stats = getStats(); const today = new Date().toDateString(); if (stats.dailyLoginDate !== today) { const dp = document.getElementById('dailyPopup'); if (dp) dp.style.display = 'flex'; } } catch(e) {} }
 window.claimDailyReward = function() { try { const stats = getStats(); stats.dailyLoginDate = new Date().toDateString(); stats.dailyLoginClaimed = true; saveStats(stats); addOP(500); playSound('coin'); document.getElementById('dailyPopup').style.display = 'none'; showToast('🎁 +500 OP', 'gold'); } catch(e) {} };
-function checkAchievements() { const stats = getStats(); let ne = []; if (stats.bestDistance >= 1000 && !stats.achievements.first1000) { stats.achievements.first1000 = true; addOP(5000); ne.push('🏆 +5000 OP'); } if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) { stats.achievements.noCrash5000 = true; addOP(20000); ne.push('🏆 +20000 OP'); } if (stats.totalDistance >= 10000 && !stats.achievements.total10000) { stats.achievements.total10000 = true; addOP(10000); ne.push('🏆 +10000 OP'); } saveStats(stats); ne.forEach((m,i) => setTimeout(() => { showToast(m, 'gold'); playSound('coin'); }, i * 1500)); }
-window.claimQuest = function(qk) { const stats = getStats(); const q = stats.quests[qk]; if (!q || q.claimed) return; const rw = { distance5000: 3000, ads5: 2000, cars3: 1500 }; const req = { distance5000: 5000, ads5: 5, cars3: 3 }; if (q.progress < req[qk]) { showToast('❌', 'info'); return; } q.claimed = true; saveStats(stats); addOP(rw[qk]); playSound('coin'); showToast('✅ +' + rw[qk] + ' OP', 'gold'); renderQuests(); };
-window.renderQuests = function() { try { const stats = getStats(); const list = document.getElementById('questsList'); const qs = [{ key:'distance5000', title:'📏 5000m', max:5000, reward:3000 }, { key:'ads5', title:'📺 5 reklam', max:5, reward:2000 }, { key:'cars3', title:'🚗 3 araba', max:3, reward:1500 }]; list.innerHTML = qs.map(q => { const quest = stats.quests[q.key] || { progress:0, claimed:false }; const p = Math.min(quest.progress, q.max); const pc = (p/q.max)*100; const isC = p >= q.max; const isCl = quest.claimed; return `<div class="task-card ${isCl?'claimed':(isC?'completed':'')}"><div class="task-title">${q.title}</div><div class="task-progress"><div class="task-progress-bar" style="width: ${pc}%"></div></div><div class="task-reward">💰 ${q.reward} OP (${p}/${q.max})</div><button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isC||isCl)?'disabled':''}>${isCl?'✅':(isC?'🎁':'...')}</button></div>`; }).join(''); } catch(e) { console.error(e); } };
-window.renderAchievements = function() { try { const stats = getStats(); const list = document.getElementById('achievementsList'); const achs = [{ key:'first1000', title:'🥇 1000m', reward:5000 }, { key:'noCrash5000', title:'🛡️ 5000m kazasız', reward:20000 }, { key:'total10000', title:'🏁 10.000m', reward:10000 }]; list.innerHTML = achs.map(a => { const u = stats.achievements[a.key]; return `<div class="task-card ${u?'completed':''}"><div class="task-title">${a.title}</div><div class="task-reward">💰 ${a.reward} OP</div><div style="margin-top:6px;font-size:12px;color:${u?'#4CAF50':'#888'}">${u?'✅':'🔒'}</div></div>`; }).join(''); } catch(e) { console.error(e); } };
+function checkAchievements() { try { const stats = getStats(); let ne = []; if (stats.bestDistance >= 1000 && !stats.achievements.first1000) { stats.achievements.first1000 = true; addOP(5000); ne.push('🏆 +5000 OP'); } if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) { stats.achievements.noCrash5000 = true; addOP(20000); ne.push('🏆 +20000 OP'); } if (stats.totalDistance >= 10000 && !stats.achievements.total10000) { stats.achievements.total10000 = true; addOP(10000); ne.push('🏆 +10000 OP'); } saveStats(stats); ne.forEach((m,i) => setTimeout(() => { showToast(m, 'gold'); playSound('coin'); }, i * 1500)); } catch(e) {} }
+window.claimQuest = function(qk) { try { const stats = getStats(); const q = stats.quests[qk]; if (!q || q.claimed) return; const rw = { distance5000: 3000, ads5: 2000, cars3: 1500 }; const req = { distance5000: 5000, ads5: 5, cars3: 3 }; if (q.progress < req[qk]) { showToast('❌', 'info'); return; } q.claimed = true; saveStats(stats); addOP(rw[qk]); playSound('coin'); showToast('✅ +' + rw[qk] + ' OP', 'gold'); renderQuests(); } catch(e) {} };
+window.renderQuests = function() { try { const stats = getStats(); const list = document.getElementById('questsList'); if (!list) return; const qs = [{ key:'distance5000', title:'📏 5000m', max:5000, reward:3000 }, { key:'ads5', title:'📺 5 reklam', max:5, reward:2000 }, { key:'cars3', title:'🚗 3 araba', max:3, reward:1500 }]; list.innerHTML = qs.map(q => { const quest = stats.quests[q.key] || { progress:0, claimed:false }; const p = Math.min(quest.progress||0, q.max); const pc = (p/q.max)*100; const isC = p >= q.max; const isCl = quest.claimed; return `<div class="task-card ${isCl?'claimed':(isC?'completed':'')}"><div class="task-title">${q.title}</div><div class="task-progress"><div class="task-progress-bar" style="width: ${pc}%"></div></div><div class="task-reward">💰 ${q.reward} OP (${p}/${q.max})</div><button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isC||isCl)?'disabled':''}>${isCl?'✅':(isC?'🎁':'...')}</button></div>`; }).join(''); } catch(e) { console.error(e); } };
+window.renderAchievements = function() { try { const stats = getStats(); const list = document.getElementById('achievementsList'); if (!list) return; const achs = [{ key:'first1000', title:'🥇 1000m', reward:5000 }, { key:'noCrash5000', title:'🛡️ 5000m kazasız', reward:20000 }, { key:'total10000', title:'🏁 10.000m', reward:10000 }]; list.innerHTML = achs.map(a => { const u = stats.achievements[a.key]; return `<div class="task-card ${u?'completed':''}"><div class="task-title">${a.title}</div><div class="task-reward">💰 ${a.reward} OP</div><div style="margin-top:6px;font-size:12px;color:${u?'#4CAF50':'#888'}">${u?'✅':'🔒'}</div></div>`; }).join(''); } catch(e) {} };
 
 // ==================== GARAJ ====================
-window.renderGarage = function() {
-  try {
-    const garage = getGarage(); const list = document.getElementById('garageList');
-    list.innerHTML = Object.keys(CARS).map(key => {
-      const car = CARS[key]; const owned = garage.owned.includes(key); const selected = garage.selected === key;
-      let actionBtn = selected ? '<button class="car-action selected">✅</button>' : (owned ? `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>` : `<button class="car-action buy" onclick="buyCar('${key}')">AL</button>`);
-      return `<div class="car-card ${selected?'selected':(owned?'owned':'')}"><div class="car-icon">${car.icon}</div><div class="car-info"><div class="car-name">${car.name}</div><div class="car-stats">⚡ ${car.speed} | 🎯 ${(car.handling*100).toFixed(0)}%</div>${!owned?`<div class="car-price">🎮 ${car.price.toLocaleString()} OP</div>`:''}</div>${actionBtn}</div>`;
-    }).join('');
-  } catch(e) { console.error(e); }
-};
-window.buyCar = function(key) { try { const car = CARS[key]; const g = getGarage(); if (g.owned.includes(key)) return; if (!spendOP(car.price)) { showToast('❌ ' + car.price.toLocaleString() + ' OP gerekli', 'error'); return; } g.owned.push(key); saveGarage(g); playSound('coin'); showToast('✅ ' + car.name, 'gold'); renderGarage(); } catch(e) { console.error(e); } };
-window.selectCar = function(key) { try { const g = getGarage(); if (!g.owned.includes(key)) return; g.selected = key; saveGarage(g); loadPlayerCar(key); state.playerCar = key; showToast('🚗 ' + CARS[key].name, 'info'); renderGarage(); } catch(e) { console.error(e); } };
+window.renderGarage = function() { try { const garage = getGarage(); const list = document.getElementById('garageList'); if (!list) return; list.innerHTML = Object.keys(CARS).map(key => { const car = CARS[key]; const owned = garage.owned.includes(key); const selected = garage.selected === key; let actionBtn = selected ? '<button class="car-action selected">✅</button>' : (owned ? `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>` : `<button class="car-action buy" onclick="buyCar('${key}')">AL</button>`); return `<div class="car-card ${selected?'selected':(owned?'owned':'')}"><div class="car-icon">${car.icon}</div><div class="car-info"><div class="car-name">${car.name}</div><div class="car-stats">⚡ ${car.speed} | 🎯 ${(car.handling*100).toFixed(0)}%</div>${!owned?`<div class="car-price">🎮 ${car.price.toLocaleString()} OP</div>`:''}</div>${actionBtn}</div>`; }).join(''); } catch(e) {} };
+window.buyCar = function(key) { try { const car = CARS[key]; const g = getGarage(); if (g.owned.includes(key)) return; if (!spendOP(car.price)) { showToast('❌ ' + car.price.toLocaleString() + ' OP gerekli', 'error'); return; } g.owned.push(key); saveGarage(g); playSound('coin'); showToast('✅ ' + car.name, 'gold'); renderGarage(); } catch(e) {} };
+window.selectCar = function(key) { try { const g = getGarage(); if (!g.owned.includes(key)) return; g.selected = key; saveGarage(g); loadPlayerCar(key); state.playerCar = key; showToast('🚗 ' + CARS[key].name, 'info'); renderGarage(); } catch(e) {} };
 
 // ==================== SİGORTA ====================
-window.renderInsurance = function() {
-  try {
-    const ins = getInsurance(); const list = document.getElementById('insuranceList');
-    let html = '';
-    if (ins.remaining > 0) html += `<div class="insurance-card active"><h3>🛡️</h3><div style="font-size:36px;margin:8px 0;">${ins.remaining}</div></div>`;
-    html += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => { const p = INSURANCE_PLANS[key]; return `<div class="insurance-card"><h3>${p.name}</h3><div class="price">${p.price} ₺</div><div class="desc">${p.desc}</div><button class="task-btn" style="width:100%" onclick="buyInsurance('${key}')">AL</button></div>`; }).join('');
-    list.innerHTML = html;
-  } catch(e) { console.error(e); }
-};
-window.buyInsurance = function(planKey) { try { const p = INSURANCE_PLANS[planKey]; if (!p || p.price === 0) return; if (!spendTL(p.price)) { showToast('❌ ' + p.price + ' ₺ gerekli', 'error'); return; } const ins = getInsurance(); ins.plan = planKey; ins.remaining = p.crashes; saveInsurance(ins); playSound('coin'); showToast('✅ ' + p.name, 'gold'); renderInsurance(); } catch(e) { console.error(e); } };
+window.renderInsurance = function() { try { const ins = getInsurance(); const list = document.getElementById('insuranceList'); if (!list) return; let html = ''; if (ins.remaining > 0) html += `<div class="insurance-card active"><h3>🛡️ Aktif</h3><div style="font-size:36px;margin:8px 0;">${ins.remaining}</div><div class="desc">Kalan kaza hakkın</div></div>`; html += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => { const p = INSURANCE_PLANS[key]; return `<div class="insurance-card"><h3>${p.name}</h3><div class="price">${p.price} ₺</div><div class="desc">${p.desc}</div><button class="task-btn" style="width:100%" onclick="buyInsurance('${key}')">AL</button></div>`; }).join(''); list.innerHTML = html; } catch(e) {} };
+window.buyInsurance = function(planKey) { try { const p = INSURANCE_PLANS[planKey]; if (!p || p.price === 0) return; if (!spendTL(p.price)) { showToast('❌ ' + p.price + ' ₺ gerekli', 'error'); return; } const ins = getInsurance(); ins.plan = planKey; ins.remaining = p.crashes; saveInsurance(ins); playSound('coin'); showToast('✅ ' + p.name, 'gold'); renderInsurance(); } catch(e) {} };
 
 // ==================== SAHNE ====================
 const scene = new THREE.Scene();
@@ -758,7 +640,6 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.0;
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
@@ -827,7 +708,7 @@ function createFallbackCar(c) { const g = new THREE.Group(); g.userData.isFallba
 const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race-future', handling: 0.15, baseMaxSpeed: 2.8, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0 };
 const CAR_SCALE = 1.4; const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
 let player = createFallbackCar(0x00cc44); player.position.set(0,0,4); scene.add(player);
-function loadPlayerCar(k) { const c = CARS[k]||CARS['race-future']; const mm = { 'race-future':'models/race-future.glb', 'police':'models/police.glb', 'taxi':'models/taxi.glb', 'suv-luxury':'models/suv-luxury.glb', 'truck':'models/truck.glb' }; const p = mm[k]||'models/race-future.glb'; loadCarModel(p, 0x00cc44).then(m => { scene.remove(player); m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); m.rotation.y = Math.PI; m.position.set(0,0,4); scene.add(m); player = m; state.modelLoaded = true; state.baseMaxSpeed = c.speed; state.handling = c.handling; }); }
+function loadPlayerCar(k) { try { const c = CARS[k]||CARS['race-future']; const mm = { 'race-future':'models/race-future.glb', 'police':'models/police.glb', 'taxi':'models/taxi.glb', 'suv-luxury':'models/suv-luxury.glb', 'truck':'models/truck.glb' }; const p = mm[k]||'models/race-future.glb'; loadCarModel(p, 0x00cc44).then(m => { scene.remove(player); m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); m.rotation.y = Math.PI; m.position.set(0,0,4); scene.add(m); player = m; state.modelLoaded = true; state.baseMaxSpeed = c.speed; state.handling = c.handling; }); } catch(e) {} }
 loadPlayerCar('race-future');
 
 document.addEventListener('keydown', e => {
@@ -842,14 +723,14 @@ document.addEventListener('touchstart', e => { const tg = e.target; if (tg.tagNa
 
 const carColors = [0xe74c3c,0x3498db,0x9b59b6,0xe67e22,0x1abc9c,0xf39c12,0x34495e];
 const enemyModels = ['models/sedan.glb','models/suv.glb','models/taxi.glb','models/van.glb'];
-async function spawnEnemyCar() { const l = Math.floor(Math.random()*3)-1; const m = enemyModels[Math.floor(Math.random()*enemyModels.length)]; const fc = carColors[Math.floor(Math.random()*carColors.length)]; const c = await loadCarModel(m, fc); c.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); c.rotation.y = Math.PI; c.position.set(LANES[l+1],0,-150); scene.add(c); state.cars.push(c); }
+async function spawnEnemyCar() { try { const l = Math.floor(Math.random()*3)-1; const m = enemyModels[Math.floor(Math.random()*enemyModels.length)]; const fc = carColors[Math.floor(Math.random()*carColors.length)]; const c = await loadCarModel(m, fc); c.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); c.rotation.y = Math.PI; c.position.set(LANES[l+1],0,-150); scene.add(c); state.cars.push(c); } catch(e) {} }
 
 function OPPerMeter() { let b = 1; if (state.distance >= 5000) b = 10; else if (state.distance >= 3000) b = 6; else if (state.distance >= 1500) b = 3; else if (state.distance >= 500) b = 1.5; if (state.weather === 'rain') b *= 1.3; if (state.weather === 'snow') b *= 1.5; if (state.weather === 'fog') b *= 1.4; if (state.timeOfDay === 'night') b *= 1.2; b *= state.mapBonus; return b; }
 function checkCollision(a, b) { return Math.abs(a.position.x - b.position.x) < 1.2 && Math.abs(a.position.z - b.position.z) < 2.8; }
 function randomizeWeatherAndTime() { const ws = ['sunny','sunny','sunny','sunny','sunny','rain','rain','snow','fog']; state.weather = ws[Math.floor(Math.random()*ws.length)]; const ts = ['day','day','day','night','night','sunset']; state.timeOfDay = ts[Math.floor(Math.random()*ts.length)]; applyWeather(); applyTimeOfDay(); updateWeatherBadge(); }
 function applyWeather() { rainParticles.visible = false; snowParticles.visible = false; fogLayer.material.opacity = 0; scene.fog.near = 90; scene.fog.far = 350; if (state.weather === 'sunny') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); state.sliding = 0; } else if (state.weather === 'rain') { scene.background = new THREE.Color(0x555566); scene.fog.color = new THREE.Color(0x555566); scene.fog.near = 40; scene.fog.far = 200; rainParticles.visible = true; state.sliding = 0.4; } else if (state.weather === 'snow') { scene.background = new THREE.Color(0xccccdd); scene.fog.color = new THREE.Color(0xccccdd); scene.fog.near = 50; scene.fog.far = 250; snowParticles.visible = true; state.sliding = 0.6; } else if (state.weather === 'fog') { scene.background = new THREE.Color(0xcccccc); scene.fog.color = new THREE.Color(0xcccccc); scene.fog.near = 15; scene.fog.far = 100; fogLayer.material.opacity = 0.4; state.sliding = 0.2; } }
 function applyTimeOfDay() { if (state.weather === 'sunny' || state.weather === 'fog') { if (state.timeOfDay === 'day') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; sunLight.color.setHex(0xffffff); sunLight.position.set(15,30,15); } else if (state.timeOfDay === 'sunset') { scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; sunLight.color.setHex(0xffaa66); sunLight.position.set(30,10,15); } else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x0a0a2e); scene.fog.color = new THREE.Color(0x0a0a2e); ambientLight.intensity = 0.35; sunLight.intensity = 0.2; hemiLight.intensity = 0.2; sunLight.color.setHex(0x4466aa); sunLight.position.set(-15,20,15); } } else { if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; } } }
-function updateWeatherBadge() { const b = document.getElementById('weatherBadge'); const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; b.classList.add('visible'); }
+function updateWeatherBadge() { const b = document.getElementById('weatherBadge'); if (!b) return; const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; b.classList.add('visible'); }
 
 // ==================== DÖNGÜ ====================
 let lastTime = performance.now(); let animationRunning = false;
@@ -899,10 +780,10 @@ function animate() {
 function startAnimationLoop() { if (!animationRunning) { animationRunning = true; lastTime = performance.now(); animate(); } }
 
 // ==================== OYUN KONTROL ====================
-window.pauseGame = function() { if (!state.running || state.paused) return; state.paused = true; document.getElementById('pauseScreen').style.display = 'flex'; document.getElementById('gameButtons').classList.remove('visible'); stopEngine(); stopBgMusic(); };
-window.resumeGame = function() { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); startEngine(); startBgMusic(); lastTime = performance.now(); };
-window.restartFromPause = function() { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; resetGameState(); state.running = true; document.getElementById('gameButtons').classList.add('visible'); randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); };
-window.goHomeFromGame = function() { try { if (state.money > 0) { addOP(state.money); const s = getStats(); s.totalDistance += state.distance; if (state.distance > s.bestDistance) s.bestDistance = state.distance; saveStats(s); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameOver').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); renderer.domElement.style.display = 'none'; document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateWalletUI(); updateKasaUI(); } catch(e) { console.error(e); } };
+window.pauseGame = function() { try { if (!state.running || state.paused) return; state.paused = true; document.getElementById('pauseScreen').style.display = 'flex'; document.getElementById('gameButtons').classList.remove('visible'); stopEngine(); stopBgMusic(); } catch(e) {} };
+window.resumeGame = function() { try { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); startEngine(); startBgMusic(); lastTime = performance.now(); } catch(e) {} };
+window.restartFromPause = function() { try { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; resetGameState(); state.running = true; document.getElementById('gameButtons').classList.add('visible'); randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); } catch(e) { console.error(e); } };
+window.goHomeFromGame = function() { try { if (state.money > 0) { addOP(state.money); const s = getStats(); s.totalDistance += state.distance; if (state.distance > s.bestDistance) s.bestDistance = state.distance; saveStats(s); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameOver').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); renderer.domElement.style.display = 'none'; document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateHUD(); updateKasaUI(); } catch(e) { console.error(e); } };
 
 let penaltyAmount = 0;
 function endGame() {
@@ -916,19 +797,23 @@ function endGame() {
     stats.totalCrashes += 1;
     stats.gamesPlayed += 1;
     if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
-    stats.quests.distance5000.progress += Math.floor(state.distance);
+    if (!stats.quests) stats.quests = {};
+    if (!stats.quests.distance5000) stats.quests.distance5000 = { progress: 0, claimed: false };
+    stats.quests.distance5000.progress = (stats.quests.distance5000.progress||0) + Math.floor(state.distance);
     const ck = getGarage().selected;
+    if (!stats.carsUsed) stats.carsUsed = [];
     if (!stats.carsUsed.includes(ck)) stats.carsUsed.push(ck);
+    if (!stats.quests.cars3) stats.quests.cars3 = { progress: 0, claimed: false };
     stats.quests.cars3.progress = stats.carsUsed.length;
     saveStats(stats);
     checkAchievements();
-    document.getElementById('earned').textContent = Math.floor(state.money);
-    document.getElementById('penalty').textContent = penaltyAmount;
+    const ee = document.getElementById('earned'); if (ee) ee.textContent = Math.floor(state.money);
+    const pe = document.getElementById('penalty'); if (pe) pe.textContent = penaltyAmount;
     const im = document.getElementById('insuranceMsg');
-    if (used) { im.textContent = t('ins_used'); im.style.color = '#4CAF50'; } else { im.textContent = ''; }
+    if (im) { if (used) { im.textContent = '🛡️ Sigorta kullanıldı!'; im.style.color = '#4CAF50'; } else { im.textContent = ''; } }
     document.getElementById('gameOver').style.display = 'flex';
     document.getElementById('gameButtons').classList.remove('visible');
-  } catch(e) { console.error('endGame error:', e); }
+  } catch(e) { console.error('endGame:', e); }
 }
 
 window.watchAd = function() {
@@ -936,24 +821,28 @@ window.watchAd = function() {
     if (!checkDailyAdLimit()) { showToast('⚠️ Günlük reklam limiti (15)', 'error'); return; }
     showToast('📺 Reklam izleniyor...', 'info');
     setTimeout(() => {
-      addOP(Math.floor(state.money / 2));
-      playSound('coin');
-      const stats = getStats();
-      stats.adsWatched += 1;
-      stats.quests.ads5.progress += 1;
-      stats.totalDistance += state.distance;
-      if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
-      saveStats(stats);
-      incrementDailyAds();
-      state.running = true; state.paused = false;
-      document.getElementById('gameOver').style.display = 'none';
-      document.getElementById('gameButtons').classList.add('visible');
-      player.position.x = 0; state.playerLane = 0; state.targetLane = 0;
-      for (let i = state.cars.length - 1; i >= 0; i--) { if (state.cars[i].position.z > player.position.z - 20) { scene.remove(state.cars[i]); state.cars.splice(i, 1); } }
-      startEngine(); startBgMusic(); startAnimationLoop();
-      showToast('✅ +' + Math.floor(state.money/2) + ' OP', 'gold');
+      try {
+        addOP(Math.floor(state.money / 2));
+        playSound('coin');
+        const stats = getStats();
+        stats.adsWatched = (stats.adsWatched||0) + 1;
+        if (!stats.quests) stats.quests = {};
+        if (!stats.quests.ads5) stats.quests.ads5 = { progress: 0, claimed: false };
+        stats.quests.ads5.progress = (stats.quests.ads5.progress||0) + 1;
+        stats.totalDistance += state.distance;
+        if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
+        saveStats(stats);
+        incrementDailyAds();
+        state.running = true; state.paused = false;
+        document.getElementById('gameOver').style.display = 'none';
+        document.getElementById('gameButtons').classList.add('visible');
+        player.position.x = 0; state.playerLane = 0; state.targetLane = 0;
+        for (let i = state.cars.length - 1; i >= 0; i--) { if (state.cars[i].position.z > player.position.z - 20) { scene.remove(state.cars[i]); state.cars.splice(i, 1); } }
+        startEngine(); startBgMusic(); startAnimationLoop();
+        showToast('✅ +' + Math.floor(state.money/2) + ' OP', 'gold');
+      } catch(e) { console.error('watchAd inner:', e); }
     }, 1500);
-  } catch(e) { console.error('watchAd error:', e); showToast('Hata: ' + e.message, 'error'); }
+  } catch(e) { console.error('watchAd:', e); showToast('Hata: ' + e.message, 'error'); }
 };
 
 window.restart = function() {
@@ -970,8 +859,8 @@ window.restart = function() {
     state.running = true; state.paused = false;
     randomizeWeatherAndTime();
     startEngine(); startBgMusic(); startAnimationLoop();
-    updateWalletUI();
-  } catch(e) { console.error('restart error:', e); showToast('Hata: ' + e.message, 'error'); }
+    updateHUD();
+  } catch(e) { console.error('restart:', e); showToast('Hata: ' + e.message, 'error'); }
 };
 
 window.goHome = function() {
@@ -987,40 +876,38 @@ window.goHome = function() {
     document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
     renderer.domElement.style.display = 'none';
     document.getElementById('homeScreen').style.display = 'flex';
-    resetGameState(); updateWalletUI(); checkDailyLogin(); updateKasaUI();
-  } catch(e) { console.error('goHome error:', e); }
+    resetGameState(); updateHUD(); checkDailyLogin(); updateKasaUI();
+  } catch(e) { console.error('goHome:', e); }
 };
 
 window.startGame = function() {
-  unlockAudio();
-  const ins = getInsurance();
-  if (ins.remaining === 0) { showInsurance(); return; }
-  beginGame();
+  try {
+    unlockAudio();
+    const ins = getInsurance();
+    if (ins.remaining === 0) { showInsurance(); return; }
+    beginGame();
+  } catch(e) { console.error('startGame:', e); }
 };
-window.startWithoutInsurance = function() { document.getElementById('insuranceScreen').style.display = 'none'; beginGame(); };
+window.startWithoutInsurance = function() { try { document.getElementById('insuranceScreen').style.display = 'none'; beginGame(); } catch(e) {} };
 window.beginGame = function() {
-  resetGameState();
-  resetDailyQuestsIfNeeded();
-  let mc = 'random';
-  if (mc === 'random') { const ms = ['city','highway','mountain']; mc = ms[Math.floor(Math.random()*ms.length)]; }
-  state.currentMap = mc;
-  state.mapBonus = MAPS[mc].bonus;
-  initScenery(mc);
-  document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-  document.getElementById('homeScreen').style.display = 'none';
-  document.getElementById('hud').style.display = 'block';
-  document.getElementById('gameButtons').classList.add('visible');
-  renderer.domElement.style.display = 'block';
-  state.running = true; state.paused = false; state.gameCrashes = 0;
-  randomizeWeatherAndTime();
-  startEngine(); startBgMusic(); startAnimationLoop();
+  try {
+    resetGameState();
+    resetDailyQuestsIfNeeded();
+    let mc = 'random';
+    if (mc === 'random') { const ms = ['city','highway','mountain']; mc = ms[Math.floor(Math.random()*ms.length)]; }
+    state.currentMap = mc;
+    state.mapBonus = MAPS[mc].bonus;
+    initScenery(mc);
+    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
+    document.getElementById('homeScreen').style.display = 'none';
+    document.getElementById('hud').style.display = 'block';
+    document.getElementById('gameButtons').classList.add('visible');
+    renderer.domElement.style.display = 'block';
+    state.running = true; state.paused = false; state.gameCrashes = 0;
+    randomizeWeatherAndTime();
+    startEngine(); startBgMusic(); startAnimationLoop();
+  } catch(e) { console.error('beginGame:', e); }
 };
-
-window.showGarage = function() { try { renderGarage(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('garageScreen').style.display='flex'; } catch(e) { console.error(e); } };
-window.showInsurance = function() { try { renderInsurance(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('insuranceScreen').style.display='flex'; } catch(e) { console.error(e); } };
-window.showQuests = function() { try { renderQuests(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('questsScreen').style.display='flex'; } catch(e) { console.error(e); } };
-window.showAchievements = function() { try { renderAchievements(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('achievementsScreen').style.display='flex'; } catch(e) { console.error(e); } };
-window.showSettings = function() { try { updateSettingsUI(); applyTranslations(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('settingsScreen').style.display='flex'; } catch(e) { console.error(e); } };
 
 function resetGameState() {
   state.money = 0; state.distance = 0; state.speed = 0.4;
@@ -1043,8 +930,6 @@ window.addEventListener('orientationchange', () => { setTimeout(resizeRenderer, 
 // ==================== BAŞLAT ====================
 resizeRenderer();
 initScenery('city');
-applyTranslations();
-updateWalletUI();
 updateSettingsUI();
 updateKasaUI();
 resetDailyQuestsIfNeeded();
