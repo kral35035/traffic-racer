@@ -9,12 +9,13 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; color: white; user-select: none; -webkit-user-select: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; }
   canvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
-  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 15px; overflow-y: auto; }
-  #homeScreen h1 { font-size: 30px; margin-bottom: 8px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
-  #homeScreen .subtitle { font-size: 12px; color: #aaa; margin-bottom: 18px; text-align: center; }
-  .home-btn { padding: 13px 30px; margin: 5px; font-size: 14px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 270px; max-width: 85vw; box-shadow: 0 6px 20px rgba(0,0,0,0.4); touch-action: manipulation; }
+  #homeScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; padding: 12px; overflow-y: auto; }
+  #homeScreen h1 { font-size: 26px; margin-bottom: 6px; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
+  #homeScreen .subtitle { font-size: 11px; color: #aaa; margin-bottom: 12px; text-align: center; }
+  .home-btn { padding: 11px 28px; margin: 4px; font-size: 13px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 260px; max-width: 85vw; box-shadow: 0 5px 16px rgba(0,0,0,0.4); touch-action: manipulation; }
   .home-btn:active { transform: scale(0.96); }
   #playBtn { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
+  #kasaBtn { background: linear-gradient(135deg, #FFD700, #FF8F00); color: #000; position: relative; }
   #garageBtn { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
   #walletBtn { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   #questsBtn { background: linear-gradient(135deg, #9C27B0, #6A1B9A); color: white; }
@@ -22,101 +23,116 @@
   #profileBtn { background: linear-gradient(135deg, #009688, #00695C); color: white; }
   #settingsBtn { background: linear-gradient(135deg, #607D8B, #37474F); color: white; }
   #fullscreenBtn { background: linear-gradient(135deg, #00BCD4, #0097A7); color: white; }
-  .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 15px; overflow-y: auto; }
-  .modal-screen h2 { font-size: 22px; margin: 15px 0; text-align: center; color: #ffd93d; }
+  .kasa-badge { position: absolute; top: -5px; right: -5px; background: #f44336; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: none; flex-direction: column; z-index: 100; padding: 12px; overflow-y: auto; }
+  .modal-screen h2 { font-size: 20px; margin: 12px 0; text-align: center; color: #ffd93d; }
   .modal-content { max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 40px; }
-  .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.1); }
+  .task-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; margin: 6px 0; border: 1px solid rgba(255,255,255,0.1); }
   .task-card.completed { border-color: #4CAF50; opacity: 0.7; }
   .task-card.claimed { border-color: #666; opacity: 0.5; }
-  .task-title { font-size: 15px; font-weight: bold; color: #fff; margin-bottom: 5px; }
-  .task-desc { font-size: 12px; color: #aaa; margin-bottom: 8px; }
-  .task-reward { font-size: 13px; color: #4CAF50; font-weight: bold; }
-  .task-progress { background: #1a1a2e; height: 8px; border-radius: 4px; overflow: hidden; margin: 6px 0; }
+  .task-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+  .task-desc { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+  .task-reward { font-size: 12px; color: #4CAF50; font-weight: bold; }
+  .task-progress { background: #1a1a2e; height: 7px; border-radius: 4px; overflow: hidden; margin: 5px 0; }
   .task-progress-bar { height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); transition: width 0.3s; }
-  .task-btn { padding: 10px 18px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 6px; touch-action: manipulation; font-size: 14px; }
+  .task-btn { padding: 9px 16px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 7px; font-weight: bold; cursor: pointer; margin-top: 5px; touch-action: manipulation; font-size: 13px; }
   .task-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.5; }
-  .back-btn { padding: 12px 28px; background: #444; color: white; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; margin: 15px auto; display: block; touch-action: manipulation; }
-  .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
+  .back-btn { padding: 10px 24px; background: #444; color: white; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; margin: 12px auto; display: block; touch-action: manipulation; }
+  .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 12px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
   .car-card.owned { border-color: #4CAF50; }
-  .car-card.selected { border-color: #ffd93d; box-shadow: 0 0 20px rgba(255,217,61,0.5); }
-  .car-card .car-icon { font-size: 42px; min-width: 60px; text-align: center; }
+  .car-card.selected { border-color: #ffd93d; box-shadow: 0 0 16px rgba(255,217,61,0.5); }
+  .car-card .car-icon { font-size: 36px; min-width: 50px; text-align: center; }
   .car-card .car-info { flex: 1; }
-  .car-card .car-name { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 4px; }
-  .car-card .car-stats { font-size: 11px; color: #aaa; line-height: 1.4; }
-  .car-card .car-price { font-size: 16px; font-weight: bold; color: #4CAF50; margin-top: 4px; }
-  .car-card .car-action { padding: 8px 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; touch-action: manipulation; }
+  .car-card .car-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 3px; }
+  .car-card .car-stats { font-size: 10px; color: #aaa; line-height: 1.3; }
+  .car-card .car-price { font-size: 14px; font-weight: bold; color: #FFD700; margin-top: 4px; }
+  .car-card .car-action { padding: 7px 12px; border: none; border-radius: 7px; font-weight: bold; cursor: pointer; font-size: 12px; touch-action: manipulation; }
   .car-action.buy { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .car-action.select { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   .car-action.selected { background: linear-gradient(135deg, #ffd93d, #FF6F00); color: #000; }
-  .insurance-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 18px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); text-align: center; }
-  .insurance-card.active { border-color: #4CAF50; box-shadow: 0 0 20px rgba(76,175,80,0.4); }
-  .insurance-card h3 { color: #ffd93d; font-size: 18px; margin-bottom: 8px; }
-  .insurance-card .price { font-size: 32px; font-weight: bold; color: #4CAF50; margin: 10px 0; }
-  .insurance-card .desc { font-size: 13px; color: #aaa; margin-bottom: 10px; }
-  .setting-row { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.1); }
-  .setting-row label { display: block; font-size: 14px; color: #fff; margin-bottom: 10px; font-weight: bold; }
+  .insurance-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); text-align: center; }
+  .insurance-card.active { border-color: #4CAF50; box-shadow: 0 0 16px rgba(76,175,80,0.4); }
+  .insurance-card h3 { color: #ffd93d; font-size: 16px; margin-bottom: 6px; }
+  .insurance-card .price { font-size: 26px; font-weight: bold; color: #4CAF50; margin: 8px 0; }
+  .insurance-card .desc { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+  .setting-row { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; margin: 6px 0; border: 1px solid rgba(255,255,255,0.1); }
+  .setting-row label { display: block; font-size: 13px; color: #fff; margin-bottom: 8px; font-weight: bold; }
   .setting-row .value { color: #4CAF50; font-weight: bold; float: right; }
   .setting-row input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: #1a1a2e; border-radius: 3px; outline: none; }
-  .setting-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #4CAF50; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-  .setting-row input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #4CAF50; cursor: pointer; border: none; }
-  .toggle-btn { padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; touch-action: manipulation; width: 100%; margin-top: 8px; }
+  .setting-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #4CAF50; cursor: pointer; }
+  .toggle-btn { padding: 9px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; font-size: 13px; touch-action: manipulation; width: 100%; margin-top: 6px; }
   .toggle-on { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .toggle-off { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
-  .lang-btn { padding: 12px; margin: 4px; border-radius: 10px; font-weight: bold; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); font-size: 15px; touch-action: manipulation; background: #1a1a2e; color: white; width: 80px; }
+  .lang-btn { padding: 10px; margin: 3px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); font-size: 13px; touch-action: manipulation; background: #1a1a2e; color: white; width: 75px; }
   .lang-btn.active { background: linear-gradient(135deg, #4CAF50, #2e7d32); border-color: #4CAF50; }
-  #hud { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 12px; text-shadow: 2px 2px 6px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; line-height: 1.5; }
+  #hud { position: absolute; top: 8px; left: 8px; color: #fff; font-size: 11px; text-shadow: 2px 2px 5px #000; pointer-events: none; z-index: 10; background: rgba(0,0,0,0.45); padding: 7px 11px; border-radius: 9px; line-height: 1.5; }
+  #hud .op { color: #FFD700; font-weight: bold; }
+  #hud .tl { color: #4CAF50; font-weight: bold; }
   #speed { color: #ffdd00; font-weight: bold; }
-  #moneyHud { color: #4CAF50; font-weight: bold; }
-  #gameButtons { position: absolute; top: 10px; right: 10px; z-index: 50; display: none; gap: 8px; flex-direction: column; }
+  #gameButtons { position: absolute; top: 8px; right: 8px; z-index: 50; display: none; gap: 6px; flex-direction: column; }
   #gameButtons.visible { display: flex; }
-  .game-icon-btn { width: 46px; height: 46px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; padding: 0; line-height: 1; }
-  .game-icon-btn:active { transform: scale(0.9); background: rgba(0,0,0,1); }
+  .game-icon-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; padding: 0; line-height: 1; }
+  .game-icon-btn:active { transform: scale(0.9); }
   #pauseScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px; }
-  #pauseScreen h1 { color: #ffd93d; font-size: 38px; margin-bottom: 25px; }
-  button.pause-btn { padding: 15px 28px; margin: 6px; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
+  #pauseScreen h1 { color: #ffd93d; font-size: 34px; margin-bottom: 20px; }
+  button.pause-btn { padding: 13px 24px; margin: 5px; font-size: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 260px; max-width: 85vw; touch-action: manipulation; }
   .btn-resume { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-home { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart2 { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 20; text-align: center; padding: 20px; }
-  #gameOver h1 { color: #ff4444; font-size: 38px; margin: 10px; }
-  #gameOver p { font-size: 16px; margin: 5px; }
-  button.game-btn { padding: 14px 26px; margin: 6px; font-size: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 280px; max-width: 85vw; touch-action: manipulation; }
+  #gameOver h1 { color: #ff4444; font-size: 34px; margin: 8px; }
+  #gameOver p { font-size: 15px; margin: 4px; }
+  button.game-btn { padding: 12px 22px; margin: 5px; font-size: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 270px; max-width: 85vw; touch-action: manipulation; }
   .btn-ad { background: linear-gradient(135deg, #FF9800, #e65100); color: white; }
   .btn-restart { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .btn-menu { background: #444; color: white; }
   #dailyPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
-  #dailyPopup .popup-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 40px 30px; max-width: 400px; width: 100%; text-align: center; border: 2px solid #ffd93d; box-shadow: 0 0 40px rgba(255,217,61,0.5); }
-  #dailyPopup h1 { font-size: 30px; color: #ffd93d; margin-bottom: 15px; }
-  #dailyPopup .reward-amount { font-size: 48px; font-weight: bold; color: #4CAF50; margin: 20px 0; }
-  #dailyPopup button { padding: 14px 36px; margin-top: 20px; font-size: 17px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
-  #toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 12px 22px; border-radius: 12px; font-weight: bold; font-size: 14px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
+  #dailyPopup .popup-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 20px; padding: 35px 25px; max-width: 380px; width: 100%; text-align: center; border: 2px solid #ffd93d; box-shadow: 0 0 40px rgba(255,217,61,0.5); }
+  #dailyPopup h1 { font-size: 26px; color: #ffd93d; margin-bottom: 12px; }
+  #dailyPopup .reward-amount { font-size: 38px; font-weight: bold; color: #4CAF50; margin: 15px 0; }
+  #dailyPopup button { padding: 12px 30px; margin-top: 15px; font-size: 15px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+  #toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-100px); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold; font-size: 13px; z-index: 500; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 90vw; text-align: center; }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  #toast.gold { background: linear-gradient(135deg, #FFC107, #FF6F00); }
+  #toast.gold { background: linear-gradient(135deg, #FFC107, #FF6F00); color: #000; }
   #toast.info { background: linear-gradient(135deg, #2196F3, #0d47a1); }
   #toast.error { background: linear-gradient(135deg, #f44336, #b71c1c); }
-  #weatherBadge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10; background: rgba(0,0,0,0.5); padding: 6px 14px; border-radius: 20px; font-size: 13px; color: white; pointer-events: none; display: none; }
+  #weatherBadge { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 10; background: rgba(0,0,0,0.55); padding: 5px 12px; border-radius: 18px; font-size: 12px; color: white; pointer-events: none; display: none; }
   #weatherBadge.visible { display: block; }
-  .profile-avatar { font-size: 80px; text-align: center; margin: 15px 0; cursor: pointer; }
-  .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
-  .avatar-item { font-size: 36px; padding: 12px; background: #1a1a2e; border-radius: 10px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+  .profile-avatar { font-size: 70px; text-align: center; margin: 12px 0; cursor: pointer; }
+  .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
+  .avatar-item { font-size: 30px; padding: 10px; background: #1a1a2e; border-radius: 9px; text-align: center; cursor: pointer; border: 2px solid transparent; }
   .avatar-item.selected { border-color: #4CAF50; background: #2d5016; }
-  .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+  .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 13px; }
   .stat-row:last-child { border-bottom: none; }
   .stat-row .label { color: #aaa; }
   .stat-row .value { color: #4CAF50; font-weight: bold; }
-  .map-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 14px; padding: 15px; margin: 10px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .map-card.selected { border-color: #ffd93d; }
-  .map-card .map-icon { font-size: 42px; }
-  .map-card .map-info { flex: 1; }
-  .map-card .map-name { font-size: 16px; font-weight: bold; }
-  .map-card .map-desc { font-size: 12px; color: #aaa; margin-top: 4px; }
+  .kasa-box { background: linear-gradient(135deg, #3d2b00, #1a1a00); border: 3px solid #FFD700; border-radius: 20px; padding: 30px 20px; text-align: center; margin: 15px 0; box-shadow: 0 0 40px rgba(255,215,0,0.4); }
+  .kasa-icon { font-size: 80px; }
+  .kasa-title { font-size: 22px; color: #FFD700; font-weight: bold; margin: 10px 0; }
+  .kasa-status { font-size: 14px; color: #aaa; margin: 10px 0; }
+  .kasa-timer { font-size: 26px; color: #FFD700; font-weight: bold; margin: 12px 0; letter-spacing: 2px; }
+  .kasa-claim-btn { padding: 16px 32px; background: linear-gradient(135deg, #FFD700, #FF8F00); color: #000; border: none; border-radius: 12px; font-size: 17px; font-weight: bold; cursor: pointer; touch-action: manipulation; width: 100%; max-width: 320px; margin-top: 15px; box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
+  .kasa-claim-btn:disabled { background: #555; color: #999; cursor: not-allowed; box-shadow: none; }
+  .wallet-dual { display: flex; gap: 8px; }
+  .wallet-dual .wallet-half { flex: 1; background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; border: 2px solid rgba(255,217,61,0.3); text-align: center; }
+  .wallet-dual .wallet-half .label { font-size: 11px; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
+  .wallet-dual .wallet-half .val { font-size: 26px; font-weight: bold; }
+  .wallet-dual .wallet-half .val.op { color: #FFD700; }
+  .wallet-dual .wallet-half .val.tl { color: #4CAF50; }
+  .convert-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; margin: 10px 0; border: 2px solid rgba(76,175,80,0.3); }
+  .convert-box h3 { color: #FFD700; font-size: 15px; margin-bottom: 10px; }
+  .convert-box .rate { font-size: 13px; color: #aaa; margin-bottom: 10px; }
+  .convert-input { width: 100%; padding: 12px; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px; margin: 5px 0; }
   @media (max-width: 600px) {
-    #homeScreen h1 { font-size: 24px; }
-    .home-btn { font-size: 13px; padding: 12px 25px; }
-    #hud { font-size: 11px; padding: 6px 10px; }
-    #gameOver h1 { font-size: 30px; }
-    #pauseScreen h1 { font-size: 30px; }
-    .game-icon-btn { width: 42px; height: 42px; font-size: 18px; }
+    #homeScreen h1 { font-size: 22px; }
+    .home-btn { font-size: 12px; padding: 10px 22px; }
+    #hud { font-size: 10px; padding: 5px 9px; }
+    #gameOver h1 { font-size: 28px; }
+    #pauseScreen h1 { font-size: 26px; }
+    .game-icon-btn { width: 38px; height: 38px; font-size: 16px; }
+    .kasa-icon { font-size: 60px; }
+    .kasa-timer { font-size: 20px; }
   }
 </style>
 </head>
@@ -126,8 +142,9 @@
   <h1 id="t_home_title">🏎️ TRAFFIC RACER</h1>
   <p class="subtitle" id="t_home_subtitle">Kaza yapmadan ilerle, para kazan!</p>
   <button class="home-btn" id="playBtn" onclick="startGame()" id="t_play">🎮 OYNAMAYA BAŞLA</button>
+  <button class="home-btn" id="kasaBtn" onclick="showKasa()" id="t_kasa">🎁 KASA<span class="kasa-badge" id="kasaBadge" style="display:none;">!</span></button>
   <button class="home-btn" id="garageBtn" onclick="showGarage()" id="t_garage">🚗 GARAJ</button>
-  <button class="home-btn" id="walletBtn" onclick="showWallet()" id="t_wallet">💰 KASAM</button>
+  <button class="home-btn" id="walletBtn" onclick="showWallet()" id="t_wallet">💰 CÜZDAN</button>
   <button class="home-btn" id="questsBtn" onclick="showQuests()" id="t_quests">🎯 GÖREVLER</button>
   <button class="home-btn" id="achievementsBtn" onclick="showAchievements()" id="t_achievements">🏆 BAŞARIMLAR</button>
   <button class="home-btn" id="profileBtn" onclick="showProfile()" id="t_profile">👤 PROFİL</button>
@@ -135,89 +152,123 @@
   <button class="home-btn" id="fullscreenBtn" onclick="toggleFullscreen()" id="t_fullscreen">⛶ TAM EKRAN</button>
 </div>
 
+<div id="kasaScreen" class="modal-screen">
+  <h2 id="t_kasa_title">🎁 GÜNLÜK KASA</h2>
+  <div class="modal-content">
+    <div class="kasa-box" id="kasaBox">
+      <div class="kasa-icon" id="kasaIcon">🎁</div>
+      <div class="kasa-title" id="kasaTitle">Kasa Hazırlanıyor...</div>
+      <div class="kasa-status" id="kasaStatus">5 saatte bir dolar</div>
+      <div class="kasa-timer" id="kasaTimer">--:--:--</div>
+      <button class="kasa-claim-btn" id="kasaClaimBtn" onclick="watchKasaAd()" disabled>📺 REKLAM İZLE (+2000 OP)</button>
+    </div>
+    <div class="task-card">
+      <div class="task-title" id="t_kasa_info">📌 Kasa Bilgisi</div>
+      <div style="font-size: 12px; color: #aaa; line-height: 1.6; margin-top: 8px;">
+        <div id="t_kasa_rule1">• Kasa 5 saatte bir dolar</div>
+        <div id="t_kasa_rule2">• Ödüllü reklamı izle → 2.000 OP kazan</div>
+        <div id="t_kasa_rule3">• Bazen ekstra nakit (5-10 kuruş) verir</div>
+        <div id="t_kasa_rule4">• Her 5 saatte tekrar dolabilir</div>
+      </div>
+    </div>
+  </div>
+  <button class="back-btn" onclick="goHome()" id="t_back_kasa">← Ana Sayfa</button>
+</div>
+
 <div id="profileScreen" class="modal-screen">
   <h2 id="t_profile_title">👤 PROFİL</h2>
   <div class="modal-content">
     <div class="task-card" style="text-align: center;">
       <div class="profile-avatar" id="profileAvatar" onclick="showAvatarPicker()">🏎️</div>
-      <div id="t_tap_to_change" style="font-size: 12px; color: #aaa;">Avatar değiştirmek için tıkla</div>
+      <div id="t_tap_to_change" style="font-size: 11px; color: #aaa;">Avatar değiştirmek için tıkla</div>
     </div>
-    
     <div class="task-card" id="avatarPicker" style="display: none;">
       <div class="task-title" id="t_choose_avatar">Avatar Seç</div>
       <div class="avatar-grid" id="avatarGrid"></div>
     </div>
-    
     <div class="task-card">
       <div class="task-title" id="t_stats">📊 İstatistikler</div>
       <div class="stat-row"><span class="label" id="t_total_distance">Toplam Mesafe</span><span class="value" id="statDistance">0 m</span></div>
       <div class="stat-row"><span class="label" id="t_total_crashes">Toplam Kaza</span><span class="value" id="statCrashes">0</span></div>
-      <div class="stat-row"><span class="label" id="t_total_earned">Toplam Kazanç</span><span class="value" id="statEarned">0 ₺</span></div>
+      <div class="stat-row"><span class="label" id="t_total_earned">Toplam Kazanç (OP)</span><span class="value" id="statEarned">0</span></div>
+      <div class="stat-row"><span class="label" id="t_total_tl">Kazanılan Nakit</span><span class="value" id="statTL">0.00 ₺</span></div>
       <div class="stat-row"><span class="label" id="t_best_distance">En İyi Mesafe</span><span class="value" id="statBest">0 m</span></div>
       <div class="stat-row"><span class="label" id="t_games_played">Oynanan Oyun</span><span class="value" id="statGames">0</span></div>
       <div class="stat-row"><span class="label" id="t_ads_watched">İzlenen Reklam</span><span class="value" id="statAds">0</span></div>
     </div>
-    
     <div class="task-card">
       <div class="task-title" id="t_unlocked_achievements">🏆 Açılan Başarımlar</div>
-      <div id="unlockedAchievements" style="font-size: 30px; text-align: center; margin-top: 10px;">🔒</div>
+      <div id="unlockedAchievements" style="font-size: 28px; text-align: center; margin-top: 10px;">🔒</div>
     </div>
   </div>
-  <button class="back-btn" onclick="goHome()" id="t_back">← Ana Sayfa</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_profile">← Ana Sayfa</button>
 </div>
 
 <div id="garageScreen" class="modal-screen">
   <h2 id="t_garage_title">🚗 GARAJ</h2>
   <div class="modal-content" id="garageList"></div>
-  <button class="back-btn" onclick="goHome()" id="t_back2">← Ana Sayfa</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_garage">← Ana Sayfa</button>
 </div>
 
 <div id="insuranceScreen" class="modal-screen">
   <h2 id="t_insurance_title">🛡️ SİGORTA</h2>
   <div class="modal-content" id="insuranceList"></div>
-  <button class="task-btn" style="width: 280px; max-width: 85vw; margin: 15px auto; display: block; background: linear-gradient(135deg, #FF9800, #e65100); font-size: 16px; padding: 15px;" onclick="startWithoutInsurance()" id="t_continue_no_ins">🚗 SİGORTASIZ DEVAM ET</button>
-  <button class="back-btn" onclick="goHome()" id="t_back3">← Ana Sayfa</button>
+  <button class="task-btn" style="width: 280px; max-width: 85vw; margin: 12px auto; display: block; background: linear-gradient(135deg, #FF9800, #e65100); font-size: 14px; padding: 13px;" onclick="startWithoutInsurance()" id="t_continue_no_ins">🚗 SİGORTASIZ DEVAM ET</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_ins">← Ana Sayfa</button>
 </div>
 
 <div id="questsScreen" class="modal-screen">
   <h2 id="t_quests_title">🎯 GÜNLÜK GÖREVLER</h2>
   <div class="modal-content" id="questsList"></div>
-  <button class="back-btn" onclick="goHome()" id="t_back4">← Ana Sayfa</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_quests">← Ana Sayfa</button>
 </div>
 
 <div id="achievementsScreen" class="modal-screen">
   <h2 id="t_achievements_title">🏆 BAŞARIMLAR</h2>
   <div class="modal-content" id="achievementsList"></div>
-  <button class="back-btn" onclick="goHome()" id="t_back5">← Ana Sayfa</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_ach">← Ana Sayfa</button>
 </div>
 
 <div id="walletScreen" class="modal-screen">
-  <h2 id="t_wallet_title">💰 KASAM</h2>
+  <h2 id="t_wallet_title">💰 CÜZDAN</h2>
   <div class="modal-content">
-    <div class="task-card">
-      <div class="task-title" id="t_balance">Toplam Bakiye</div>
-      <div style="font-size: 38px; font-weight: bold; color: #4CAF50; margin-top: 8px;">
-        <span id="walletBalance">0.00</span> <span style="font-size: 20px; color: #aaa;">₺</span>
+    <div class="wallet-dual">
+      <div class="wallet-half">
+        <div class="label" id="t_op_label">🎮 OYUN PARASI</div>
+        <div class="val op" id="walletOP">0</div>
+      </div>
+      <div class="wallet-half">
+        <div class="label" id="t_tl_label">💵 NAKİT</div>
+        <div class="val tl" id="walletTL">0.00 ₺</div>
       </div>
     </div>
-    <div class="task-card">
-      <div class="task-title" id="t_pending">Çekim Bekleyen</div>
-      <div style="font-size: 28px; font-weight: bold; color: #FF9800; margin-top: 8px;">
-        <span id="walletPending">0.00</span> <span style="font-size: 16px; color: #aaa;">₺</span>
-      </div>
+    
+    <div class="convert-box">
+      <h3 id="t_convert_title">🔄 OP → TL Çevrim</h3>
+      <div class="rate" id="t_convert_rate">📌 100.000 OP = 1 TL</div>
+      <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;" id="t_convert_hint">Oyun paranı nakde çevir, 100 TL'ye ulaşınca çek!</div>
+      <input type="number" class="convert-input" id="convertAmount" placeholder="Çevrilecek OP miktarı" min="100000" step="10000">
+      <button class="task-btn" style="width: 100%; margin-top: 8px;" onclick="convertToCash()" id="t_convert_btn">💱 ÇEVİR</button>
     </div>
+    
     <div class="task-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size: 15px;" id="t_withdraw">💸 Para Çek</h3>
-      <select id="withdrawMethod" style="width: 100%; padding: 12px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px;">
+      <div class="task-title" id="t_withdraw">💸 Para Çek (min 100 TL)</div>
+      <div style="font-size: 11px; color: #aaa; margin: 6px 0;" id="t_withdraw_hint">100 TL'ye ulaşınca çekebilirsin</div>
+      <select id="withdrawMethod" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
         <option value="iban">🏦 IBAN</option>
         <option value="payeer">💳 Payeer</option>
       </select>
-      <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 12px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px;">
-      <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 10₺)" min="10" step="0.01" style="width: 100%; padding: 12px; margin: 6px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px;">
+      <input type="text" id="withdrawAccount" placeholder="IBAN veya Payeer hesabı" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
+      <input type="number" id="withdrawAmount" placeholder="Çekilecek tutar (min 100₺)" min="100" step="1" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
       <button class="task-btn" style="width: 100%;" onclick="requestWithdraw()" id="t_withdraw_btn">ÇEKİM TALEBİ OLUŞTUR</button>
     </div>
+    
+    <div class="task-card">
+      <div class="task-title" id="t_withdraw_history">📜 Çekim Geçmişi</div>
+      <div id="withdrawHistory" style="font-size: 12px; color: #aaa; margin-top: 8px;">Henüz çekim yok</div>
+    </div>
   </div>
-  <button class="back-btn" onclick="goHome()" id="t_back6">← Ana Sayfa</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_wallet">← Ana Sayfa</button>
 </div>
 
 <div id="settingsScreen" class="modal-screen">
@@ -225,7 +276,7 @@
   <div class="modal-content">
     <div class="setting-row">
       <label id="t_language">🌍 Dil / Language</label>
-      <div style="display: flex; justify-content: center; gap: 8px; margin-top: 8px;">
+      <div style="display: flex; justify-content: center; gap: 6px; margin-top: 6px;">
         <button class="lang-btn" id="langTR" onclick="setLanguage('tr')">🇹🇷 TR</button>
         <button class="lang-btn" id="langEN" onclick="setLanguage('en')">🇬🇧 EN</button>
         <button class="lang-btn" id="langRU" onclick="setLanguage('ru')">🇷🇺 RU</button>
@@ -259,11 +310,12 @@
       <button class="task-btn" onclick="testSound('engine')" style="margin: 4px;">🚗</button>
     </div>
   </div>
-  <button class="back-btn" onclick="goHome()" id="t_back7">← Ana Sayfa</button>
+  <button class="back-btn" onclick="goHome()" id="t_back_settings">← Ana Sayfa</button>
 </div>
 
 <div id="hud" style="display:none;">
-  <div>💰 <span id="moneyHud">0.00</span> ₺</div>
+  <div>🎮 <span class="op" id="moneyHud">0</span> OP</div>
+  <div>💵 <span class="tl" id="cashHud">0.00</span> ₺</div>
   <div>📏 <span id="distance">0</span> m</div>
   <div>⚡ <span id="speed">0</span> km/s</div>
 </div>
@@ -284,9 +336,9 @@
 
 <div id="gameOver">
   <h1 id="t_crash">💥 KAZA!</h1>
-  <p><span id="t_earned">Kazanılan</span>: <span id="earned">0</span> ₺</p>
-  <p><span id="t_penalty">Kesilecek</span>: <span id="penalty">0</span> ₺</p>
-  <p id="insuranceMsg" style="color: #4CAF50; font-size: 15px;"></p>
+  <p><span id="t_earned">Kazanılan</span>: <span id="earned">0</span> OP</p>
+  <p><span id="t_penalty">Kesilecek</span>: <span id="penalty">0</span> OP</p>
+  <p id="insuranceMsg" style="color: #4CAF50; font-size: 14px;"></p>
   <button class="game-btn btn-ad" onclick="watchAd()" id="t_watch_ad">📺 Reklam İzle (Kesinti Yok)</button>
   <button class="game-btn btn-restart" onclick="restart()" id="t_restart">🔄 Yeniden Başla</button>
   <button class="game-btn btn-menu" onclick="goHome()" id="t_home">🏠 Ana Menü</button>
@@ -296,7 +348,7 @@
   <div class="popup-box">
     <h1 id="t_daily_reward">🎁 GÜNLÜK ÖDÜL!</h1>
     <p style="color: #aaa;" id="t_daily_desc">Bugün ilk kez giriş yaptın!</p>
-    <div class="reward-amount">+1.00 ₺</div>
+    <div class="reward-amount">+500 OP</div>
     <button onclick="claimDailyReward()" id="t_claim">ÖDÜLÜ AL</button>
   </div>
 </div>
@@ -315,350 +367,292 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ==================== ÇOKLU DİL SİSTEMİ ====================
+// ==================== SABITLER ====================
+const OP_TO_TL_RATE = 100000;      // 100.000 OP = 1 TL
+const MIN_WITHDRAW_TL = 100;        // Minimum çekim 100 TL
+const KASA_COOLDOWN_MS = 5 * 60 * 60 * 1000; // 5 saat
+const KASA_REWARD_OP = 2000;        // Kasa reklamı = 2000 OP
+const AD_REWARD_OP = 500;           // Normal reklam = 500 OP
+const DAILY_AD_LIMIT = 15;          // Günde maksimum 15 reklam
+
+// ==================== ÇOKLU DİL ====================
 const TRANSLATIONS = {
   tr: {
-    home_title: "🏎️ TRAFFIC RACER",
-    home_subtitle: "Kaza yapmadan ilerle, para kazan!",
-    play: "🎮 OYNAMAYA BAŞLA",
-    garage: "🚗 GARAJ",
-    wallet: "💰 KASAM",
-    quests: "🎯 GÖREVLER",
-    achievements: "🏆 BAŞARIMLAR",
-    profile: "👤 PROFİL",
-    settings: "⚙️ AYARLAR",
-    fullscreen: "⛶ TAM EKRAN",
-    profile_title: "👤 PROFİL",
-    tap_to_change: "Avatar değiştirmek için tıkla",
-    choose_avatar: "Avatar Seç",
-    stats: "📊 İstatistikler",
-    total_distance: "Toplam Mesafe",
-    total_crashes: "Toplam Kaza",
-    total_earned: "Toplam Kazanç",
-    best_distance: "En İyi Mesafe",
-    games_played: "Oynanan Oyun",
-    ads_watched: "İzlenen Reklam",
-    unlocked_achievements: "🏆 Açılan Başarımlar",
-    garage_title: "🚗 GARAJ",
-    insurance_title: "🛡️ SİGORTA",
-    continue_no_ins: "🚗 SİGORTASIZ DEVAM ET",
-    quests_title: "🎯 GÜNLÜK GÖREVLER",
-    achievements_title: "🏆 BAŞARIMLAR",
-    wallet_title: "💰 KASAM",
-    balance: "Toplam Bakiye",
-    pending: "Çekim Bekleyen",
-    withdraw: "💸 Para Çek",
-    withdraw_btn: "ÇEKİM TALEBİ OLUŞTUR",
-    settings_title: "⚙️ AYARLAR",
-    language: "🌍 Dil / Language",
-    master_vol: "🔊 Ana Ses",
-    music_vol: "🎵 Müzik",
-    engine_vol: "🚗 Motor Sesi",
-    sfx_vol: "💥 Efekt Sesleri",
-    sound_test: "🔊 Ses Testi",
-    back: "← Ana Sayfa",
-    paused: "⏸️ DURAKLATILDI",
-    resume: "▶️ DEVAM ET",
-    restart_pause: "🔄 YENİDEN BAŞLA",
-    home_pause: "🏠 ANA MENÜ",
-    crash: "💥 KAZA!",
-    earned: "Kazanılan",
-    penalty: "Kesilecek",
-    watch_ad: "📺 Reklam İzle (Kesinti Yok)",
-    restart: "🔄 Yeniden Başla",
-    home: "🏠 Ana Menü",
-    daily_reward: "🎁 GÜNLÜK ÖDÜL!",
-    daily_desc: "Bugün ilk kez giriş yaptın!",
-    claim: "ÖDÜLÜ AL",
-    ins_used: "🛡️ Sigorta kullanıldı! Para kesilmedi.",
-    lang_changed: "🌍 Dil değiştirildi",
-    avatar_changed: "Avatar değiştirildi!"
+    home_title: "🏎️ TRAFFIC RACER", home_subtitle: "Kaza yapmadan ilerle, para kazan!",
+    play: "🎮 OYNAMAYA BAŞLA", kasa: "🎁 KASA", garage: "🚗 GARAJ", wallet: "💰 CÜZDAN",
+    quests: "🎯 GÖREVLER", achievements: "🏆 BAŞARIMLAR", profile: "👤 PROFİL",
+    settings: "⚙️ AYARLAR", fullscreen: "⛶ TAM EKRAN",
+    kasa_title: "🎁 GÜNLÜK KASA", kasa_info: "📌 Kasa Bilgisi",
+    kasa_rule1: "• Kasa 5 saatte bir dolar", kasa_rule2: "• Ödüllü reklamı izle → 2.000 OP",
+    kasa_rule3: "• Bazen ekstra nakit (5-10 kuruş) verir", kasa_rule4: "• Her 5 saatte tekrar dolabilir",
+    profile_title: "👤 PROFİL", tap_to_change: "Avatar değiştirmek için tıkla", choose_avatar: "Avatar Seç",
+    stats: "📊 İstatistikler", total_distance: "Toplam Mesafe", total_crashes: "Toplam Kaza",
+    total_earned: "Toplam Kazanç (OP)", total_tl: "Kazanılan Nakit", best_distance: "En İyi Mesafe",
+    games_played: "Oynanan Oyun", ads_watched: "İzlenen Reklam", unlocked_achievements: "🏆 Açılan Başarımlar",
+    garage_title: "🚗 GARAJ", insurance_title: "🛡️ SİGORTA", continue_no_ins: "🚗 SİGORTASIZ DEVAM ET",
+    quests_title: "🎯 GÜNLÜK GÖREVLER", achievements_title: "🏆 BAŞARIMLAR", wallet_title: "💰 CÜZDAN",
+    op_label: "🎮 OYUN PARASI", tl_label: "💵 NAKİT",
+    convert_title: "🔄 OP → TL Çevrim", convert_rate: "📌 100.000 OP = 1 TL",
+    convert_hint: "Oyun paranı nakde çevir, 100 TL'ye ulaşınca çek!", convert_btn: "💱 ÇEVİR",
+    withdraw: "💸 Para Çek (min 100 TL)", withdraw_hint: "100 TL'ye ulaşınca çekebilirsin",
+    withdraw_btn: "ÇEKİM TALEBİ OLUŞTUR", withdraw_history: "📜 Çekim Geçmişi",
+    settings_title: "⚙️ AYARLAR", language: "🌍 Dil / Language",
+    master_vol: "🔊 Ana Ses", music_vol: "🎵 Müzik", engine_vol: "🚗 Motor Sesi",
+    sfx_vol: "💥 Efekt Sesleri", sound_test: "🔊 Ses Testi",
+    back: "← Ana Sayfa", paused: "⏸️ DURAKLATILDI", resume: "▶️ DEVAM ET",
+    restart_pause: "🔄 YENİDEN BAŞLA", home_pause: "🏠 ANA MENÜ",
+    crash: "💥 KAZA!", earned: "Kazanılan", penalty: "Kesilecek",
+    watch_ad: "📺 Reklam İzle (Kesinti Yok)", restart: "🔄 Yeniden Başla", home: "🏠 Ana Menü",
+    daily_reward: "🎁 GÜNLÜK ÖDÜL!", daily_desc: "Bugün ilk kez giriş yaptın!", claim: "ÖDÜLÜ AL",
+    ins_used: "🛡️ Sigorta kullanıldı! Para kesilmedi.", lang_changed: "🌍 Dil değiştirildi",
+    avatar_changed: "Avatar değiştirildi!", kasa_ready: "🎁 KASA DOLDU!", kasa_waiting: "⏳ Kasa Doluyor...",
+    kasa_claimed: "✅ Kasa alındı! +2000 OP", op_converted: "💱 {op} OP → {tl} TL",
+    withdraw_min: "⚠️ Minimum çekim 100 TL", withdraw_success: "✅ Çekim talebiniz alındı!",
+    ad_limit: "⚠️ Günlük reklam limitine ulaştın (15)", ad_watched: "📺 Reklam izlendi!"
   },
   en: {
-    home_title: "🏎️ TRAFFIC RACER",
-    home_subtitle: "Race without crashing, earn money!",
-    play: "🎮 START GAME",
-    garage: "🚗 GARAGE",
-    wallet: "💰 WALLET",
-    quests: "🎯 QUESTS",
-    achievements: "🏆 ACHIEVEMENTS",
-    profile: "👤 PROFILE",
-    settings: "⚙️ SETTINGS",
-    fullscreen: "⛶ FULLSCREEN",
-    profile_title: "👤 PROFILE",
-    tap_to_change: "Tap to change avatar",
-    choose_avatar: "Choose Avatar",
-    stats: "📊 Statistics",
-    total_distance: "Total Distance",
-    total_crashes: "Total Crashes",
-    total_earned: "Total Earned",
-    best_distance: "Best Distance",
-    games_played: "Games Played",
-    ads_watched: "Ads Watched",
-    unlocked_achievements: "🏆 Unlocked Achievements",
-    garage_title: "🚗 GARAGE",
-    insurance_title: "🛡️ INSURANCE",
-    continue_no_ins: "🚗 CONTINUE WITHOUT INSURANCE",
-    quests_title: "🎯 DAILY QUESTS",
-    achievements_title: "🏆 ACHIEVEMENTS",
-    wallet_title: "💰 WALLET",
-    balance: "Total Balance",
-    pending: "Pending Withdrawal",
-    withdraw: "💸 Withdraw",
-    withdraw_btn: "CREATE WITHDRAWAL REQUEST",
-    settings_title: "⚙️ SETTINGS",
-    language: "🌍 Language / Dil",
-    master_vol: "🔊 Master Volume",
-    music_vol: "🎵 Music",
-    engine_vol: "🚗 Engine Sound",
-    sfx_vol: "💥 Sound Effects",
-    sound_test: "🔊 Sound Test",
-    back: "← Home",
-    paused: "⏸️ PAUSED",
-    resume: "▶️ RESUME",
-    restart_pause: "🔄 RESTART",
-    home_pause: "🏠 MAIN MENU",
-    crash: "💥 CRASH!",
-    earned: "Earned",
-    penalty: "Penalty",
-    watch_ad: "📺 Watch Ad (No Penalty)",
-    restart: "🔄 Restart",
-    home: "🏠 Main Menu",
-    daily_reward: "🎁 DAILY REWARD!",
-    daily_desc: "Your first login today!",
-    claim: "CLAIM REWARD",
-    ins_used: "🛡️ Insurance used! No penalty.",
-    lang_changed: "🌍 Language changed",
-    avatar_changed: "Avatar changed!"
+    home_title: "🏎️ TRAFFIC RACER", home_subtitle: "Race without crashing, earn rewards!",
+    play: "🎮 START GAME", kasa: "🎁 CHEST", garage: "🚗 GARAGE", wallet: "💰 WALLET",
+    quests: "🎯 QUESTS", achievements: "🏆 ACHIEVEMENTS", profile: "👤 PROFILE",
+    settings: "⚙️ SETTINGS", fullscreen: "⛶ FULLSCREEN",
+    kasa_title: "🎁 DAILY CHEST", kasa_info: "📌 Chest Info",
+    kasa_rule1: "• Chest fills every 5 hours", kasa_rule2: "• Watch rewarded ad → 2,000 OP",
+    kasa_rule3: "• Sometimes gives extra cash (5-10 cents)", kasa_rule4: "• Refills every 5 hours",
+    profile_title: "👤 PROFILE", tap_to_change: "Tap to change avatar", choose_avatar: "Choose Avatar",
+    stats: "📊 Statistics", total_distance: "Total Distance", total_crashes: "Total Crashes",
+    total_earned: "Total Earned (OP)", total_tl: "Cash Earned", best_distance: "Best Distance",
+    games_played: "Games Played", ads_watched: "Ads Watched", unlocked_achievements: "🏆 Unlocked Achievements",
+    garage_title: "🚗 GARAGE", insurance_title: "🛡️ INSURANCE", continue_no_ins: "🚗 CONTINUE WITHOUT INSURANCE",
+    quests_title: "🎯 DAILY QUESTS", achievements_title: "🏆 ACHIEVEMENTS", wallet_title: "💰 WALLET",
+    op_label: "🎮 GAME MONEY", tl_label: "💵 CASH",
+    convert_title: "🔄 OP → TL Convert", convert_rate: "📌 100,000 OP = 1 TL",
+    convert_hint: "Convert game money to cash, withdraw at 100 TL!", convert_btn: "💱 CONVERT",
+    withdraw: "💸 Withdraw (min 100 TL)", withdraw_hint: "You can withdraw when you reach 100 TL",
+    withdraw_btn: "CREATE WITHDRAWAL REQUEST", withdraw_history: "📜 Withdrawal History",
+    settings_title: "⚙️ SETTINGS", language: "🌍 Language / Dil",
+    master_vol: "🔊 Master Volume", music_vol: "🎵 Music", engine_vol: "🚗 Engine Sound",
+    sfx_vol: "💥 Sound Effects", sound_test: "🔊 Sound Test",
+    back: "← Home", paused: "⏸️ PAUSED", resume: "▶️ RESUME",
+    restart_pause: "🔄 RESTART", home_pause: "🏠 MAIN MENU",
+    crash: "💥 CRASH!", earned: "Earned", penalty: "Penalty",
+    watch_ad: "📺 Watch Ad (No Penalty)", restart: "🔄 Restart", home: "🏠 Main Menu",
+    daily_reward: "🎁 DAILY REWARD!", daily_desc: "First login today!", claim: "CLAIM",
+    ins_used: "🛡️ Insurance used! No penalty.", lang_changed: "🌍 Language changed",
+    avatar_changed: "Avatar changed!", kasa_ready: "🎁 CHEST READY!", kasa_waiting: "⏳ Chest Filling...",
+    kasa_claimed: "✅ Chest claimed! +2000 OP", op_converted: "💱 {op} OP → {tl} TL",
+    withdraw_min: "⚠️ Minimum withdrawal 100 TL", withdraw_success: "✅ Withdrawal request received!",
+    ad_limit: "⚠️ Daily ad limit reached (15)", ad_watched: "📺 Ad watched!"
   },
   ru: {
-    home_title: "🏎️ TRAFFIC RACER",
-    home_subtitle: "Гоняй без аварий, зарабатывай!",
-    play: "🎮 НАЧАТЬ ИГРУ",
-    garage: "🚗 ГАРАЖ",
-    wallet: "💰 КОШЕЛЁК",
-    quests: "🎯 ЗАДАНИЯ",
-    achievements: "🏆 ДОСТИЖЕНИЯ",
-    profile: "👤 ПРОФИЛЬ",
-    settings: "⚙️ НАСТРОЙКИ",
-    fullscreen: "⛶ ПОЛНЫЙ ЭКРАН",
-    profile_title: "👤 ПРОФИЛЬ",
-    tap_to_change: "Нажмите чтобы сменить аватар",
-    choose_avatar: "Выбрать аватар",
-    stats: "📊 Статистика",
-    total_distance: "Общее расстояние",
-    total_crashes: "Всего аварий",
-    total_earned: "Всего заработано",
-    best_distance: "Лучшее расстояние",
-    games_played: "Игр сыграно",
-    ads_watched: "Реклам просмотрено",
-    unlocked_achievements: "🏆 Открытые достижения",
-    garage_title: "🚗 ГАРАЖ",
-    insurance_title: "🛡️ СТРАХОВКА",
-    continue_no_ins: "🚗 ПРОДОЛЖИТЬ БЕЗ СТРАХОВКИ",
-    quests_title: "🎯 ЕЖЕДНЕВНЫЕ ЗАДАНИЯ",
-    achievements_title: "🏆 ДОСТИЖЕНИЯ",
-    wallet_title: "💰 КОШЕЛЁК",
-    balance: "Общий баланс",
-    pending: "Ожидает вывода",
-    withdraw: "💸 Вывести",
-    withdraw_btn: "СОЗДАТЬ ЗАПРОС",
-    settings_title: "⚙️ НАСТРОЙКИ",
-    language: "🌍 Язык / Language",
-    master_vol: "🔊 Общая громкость",
-    music_vol: "🎵 Музыка",
-    engine_vol: "🚗 Звук двигателя",
-    sfx_vol: "💥 Звуковые эффекты",
-    sound_test: "🔊 Тест звука",
-    back: "← Домой",
-    paused: "⏸️ ПАУЗА",
-    resume: "▶️ ПРОДОЛЖИТЬ",
-    restart_pause: "🔄 ЗАНОВО",
-    home_pause: "🏠 ГЛАВНОЕ МЕНЮ",
-    crash: "💥 АВАРИЯ!",
-    earned: "Заработано",
-    penalty: "Штраф",
-    watch_ad: "📺 Реклама (Без штрафа)",
-    restart: "🔄 Заново",
-    home: "🏠 Главное меню",
-    daily_reward: "🎁 ЕЖЕДНЕВНАЯ НАГРАДА!",
-    daily_desc: "Первый вход сегодня!",
-    claim: "ПОЛУЧИТЬ",
-    ins_used: "🛡️ Страховка использована!",
-    lang_changed: "🌍 Язык изменён",
-    avatar_changed: "Аватар изменён!"
+    home_title: "🏎️ TRAFFIC RACER", home_subtitle: "Гоняй без аварий, зарабатывай!",
+    play: "🎮 НАЧАТЬ ИГРУ", kasa: "🎁 СУНДУК", garage: "🚗 ГАРАЖ", wallet: "💰 КОШЕЛЁК",
+    quests: "🎯 ЗАДАНИЯ", achievements: "🏆 ДОСТИЖЕНИЯ", profile: "👤 ПРОФИЛЬ",
+    settings: "⚙️ НАСТРОЙКИ", fullscreen: "⛶ ПОЛНЫЙ ЭКРАН",
+    kasa_title: "🎁 ЕЖЕДНЕВНЫЙ СУНДУК", kasa_info: "📌 Информация",
+    kasa_rule1: "• Сундук заполняется каждые 5 часов", kasa_rule2: "• Смотри рекламу → 2,000 OP",
+    kasa_rule3: "• Иногда даёт бонус (5-10 копеек)", kasa_rule4: "• Заполняется каждые 5 часов",
+    profile_title: "👤 ПРОФИЛЬ", tap_to_change: "Нажмите чтобы сменить аватар", choose_avatar: "Выбрать аватар",
+    stats: "📊 Статистика", total_distance: "Общее расстояние", total_crashes: "Всего аварий",
+    total_earned: "Всего заработано (OP)", total_tl: "Заработано наличными", best_distance: "Лучшее расстояние",
+    games_played: "Игр сыграно", ads_watched: "Реклам просмотрено", unlocked_achievements: "🏆 Открытые достижения",
+    garage_title: "🚗 ГАРАЖ", insurance_title: "🛡️ СТРАХОВКА", continue_no_ins: "🚗 ПРОДОЛЖИТЬ БЕЗ СТРАХОВКИ",
+    quests_title: "🎯 ЕЖЕДНЕВНЫЕ ЗАДАНИЯ", achievements_title: "🏆 ДОСТИЖЕНИЯ", wallet_title: "💰 КОШЕЛЁК",
+    op_label: "🎮 ИГРОВЫЕ ДЕНЬГИ", tl_label: "💵 НАЛИЧНЫЕ",
+    convert_title: "🔄 OP → TL Обмен", convert_rate: "📌 100,000 OP = 1 TL",
+    convert_hint: "Обменяйте деньги, снимите при 100 TL!", convert_btn: "💱 ОБМЕНЯТЬ",
+    withdraw: "💸 Снять (мин 100 TL)", withdraw_hint: "Можно снять при 100 TL",
+    withdraw_btn: "СОЗДАТЬ ЗАПРОС", withdraw_history: "📜 История",
+    settings_title: "⚙️ НАСТРОЙКИ", language: "🌍 Язык",
+    master_vol: "🔊 Общая громкость", music_vol: "🎵 Музыка", engine_vol: "🚗 Двигатель",
+    sfx_vol: "💥 Эффекты", sound_test: "🔊 Тест звука",
+    back: "← Домой", paused: "⏸️ ПАУЗА", resume: "▶️ ПРОДОЛЖИТЬ",
+    restart_pause: "🔄 ЗАНОВО", home_pause: "🏠 ГЛАВНОЕ МЕНЮ",
+    crash: "💥 АВАРИЯ!", earned: "Заработано", penalty: "Штраф",
+    watch_ad: "📺 Реклама (Без штрафа)", restart: "🔄 Заново", home: "🏠 Главное меню",
+    daily_reward: "🎁 ЕЖЕДНЕВНАЯ НАГРАДА!", daily_desc: "Первый вход сегодня!", claim: "ПОЛУЧИТЬ",
+    ins_used: "🛡️ Страховка использована!", lang_changed: "🌍 Язык изменён",
+    avatar_changed: "Аватар изменён!", kasa_ready: "🎁 СУНДУК ГОТОВ!", kasa_waiting: "⏳ Заполняется...",
+    kasa_claimed: "✅ Получено! +2000 OP", op_converted: "💱 {op} OP → {tl} TL",
+    withdraw_min: "⚠️ Минимум 100 TL", withdraw_success: "✅ Запрос получен!",
+    ad_limit: "⚠️ Лимит рекламы (15)", ad_watched: "📺 Реклама просмотрена!"
   }
 };
-
-function getLanguage() {
-  const saved = localStorage.getItem('trafficRacerLang');
-  if (saved && TRANSLATIONS[saved]) return saved;
-  const browserLang = (navigator.language || 'tr').slice(0, 2).toLowerCase();
-  if (browserLang === 'tr') return 'tr';
-  if (browserLang === 'ru') return 'ru';
-  if (browserLang === 'en') return 'en';
-  return 'tr';
-}
-function saveLanguage(lang) { localStorage.setItem('trafficRacerLang', lang); }
-
+function getLanguage() { const s = localStorage.getItem('trafficRacerLang'); if (s && TRANSLATIONS[s]) return s; const bl = (navigator.language || 'tr').slice(0, 2).toLowerCase(); return TRANSLATIONS[bl] ? bl : 'tr'; }
+function saveLanguage(l) { localStorage.setItem('trafficRacerLang', l); }
 let currentLang = getLanguage();
-
-function t(key) {
-  return TRANSLATIONS[currentLang][key] || TRANSLATIONS.tr[key] || key;
-}
-
+function t(key) { return TRANSLATIONS[currentLang][key] || TRANSLATIONS.tr[key] || key; }
 function applyTranslations() {
-  // Home screen
-  document.getElementById('t_home_title').textContent = t('home_title');
-  document.getElementById('t_home_subtitle').textContent = t('home_subtitle');
-  document.getElementById('playBtn').textContent = t('play');
-  document.getElementById('garageBtn').textContent = t('garage');
-  document.getElementById('walletBtn').textContent = t('wallet');
-  document.getElementById('questsBtn').textContent = t('quests');
-  document.getElementById('achievementsBtn').textContent = t('achievements');
-  document.getElementById('profileBtn').textContent = t('profile');
-  document.getElementById('settingsBtn').textContent = t('settings');
-  document.getElementById('fullscreenBtn').textContent = t('fullscreen');
-  
-  // Profile
-  document.getElementById('t_profile_title').textContent = t('profile_title');
-  document.getElementById('t_tap_to_change').textContent = t('tap_to_change');
-  document.getElementById('t_choose_avatar').textContent = t('choose_avatar');
-  document.getElementById('t_stats').textContent = t('stats');
-  document.getElementById('t_total_distance').textContent = t('total_distance');
-  document.getElementById('t_total_crashes').textContent = t('total_crashes');
-  document.getElementById('t_total_earned').textContent = t('total_earned');
-  document.getElementById('t_best_distance').textContent = t('best_distance');
-  document.getElementById('t_games_played').textContent = t('games_played');
-  document.getElementById('t_ads_watched').textContent = t('ads_watched');
-  document.getElementById('t_unlocked_achievements').textContent = t('unlocked_achievements');
-  
-  // Back buttons
-  ['t_back','t_back2','t_back3','t_back4','t_back5','t_back6','t_back7'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = t('back');
-  });
-  
-  // Garage, Insurance, Quests, Achievements, Wallet
-  document.getElementById('t_garage_title').textContent = t('garage_title');
-  document.getElementById('t_insurance_title').textContent = t('insurance_title');
-  document.getElementById('t_continue_no_ins').textContent = t('continue_no_ins');
-  document.getElementById('t_quests_title').textContent = t('quests_title');
-  document.getElementById('t_achievements_title').textContent = t('achievements_title');
-  document.getElementById('t_wallet_title').textContent = t('wallet_title');
-  document.getElementById('t_balance').textContent = t('balance');
-  document.getElementById('t_pending').textContent = t('pending');
-  document.getElementById('t_withdraw').textContent = t('withdraw');
-  document.getElementById('t_withdraw_btn').textContent = t('withdraw_btn');
-  
-  // Settings
-  document.getElementById('t_settings_title').textContent = t('settings_title');
-  document.getElementById('t_language').innerHTML = t('language') + ' <span class="value" id="langVal"></span>';
-  document.getElementById('t_master_vol').innerHTML = t('master_vol') + ' <span class="value" id="masterVal">' + settings.masterVolume + '%</span>';
-  document.getElementById('t_music_vol').innerHTML = t('music_vol') + ' <span class="value" id="musicVal">' + settings.musicVolume + '%</span>';
-  document.getElementById('t_engine_vol').innerHTML = t('engine_vol') + ' <span class="value" id="engineVal">' + settings.engineVolume + '%</span>';
-  document.getElementById('t_sfx_vol').innerHTML = t('sfx_vol') + ' <span class="value" id="sfxVal">' + settings.sfxVolume + '%</span>';
-  document.getElementById('t_sound_test').textContent = t('sound_test');
-  
-  // Pause
-  document.getElementById('t_paused').textContent = t('paused');
-  document.getElementById('t_resume').textContent = t('resume');
-  document.getElementById('t_restart_pause').textContent = t('restart_pause');
-  document.getElementById('t_home_pause').textContent = t('home_pause');
-  
-  // Game Over
-  document.getElementById('t_crash').textContent = t('crash');
-  document.getElementById('t_earned').textContent = t('earned');
-  document.getElementById('t_penalty').textContent = t('penalty');
-  document.getElementById('t_watch_ad').textContent = t('watch_ad');
-  document.getElementById('t_restart').textContent = t('restart');
-  document.getElementById('t_home').textContent = t('home');
-  
-  // Daily
-  document.getElementById('t_daily_reward').textContent = t('daily_reward');
-  document.getElementById('t_daily_desc').textContent = t('daily_desc');
-  document.getElementById('t_claim').textContent = t('claim');
-  
-  // Highlight active language
+  const ids = { t_home_title:'home_title', t_home_subtitle:'home_subtitle' };
+  Object.keys(ids).forEach(id => { const el = document.getElementById(id); if (el) el.textContent = t(ids[id]); });
+  const btnMap = { playBtn:'play', kasaBtn:'kasa', garageBtn:'garage', walletBtn:'wallet', questsBtn:'quests', achievementsBtn:'achievements', profileBtn:'profile', settingsBtn:'settings', fullscreenBtn:'fullscreen' };
+  Object.keys(btnMap).forEach(id => { const el = document.getElementById(id); if (el) { const badge = el.querySelector('.kasa-badge'); const text = t(btnMap[id]); el.textContent = text; if (badge) el.appendChild(badge); } });
+  const textIds = ['t_kasa_title','t_profile_title','t_tap_to_change','t_choose_avatar','t_stats','t_total_distance','t_total_crashes','t_total_earned','t_total_tl','t_best_distance','t_games_played','t_ads_watched','t_unlocked_achievements','t_garage_title','t_insurance_title','t_continue_no_ins','t_quests_title','t_achievements_title','t_wallet_title','t_settings_title','t_language','t_master_vol','t_music_vol','t_engine_vol','t_sfx_vol','t_sound_test','t_paused','t_resume','t_restart_pause','t_home_pause','t_crash','t_watch_ad','t_restart','t_home','t_daily_reward','t_daily_desc','t_claim','t_kasa_info','t_kasa_rule1','t_kasa_rule2','t_kasa_rule3','t_kasa_rule4','t_op_label','t_tl_label','t_convert_title','t_convert_rate','t_convert_hint','t_convert_btn','t_withdraw','t_withdraw_hint','t_withdraw_btn','t_withdraw_history'];
+  const keyMap = { t_kasa_title:'kasa_title', t_profile_title:'profile_title', t_tap_to_change:'tap_to_change', t_choose_avatar:'choose_avatar', t_stats:'stats', t_total_distance:'total_distance', t_total_crashes:'total_crashes', t_total_earned:'total_earned', t_total_tl:'total_tl', t_best_distance:'best_distance', t_games_played:'games_played', t_ads_watched:'ads_watched', t_unlocked_achievements:'unlocked_achievements', t_garage_title:'garage_title', t_insurance_title:'insurance_title', t_continue_no_ins:'continue_no_ins', t_quests_title:'quests_title', t_achievements_title:'achievements_title', t_wallet_title:'wallet_title', t_settings_title:'settings_title', t_language:'language', t_master_vol:'master_vol', t_music_vol:'music_vol', t_engine_vol:'engine_vol', t_sfx_vol:'sfx_vol', t_sound_test:'sound_test', t_paused:'paused', t_resume:'resume', t_restart_pause:'restart_pause', t_home_pause:'home_pause', t_crash:'crash', t_watch_ad:'watch_ad', t_restart:'restart', t_home:'home', t_daily_reward:'daily_reward', t_daily_desc:'daily_desc', t_claim:'claim', t_kasa_info:'kasa_info', t_kasa_rule1:'kasa_rule1', t_kasa_rule2:'kasa_rule2', t_kasa_rule3:'kasa_rule3', t_kasa_rule4:'kasa_rule4', t_op_label:'op_label', t_tl_label:'tl_label', t_convert_title:'convert_title', t_convert_rate:'convert_rate', t_convert_hint:'convert_hint', t_convert_btn:'convert_btn', t_withdraw:'withdraw', t_withdraw_hint:'withdraw_hint', t_withdraw_btn:'withdraw_btn', t_withdraw_history:'withdraw_history' };
+  textIds.forEach(id => { const el = document.getElementById(id); if (el && keyMap[id]) el.textContent = t(keyMap[id]); });
+  const earnedLabel = document.getElementById('t_earned'); if (earnedLabel) earnedLabel.textContent = t('earned');
+  const penaltyLabel = document.getElementById('t_penalty'); if (penaltyLabel) penaltyLabel.textContent = t('penalty');
+  ['t_back_kasa','t_back_profile','t_back_garage','t_back_ins','t_back_quests','t_back_ach','t_back_wallet','t_back_settings'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = t('back'); });
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   const langMap = { tr: 'langTR', en: 'langEN', ru: 'langRU' };
-  const activeBtn = document.getElementById(langMap[currentLang]);
-  if (activeBtn) activeBtn.classList.add('active');
+  const a = document.getElementById(langMap[currentLang]); if (a) a.classList.add('active');
 }
-
-window.setLanguage = function(lang) {
-  if (!TRANSLATIONS[lang]) return;
-  currentLang = lang;
-  saveLanguage(lang);
-  applyTranslations();
-  showToast(t('lang_changed'), 'info');
-  // Refresh dynamic lists
-  try { renderQuests(); } catch(e) {}
-  try { renderAchievements(); } catch(e) {}
-  try { renderGarage(); } catch(e) {}
-  try { renderInsurance(); } catch(e) {}
-  try { renderProfile(); } catch(e) {}
-};
+window.setLanguage = function(lang) { if (!TRANSLATIONS[lang]) return; currentLang = lang; saveLanguage(lang); applyTranslations(); showToast(t('lang_changed'), 'info'); try { renderQuests(); renderAchievements(); renderGarage(); renderInsurance(); renderProfile(); renderWallet(); } catch(e){} };
 
 // ==================== AYARLAR ====================
-function getSettings() {
-  const data = localStorage.getItem('trafficRacerSettings');
-  if (data) return JSON.parse(data);
-  return { masterEnabled: true, masterVolume: 100, musicEnabled: true, musicVolume: 20, engineEnabled: true, engineVolume: 30, sfxEnabled: true, sfxVolume: 60 };
-}
+function getSettings() { const d = localStorage.getItem('trafficRacerSettings'); if (d) return JSON.parse(d); return { masterEnabled: true, masterVolume: 100, musicEnabled: true, musicVolume: 20, engineEnabled: true, engineVolume: 30, sfxEnabled: true, sfxVolume: 60 }; }
 function saveSettings(s) { localStorage.setItem('trafficRacerSettings', JSON.stringify(s)); }
 let settings = getSettings();
 
-// ==================== KASA ====================
-function getWallet() { const data = localStorage.getItem('trafficRacerWallet'); if (data) return JSON.parse(data); return { balance: 0, pending: 0, history: [] }; }
-function saveWallet(w) { localStorage.setItem('trafficRacerWallet', JSON.stringify(w)); }
-function addToWallet(amount) { const w = getWallet(); w.balance += amount; saveWallet(w); }
-
-// ==================== ARAÇLAR ====================
-const CARS = {
-  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, desc: 'Dengeli yarış arabası' },
-  'police': { name: 'Police', icon: '🚓', price: 75, speed: 2.6, handling: 0.18, desc: 'Hızlı ve çevik' },
-  'taxi': { name: 'Taxi', icon: '🚕', price: 75, speed: 2.5, handling: 0.16, desc: 'Ekonomik ve stabil' },
-  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150, speed: 3.0, handling: 0.12, desc: 'Güçlü ve hızlı' },
-  'truck': { name: 'Truck', icon: '🚚', price: 300, speed: 3.2, handling: 0.10, desc: 'Maksimum hız, ağır kontrol' }
-};
-function getGarage() { const data = localStorage.getItem('trafficRacerGarage'); if (data) return JSON.parse(data); return { owned: ['race-future'], selected: 'race-future' }; }
-function saveGarage(g) { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); }
-
-// ==================== HARİTA SİSTEMİ ====================
-const MAPS = {
-  city: { name: '🏙️ Şehir', icon: '🏙️', desc: 'Binalar ve trafik dolu', bonus: 1.0 },
-  highway: { name: '🛣️ Otoban', icon: '🛣️', desc: 'Hızlı, düz yol, çok araba', bonus: 1.1 },
-  mountain: { name: '⛰️ Dağ Yolu', icon: '⛰️', desc: 'Manzaralı, az araba', bonus: 1.3 }
-};
-function getMapChoice() {
-  const data = localStorage.getItem('trafficRacerMap');
-  if (data) return data;
-  return 'random';
+// ==================== ÇİFT CÜZDAN SİSTEMİ ====================
+// OP = Oyun Parası (bol kazanılır, oyun içi harcanır, TL'ye çevrilebilir)
+// TL = Nakit (reklamdan kazanılır, çekilebilir)
+function getWallet() {
+  const d = localStorage.getItem('trafficRacerWallet');
+  if (d) return JSON.parse(d);
+  return { op: 0, tl: 0, pending: 0, history: [], totalOPEarned: 0, totalTLEarned: 0 };
 }
-function saveMapChoice(m) { localStorage.setItem('trafficRacerMap', m); }
+function saveWallet(w) { localStorage.setItem('trafficRacerWallet', JSON.stringify(w)); }
+function addOP(amount) { const w = getWallet(); w.op += amount; w.totalOPEarned += amount; saveWallet(w); updateHUD(); }
+function addTL(amount) { const w = getWallet(); w.tl += amount; w.totalTLEarned += amount; saveWallet(w); updateHUD(); }
+function spendOP(amount) { const w = getWallet(); if (w.op < amount) return false; w.op -= amount; saveWallet(w); updateHUD(); return true; }
+function spendTL(amount) { const w = getWallet(); if (w.tl < amount) return false; w.tl -= amount; saveWallet(w); updateHUD(); return true; }
 
-// ==================== AVATAR ====================
-const AVATARS = ['🏎️', '🚗', '🚓', '🚕', '🚙', '🚚', '🏁', '🏆', '👑', '⭐', '🔥', '⚡', '🎯', '💎', '🚀', '🐎'];
-function getAvatar() { return localStorage.getItem('trafficRacerAvatar') || '🏎️'; }
-function saveAvatar(a) { localStorage.setItem('trafficRacerAvatar', a); }
+function updateHUD() {
+  const w = getWallet();
+  const opEl = document.getElementById('moneyHud'); if (opEl) opEl.textContent = Math.floor(w.op);
+  const tlEl = document.getElementById('cashHud'); if (tlEl) tlEl.textContent = w.tl.toFixed(2);
+}
 
-// ==================== SİGORTA ====================
-const INSURANCE_PLANS = {
-  'none': { name: 'Sigortasız', price: 0, crashes: 0, desc: 'Kaza yaparsan paranın yarısı kesilir' },
-  'basic': { name: 'Temel Sigorta', price: 20, crashes: 1, desc: '1 kaza bedava' },
-  'premium': { name: 'Premium Sigorta', price: 80, crashes: 5, desc: '5 kaza bedava' }
+// ==================== KASA SİSTEMİ ====================
+function getKasaState() {
+  const d = localStorage.getItem('trafficRacerKasa');
+  if (d) return JSON.parse(d);
+  return { lastClaim: 0, isReady: true };
+}
+function saveKasaState(k) { localStorage.setItem('trafficRacerKasa', JSON.stringify(k)); }
+
+function getKasaRemainingMs() {
+  const k = getKasaState();
+  const now = Date.now();
+  const elapsed = now - k.lastClaim;
+  return Math.max(0, KASA_COOLDOWN_MS - elapsed);
+}
+
+function isKasaReady() {
+  return getKasaRemainingMs() === 0;
+}
+
+function formatKasaTime(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+function updateKasaUI() {
+  const timerEl = document.getElementById('kasaTimer');
+  const btnEl = document.getElementById('kasaClaimBtn');
+  const titleEl = document.getElementById('kasaTitle');
+  const iconEl = document.getElementById('kasaIcon');
+  const badge = document.getElementById('kasaBadge');
+  if (!timerEl || !btnEl) return;
+  
+  if (isKasaReady()) {
+    iconEl.textContent = '🎉';
+    titleEl.textContent = t('kasa_ready');
+    titleEl.style.color = '#FFD700';
+    timerEl.textContent = 'HAZIR!';
+    timerEl.style.color = '#4CAF50';
+    btnEl.disabled = false;
+    btnEl.textContent = '📺 REKLAM İZLE (+2000 OP)';
+    if (badge) badge.style.display = 'flex';
+  } else {
+    iconEl.textContent = '🎁';
+    titleEl.textContent = t('kasa_waiting');
+    titleEl.style.color = '#aaa';
+    timerEl.textContent = formatKasaTime(getKasaRemainingMs());
+    timerEl.style.color = '#FFD700';
+    btnEl.disabled = true;
+    btnEl.textContent = '⏳ ' + formatKasaTime(getKasaRemainingMs());
+    if (badge) badge.style.display = 'none';
+  }
+}
+
+// Kasa UI güncelleme - her saniye
+setInterval(() => {
+  const el = document.getElementById('kasaTimer');
+  if (el && document.getElementById('kasaScreen').style.display === 'flex') {
+    updateKasaUI();
+  }
+}, 1000);
+
+// Ana menüdeki kasa badge'ini güncelle - her saniye
+setInterval(() => {
+  const badge = document.getElementById('kasaBadge');
+  if (badge) badge.style.display = isKasaReady() ? 'flex' : 'none';
+}, 1000);
+
+window.showKasa = function() {
+  updateKasaUI();
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('kasaScreen').style.display = 'flex';
 };
-function getInsurance() { const data = localStorage.getItem('trafficRacerInsurance'); if (data) return JSON.parse(data); return { plan: 'none', remaining: 0 }; }
-function saveInsurance(i) { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); }
+
+window.watchKasaAd = function() {
+  if (!isKasaReady()) {
+    showToast('⏳ ' + formatKasaTime(getKasaRemainingMs()), 'info');
+    return;
+  }
+  // Reklam simülasyonu
+  showToast('📺 Reklam oynatılıyor...', 'info');
+  const btn = document.getElementById('kasaClaimBtn');
+  btn.disabled = true;
+  btn.textContent = '📺 Reklam... 10s';
+  let sec = 10;
+  const interval = setInterval(() => {
+    sec--;
+    btn.textContent = '📺 Reklam... ' + sec + 's';
+    if (sec <= 0) {
+      clearInterval(interval);
+      // Ödülü ver
+      addOP(KASA_REWARD_OP);
+      // Rastgele nakit bonusu (%30 = 0.05, %10 = 0.10)
+      const rand = Math.random();
+      if (rand < 0.10) { addTL(0.10); showToast('🎁 +2000 OP + 0.10 ₺!', 'gold'); }
+      else if (rand < 0.40) { addTL(0.05); showToast('🎁 +2000 OP + 0.05 ₺!', 'gold'); }
+      else { showToast('✅ +2000 OP!', 'gold'); }
+      playSound('coin');
+      // Kasa state güncelle
+      const k = getKasaState(); k.lastClaim = Date.now(); saveKasaState(k);
+      // İstatistik
+      const stats = getStats(); stats.adsWatched += 1; saveStats(stats);
+      updateKasaUI();
+      updateWalletUI();
+      updateHUD();
+    }
+  }, 1000);
+};
 
 // ==================== İSTATİSTİK ====================
 function getStats() {
-  const data = localStorage.getItem('trafficRacerStats');
-  if (data) return JSON.parse(data);
-  return { totalDistance: 0, totalCrashes: 0, totalEarned: 0, bestDistance: 0, gamesPlayed: 0, adsWatched: 0, carsUsed: [], dailyLoginDate: '', dailyLoginClaimed: false, achievements: {}, quests: { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }, lastQuestResetDate: '' };
+  const d = localStorage.getItem('trafficRacerStats');
+  if (d) return JSON.parse(d);
+  return { totalDistance: 0, totalCrashes: 0, bestDistance: 0, gamesPlayed: 0, adsWatched: 0, carsUsed: [], dailyLoginDate: '', dailyLoginClaimed: false, achievements: {}, quests: { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }, lastQuestResetDate: '', dailyAdsCount: 0, dailyAdsDate: '' };
 }
 function saveStats(s) { localStorage.setItem('trafficRacerStats', JSON.stringify(s)); }
+
+function checkDailyAdLimit() {
+  const stats = getStats();
+  const today = new Date().toDateString();
+  if (stats.dailyAdsDate !== today) { stats.dailyAdsCount = 0; stats.dailyAdsDate = today; saveStats(stats); }
+  return stats.dailyAdsCount < DAILY_AD_LIMIT;
+}
+function incrementDailyAds() {
+  const stats = getStats();
+  stats.dailyAdsCount = (stats.dailyAdsCount || 0) + 1;
+  saveStats(stats);
+}
 
 // ==================== TOAST ====================
 function showToast(msg, type = '') {
@@ -672,43 +666,23 @@ function showToast(msg, type = '') {
 // ==================== SES ====================
 const sounds = { engine: null, crash: null, coin: null, bgmusic: null };
 let audioUnlocked = false;
-function getEffectiveVolume(soundName) {
-  if (!settings.masterEnabled) return 0;
-  if (soundName === 'engine') return settings.engineEnabled ? (settings.engineVolume / 100) * (settings.masterVolume / 100) : 0;
-  if (soundName === 'bgmusic') return settings.musicEnabled ? (settings.musicVolume / 100) * (settings.masterVolume / 100) : 0;
-  return settings.sfxEnabled ? (settings.sfxVolume / 100) * (settings.masterVolume / 100) : 0;
-}
-function loadSound(name, path, loop = false) { const audio = new Audio(); audio.src = path; audio.loop = loop; audio.preload = 'auto'; audio.playsInline = true; sounds[name] = audio; }
-loadSound('engine', 'sounds/engine.mp3', true);
-loadSound('crash', 'sounds/crash.mp3', false);
-loadSound('coin', 'sounds/coin.mp3', false);
-loadSound('bgmusic', 'sounds/bgmusic.mp3', true);
-function unlockAudio() { if (audioUnlocked) return; audioUnlocked = true; [sounds.crash, sounds.coin, sounds.bgmusic].forEach(sound => { if (!sound) return; const origVol = sound.volume; sound.volume = 0; const p = sound.play(); if (p) p.then(() => { sound.pause(); sound.currentTime = 0; sound.volume = origVol; }).catch(() => { sound.volume = origVol; }); }); }
+function getEffectiveVolume(n) { if (!settings.masterEnabled) return 0; if (n==='engine') return settings.engineEnabled?(settings.engineVolume/100)*(settings.masterVolume/100):0; if (n==='bgmusic') return settings.musicEnabled?(settings.musicVolume/100)*(settings.masterVolume/100):0; return settings.sfxEnabled?(settings.sfxVolume/100)*(settings.masterVolume/100):0; }
+function loadSound(n, p, l=false) { const a = new Audio(); a.src = p; a.loop = l; a.preload='auto'; a.playsInline=true; sounds[n]=a; }
+loadSound('engine','sounds/engine.mp3',true);
+loadSound('crash','sounds/crash.mp3',false);
+loadSound('coin','sounds/coin.mp3',false);
+loadSound('bgmusic','sounds/bgmusic.mp3',true);
+function unlockAudio() { if (audioUnlocked) return; audioUnlocked=true; [sounds.crash,sounds.coin,sounds.bgmusic].forEach(s=>{ if(!s)return; const ov=s.volume; s.volume=0; const p=s.play(); if(p)p.then(()=>{s.pause();s.currentTime=0;s.volume=ov;}).catch(()=>{s.volume=ov;}); }); }
 document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 document.addEventListener('click', unlockAudio, { once: true });
-function playSound(name) { const sound = sounds[name]; if (!sound) return; const vol = getEffectiveVolume(name); if (vol <= 0) return; try { sound.currentTime = 0; sound.volume = vol; const p = sound.play(); if (p) p.catch(() => {}); } catch (e) {} }
-function startEngine() { const sound = sounds.engine; if (!sound) return; const vol = getEffectiveVolume('engine'); if (vol <= 0) { stopEngine(); return; } try { sound.volume = vol; sound.loop = true; sound.playbackRate = 1.0; if (sound.paused) { const p = sound.play(); if (p) p.catch(() => {}); } } catch (e) {} }
-function stopEngine() { if (sounds.engine) { try { sounds.engine.pause(); } catch (e) {} } }
-function updateEngineSpeed(speed) { if (!sounds.engine) return; const rate = 0.8 + (speed / 3.2) * 1.0; try { sounds.engine.playbackRate = Math.max(0.5, Math.min(2.0, rate)); } catch (e) {} }
-function startBgMusic() { const sound = sounds.bgmusic; if (!sound) return; const vol = getEffectiveVolume('bgmusic'); if (vol <= 0) { stopBgMusic(); return; } try { sound.volume = vol; if (sound.paused) { const p = sound.play(); if (p) p.catch(() => {}); } } catch (e) {} }
-function stopBgMusic() { if (sounds.bgmusic) { try { sounds.bgmusic.pause(); } catch (e) {} } }
-function updateAllVolumes() { if (sounds.engine) { const vol = getEffectiveVolume('engine'); sounds.engine.volume = vol; if (vol <= 0) stopEngine(); else if (state.running && !state.paused) startEngine(); } if (sounds.bgmusic) { const vol = getEffectiveVolume('bgmusic'); sounds.bgmusic.volume = vol; if (vol <= 0) stopBgMusic(); else if (state.running && !state.paused) startBgMusic(); } }
-function updateSettingsUI() {
-  const mv = document.getElementById('masterVal'); if (mv) mv.textContent = settings.masterVolume + '%';
-  const mu = document.getElementById('musicVal'); if (mu) mu.textContent = settings.musicVolume + '%';
-  const ev = document.getElementById('engineVal'); if (ev) ev.textContent = settings.engineVolume + '%';
-  const sv = document.getElementById('sfxVal'); if (sv) sv.textContent = settings.sfxVolume + '%';
-  const mt = document.getElementById('masterToggle'); if (mt) { mt.textContent = settings.masterEnabled ? 'AÇIK' : 'KAPALI'; mt.className = 'toggle-btn ' + (settings.masterEnabled ? 'toggle-on' : 'toggle-off'); }
-  const mut = document.getElementById('musicToggle'); if (mut) { mut.textContent = settings.musicEnabled ? 'AÇIK' : 'KAPALI'; mut.className = 'toggle-btn ' + (settings.musicEnabled ? 'toggle-on' : 'toggle-off'); }
-  const et = document.getElementById('engineToggle'); if (et) { et.textContent = settings.engineEnabled ? 'AÇIK' : 'KAPALI'; et.className = 'toggle-btn ' + (settings.engineEnabled ? 'toggle-on' : 'toggle-off'); }
-  const st = document.getElementById('sfxToggle'); if (st) { st.textContent = settings.sfxEnabled ? 'AÇIK' : 'KAPALI'; st.className = 'toggle-btn ' + (settings.sfxEnabled ? 'toggle-on' : 'toggle-off'); }
-  const mvs = document.getElementById('masterVol'); if (mvs) mvs.value = settings.masterVolume;
-  const mus = document.getElementById('musicVol'); if (mus) mus.value = settings.musicVolume;
-  const evs = document.getElementById('engineVol'); if (evs) evs.value = settings.engineVolume;
-  const svs = document.getElementById('sfxVol'); if (svs) svs.value = settings.sfxVolume;
-  const gsb = document.getElementById('gameSoundBtn');
-  if (gsb) gsb.textContent = settings.masterEnabled ? '🔊' : '🔇';
-}
+function playSound(n){const s=sounds[n];if(!s)return;const v=getEffectiveVolume(n);if(v<=0)return;try{s.currentTime=0;s.volume=v;const p=s.play();if(p)p.catch(()=>{});}catch(e){}}
+function startEngine(){const s=sounds.engine;if(!s)return;const v=getEffectiveVolume('engine');if(v<=0){stopEngine();return;}try{s.volume=v;s.loop=true;s.playbackRate=1.0;if(s.paused){const p=s.play();if(p)p.catch(()=>{});}}catch(e){}}
+function stopEngine(){if(sounds.engine){try{sounds.engine.pause();}catch(e){}}}
+function updateEngineSpeed(sp){if(!sounds.engine)return;const r=0.8+(sp/3.2)*1.0;try{sounds.engine.playbackRate=Math.max(0.5,Math.min(2.0,r));}catch(e){}}
+function startBgMusic(){const s=sounds.bgmusic;if(!s)return;const v=getEffectiveVolume('bgmusic');if(v<=0){stopBgMusic();return;}try{s.volume=v;if(s.paused){const p=s.play();if(p)p.catch(()=>{});}}catch(e){}}
+function stopBgMusic(){if(sounds.bgmusic){try{sounds.bgmusic.pause();}catch(e){}}}
+function updateAllVolumes(){if(sounds.engine){const v=getEffectiveVolume('engine');sounds.engine.volume=v;if(v<=0)stopEngine();else if(state.running&&!state.paused)startEngine();}if(sounds.bgmusic){const v=getEffectiveVolume('bgmusic');sounds.bgmusic.volume=v;if(v<=0)stopBgMusic();else if(state.running&&!state.paused)startBgMusic();}}
+function updateSettingsUI(){const mv=document.getElementById('masterVal');if(mv)mv.textContent=settings.masterVolume+'%';const mu=document.getElementById('musicVal');if(mu)mu.textContent=settings.musicVolume+'%';const ev=document.getElementById('engineVal');if(ev)ev.textContent=settings.engineVolume+'%';const sv=document.getElementById('sfxVal');if(sv)sv.textContent=settings.sfxVolume+'%';const mt=document.getElementById('masterToggle');if(mt){mt.textContent=settings.masterEnabled?'AÇIK':'KAPALI';mt.className='toggle-btn '+(settings.masterEnabled?'toggle-on':'toggle-off');}const mut=document.getElementById('musicToggle');if(mut){mut.textContent=settings.musicEnabled?'AÇIK':'KAPALI';mut.className='toggle-btn '+(settings.musicEnabled?'toggle-on':'toggle-off');}const et=document.getElementById('engineToggle');if(et){et.textContent=settings.engineEnabled?'AÇIK':'KAPALI';et.className='toggle-btn '+(settings.engineEnabled?'toggle-on':'toggle-off');}const st=document.getElementById('sfxToggle');if(st){st.textContent=settings.sfxEnabled?'AÇIK':'KAPALI';st.className='toggle-btn '+(settings.sfxEnabled?'toggle-on':'toggle-off');}const gsb=document.getElementById('gameSoundBtn');if(gsb)gsb.textContent=settings.masterEnabled?'🔊':'🔇';}
 document.addEventListener('input', e => {
   if (e.target.id === 'masterVol') { settings.masterVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
   if (e.target.id === 'musicVol') { settings.musicVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
@@ -720,61 +694,154 @@ window.toggleMusic = function() { settings.musicEnabled = !settings.musicEnabled
 window.toggleEngine = function() { settings.engineEnabled = !settings.engineEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
 window.toggleSfx = function() { settings.sfxEnabled = !settings.sfxEnabled; saveSettings(settings); updateSettingsUI(); };
 window.toggleMasterFromGame = function() { toggleMaster(); };
-window.testSound = function(name) { unlockAudio(); const sound = sounds[name]; if (!sound) { showToast('❌', 'error'); return; } const vol = getEffectiveVolume(name); try { sound.currentTime = 0; sound.volume = vol > 0 ? vol : 0.5; const p = sound.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { sound.pause(); sound.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
+window.testSound = function(name) { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); try { s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
 
 window.toggleFullscreen = function() { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } };
 
-// ==================== PROFİL ====================
-window.showProfile = function() {
-  renderProfile();
-  document.getElementById('homeScreen').style.display = 'none';
-  document.getElementById('profileScreen').style.display = 'flex';
+// ==================== ARAÇLAR (OP İLE ALINIR) ====================
+const CARS = {
+  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, desc: 'Dengeli yarış arabası' },
+  'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18, desc: 'Hızlı ve çevik' },
+  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, desc: 'Ekonomik ve stabil' },
+  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150000, speed: 3.0, handling: 0.12, desc: 'Güçlü ve hızlı' },
+  'truck': { name: 'Truck', icon: '🚚', price: 300000, speed: 3.2, handling: 0.10, desc: 'Maksimum hız, ağır kontrol' }
+};
+function getGarage() { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); return { owned: ['race-future'], selected: 'race-future' }; }
+function saveGarage(g) { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); }
+
+// ==================== HARİTA ====================
+const MAPS = {
+  city: { name: '🏙️ Şehir', icon: '🏙️', bonus: 1.0 },
+  highway: { name: '🛣️ Otoban', icon: '🛣️', bonus: 1.1 },
+  mountain: { name: '⛰️ Dağ Yolu', icon: '⛰️', bonus: 1.3 }
 };
 
+// ==================== AVATAR ====================
+const AVATARS = ['🏎️','🚗','🚓','🚕','🚙','🚚','🏁','🏆','👑','⭐','🔥','⚡','🎯','💎','🚀','🐎'];
+function getAvatar() { return localStorage.getItem('trafficRacerAvatar') || '🏎️'; }
+function saveAvatar(a) { localStorage.setItem('trafficRacerAvatar', a); }
+
+// ==================== SİGORTA (TL İLE ALINIR) ====================
+const INSURANCE_PLANS = {
+  'none': { name: 'Sigortasız', price: 0, crashes: 0, desc: 'Kaza yaparsan OP yarısı kesilir' },
+  'basic': { name: 'Temel Sigorta', price: 5, crashes: 1, desc: '1 kaza bedava (5 TL)' },
+  'premium': { name: 'Premium Sigorta', price: 20, crashes: 5, desc: '5 kaza bedava (20 TL)' }
+};
+function getInsurance() { const d = localStorage.getItem('trafficRacerInsurance'); if (d) return JSON.parse(d); return { plan: 'none', remaining: 0 }; }
+function saveInsurance(i) { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); }
+
+// ==================== PROFİL ====================
+window.showProfile = function() { renderProfile(); document.getElementById('homeScreen').style.display='none'; document.getElementById('profileScreen').style.display='flex'; };
 window.renderProfile = function() {
-  const stats = getStats();
+  const stats = getStats(); const w = getWallet();
   document.getElementById('profileAvatar').textContent = getAvatar();
   document.getElementById('statDistance').textContent = Math.floor(stats.totalDistance) + ' m';
   document.getElementById('statCrashes').textContent = stats.totalCrashes;
-  document.getElementById('statEarned').textContent = stats.totalEarned.toFixed(2) + ' ₺';
+  document.getElementById('statEarned').textContent = Math.floor(w.totalOPEarned).toLocaleString();
+  document.getElementById('statTL').textContent = w.totalTLEarned.toFixed(2) + ' ₺';
   document.getElementById('statBest').textContent = Math.floor(stats.bestDistance) + ' m';
   document.getElementById('statGames').textContent = stats.gamesPlayed;
   document.getElementById('statAds').textContent = stats.adsWatched;
-  
-  let unlockedEmojis = [];
-  if (stats.achievements.first1000) unlockedEmojis.push('🥇');
-  if (stats.achievements.noCrash5000) unlockedEmojis.push('🛡️');
-  if (stats.achievements.total10000) unlockedEmojis.push('🏁');
-  document.getElementById('unlockedAchievements').textContent = unlockedEmojis.length > 0 ? unlockedEmojis.join(' ') : '🔒';
+  let ae = [];
+  if (stats.achievements.first1000) ae.push('🥇');
+  if (stats.achievements.noCrash5000) ae.push('🛡️');
+  if (stats.achievements.total10000) ae.push('🏁');
+  document.getElementById('unlockedAchievements').textContent = ae.length > 0 ? ae.join(' ') : '🔒';
 };
+window.showAvatarPicker = function() { const p = document.getElementById('avatarPicker'); const g = document.getElementById('avatarGrid'); if (p.style.display === 'none') { p.style.display='block'; const c = getAvatar(); g.innerHTML = AVATARS.map(a => `<div class="avatar-item ${a===c?'selected':''}" onclick="selectAvatar('${a}')">${a}</div>`).join(''); } else { p.style.display='none'; } };
+window.selectAvatar = function(a) { saveAvatar(a); renderProfile(); showToast(t('avatar_changed') + ' ' + a, 'info'); };
 
-window.showAvatarPicker = function() {
-  const picker = document.getElementById('avatarPicker');
-  const grid = document.getElementById('avatarGrid');
-  if (picker.style.display === 'none') {
-    picker.style.display = 'block';
-    const current = getAvatar();
-    grid.innerHTML = AVATARS.map(a => `<div class="avatar-item ${a === current ? 'selected' : ''}" onclick="selectAvatar('${a}')">${a}</div>`).join('');
-  } else {
-    picker.style.display = 'none';
+// ==================== CÜZDAN ====================
+window.renderWallet = function() {
+  const w = getWallet();
+  const opEl = document.getElementById('walletOP'); if (opEl) opEl.textContent = Math.floor(w.op).toLocaleString();
+  const tlEl = document.getElementById('walletTL'); if (tlEl) tlEl.textContent = w.tl.toFixed(2) + ' ₺';
+  const h = document.getElementById('withdrawHistory');
+  if (h) {
+    if (w.history.length === 0) h.textContent = 'Henüz çekim yok';
+    else h.innerHTML = w.history.slice(-5).reverse().map(x => `<div style="padding:6px 0; border-bottom:1px solid #333;">${x.method === 'iban' ? '🏦' : '💳'} ${x.amount.toFixed(2)} ₺ — ${new Date(x.date).toLocaleDateString('tr-TR')} <span style="color:${x.status==='pending'?'#FF9800':'#4CAF50'}">${x.status==='pending'?'Beklemede':'Ödendi'}</span></div>`).join('');
   }
 };
+window.showWallet = function() { updateWalletUI(); renderWallet(); document.getElementById('homeScreen').style.display='none'; document.getElementById('walletScreen').style.display='flex'; };
 
-window.selectAvatar = function(avatar) {
-  saveAvatar(avatar);
-  renderProfile();
-  showToast(t('avatar_changed') + ' ' + avatar, 'info');
+window.convertToCash = function() {
+  const amount = parseInt(document.getElementById('convertAmount').value);
+  if (isNaN(amount) || amount < OP_TO_TL_RATE) { showToast('⚠️ Minimum ' + OP_TO_TL_RATE.toLocaleString() + ' OP', 'error'); return; }
+  const w = getWallet();
+  if (w.op < amount) { showToast('⚠️ Yetersiz OP', 'error'); return; }
+  const tl = amount / OP_TO_TL_RATE;
+  w.op -= amount; w.tl += tl;
+  saveWallet(w);
+  updateWalletUI(); renderWallet();
+  playSound('coin');
+  showToast(t('op_converted').replace('{op}', amount.toLocaleString()).replace('{tl}', tl.toFixed(2)), 'gold');
+  document.getElementById('convertAmount').value = '';
 };
- 
+
+window.requestWithdraw = async function() {
+  const method = document.getElementById('withdrawMethod').value;
+  const account = document.getElementById('withdrawAccount').value.trim();
+  const amount = parseFloat(document.getElementById('withdrawAmount').value);
+  if (!account) { alert('⚠️ Hesap bilgisi gerekli'); return; }
+  if (isNaN(amount) || amount < MIN_WITHDRAW_TL) { alert(t('withdraw_min')); return; }
+  const w = getWallet();
+  if (amount > w.tl) { alert('⚠️ Yetersiz nakit'); return; }
+  w.tl -= amount; w.pending += amount;
+  w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
+  saveWallet(w);
+  try { await fetch('/api/notify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() }) }); } catch(e){}
+  alert(t('withdraw_success'));
+  renderWallet(); updateWalletUI();
+  document.getElementById('withdrawAccount').value = '';
+  document.getElementById('withdrawAmount').value = '';
+};
+
+function updateWalletUI() {
+  const w = getWallet();
+  const el1 = document.getElementById('walletBalance'); if (el1) el1.textContent = w.tl.toFixed(2);
+  const el2 = document.getElementById('walletPending'); if (el2) el2.textContent = w.pending.toFixed(2);
+  updateHUD();
+}
+
+// ==================== GÖREV VE BAŞARIM ====================
+function resetDailyQuestsIfNeeded() { const stats = getStats(); const today = new Date().toDateString(); if (stats.lastQuestResetDate !== today) { stats.quests = { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }; stats.lastQuestResetDate = today; stats.carsUsed = []; saveStats(stats); } }
+function checkDailyLogin() { const stats = getStats(); const today = new Date().toDateString(); if (stats.dailyLoginDate !== today) document.getElementById('dailyPopup').style.display = 'flex'; }
+window.claimDailyReward = function() { const stats = getStats(); stats.dailyLoginDate = new Date().toDateString(); stats.dailyLoginClaimed = true; saveStats(stats); addOP(500); playSound('coin'); document.getElementById('dailyPopup').style.display = 'none'; showToast('🎁 +500 OP', 'gold'); };
+function checkAchievements() { const stats = getStats(); let ne = []; if (stats.bestDistance >= 1000 && !stats.achievements.first1000) { stats.achievements.first1000 = true; addOP(5000); ne.push('🏆 +5000 OP'); } if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) { stats.achievements.noCrash5000 = true; addOP(20000); ne.push('🏆 +20000 OP'); } if (stats.totalDistance >= 10000 && !stats.achievements.total10000) { stats.achievements.total10000 = true; addOP(10000); ne.push('🏆 +10000 OP'); } saveStats(stats); ne.forEach((m,i) => setTimeout(() => { showToast(m, 'gold'); playSound('coin'); }, i * 1500)); }
+window.claimQuest = function(qk) { const stats = getStats(); const q = stats.quests[qk]; if (!q || q.claimed) return; const rw = { distance5000: 3000, ads5: 2000, cars3: 1500 }; const req = { distance5000: 5000, ads5: 5, cars3: 3 }; if (q.progress < req[qk]) { showToast('❌', 'info'); return; } q.claimed = true; saveStats(stats); addOP(rw[qk]); playSound('coin'); showToast('✅ +' + rw[qk] + ' OP', 'gold'); renderQuests(); };
+window.renderQuests = function() { const stats = getStats(); const list = document.getElementById('questsList'); const qs = [{ key:'distance5000', title:'📏 5000m', max:5000, reward:3000 }, { key:'ads5', title:'📺 5 reklam', max:5, reward:2000 }, { key:'cars3', title:'🚗 3 araba', max:3, reward:1500 }]; list.innerHTML = qs.map(q => { const quest = stats.quests[q.key] || { progress:0, claimed:false }; const p = Math.min(quest.progress, q.max); const pc = (p/q.max)*100; const isC = p >= q.max; const isCl = quest.claimed; return `<div class="task-card ${isCl?'claimed':(isC?'completed':'')}"><div class="task-title">${q.title}</div><div class="task-progress"><div class="task-progress-bar" style="width: ${pc}%"></div></div><div class="task-reward">💰 ${q.reward} OP (${p}/${q.max})</div><button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isC||isCl)?'disabled':''}>${isCl?'✅':(isC?'🎁':'...')}</button></div>`; }).join(''); };
+window.renderAchievements = function() { const stats = getStats(); const list = document.getElementById('achievementsList'); const achs = [{ key:'first1000', title:'🥇 1000m', reward:5000 }, { key:'noCrash5000', title:'🛡️ 5000m kazasız', reward:20000 }, { key:'total10000', title:'🏁 10.000m', reward:10000 }]; list.innerHTML = achs.map(a => { const u = stats.achievements[a.key]; return `<div class="task-card ${u?'completed':''}"><div class="task-title">${a.title}</div><div class="task-reward">💰 ${a.reward} OP</div><div style="margin-top:6px;font-size:12px;color:${u?'#4CAF50':'#888'}">${u?'✅':'🔒'}</div></div>`; }).join(''); };
+
+// ==================== GARAJ ====================
+window.renderGarage = function() {
+  const garage = getGarage(); const list = document.getElementById('garageList');
+  const w = getWallet();
+  list.innerHTML = Object.keys(CARS).map(key => {
+    const car = CARS[key]; const owned = garage.owned.includes(key); const selected = garage.selected === key;
+    let actionBtn = selected ? '<button class="car-action selected">✅</button>' : (owned ? `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>` : `<button class="car-action buy" onclick="buyCar('${key}')">AL</button>`);
+    return `<div class="car-card ${selected?'selected':(owned?'owned':'')}"><div class="car-icon">${car.icon}</div><div class="car-info"><div class="car-name">${car.name}</div><div class="car-stats">⚡ ${car.speed} | 🎯 ${(car.handling*100).toFixed(0)}%</div>${!owned?`<div class="car-price">🎮 ${car.price.toLocaleString()} OP</div>`:''}</div>${actionBtn}</div>`;
+  }).join('');
+};
+window.buyCar = function(key) { const car = CARS[key]; const g = getGarage(); if (g.owned.includes(key)) return; if (!spendOP(car.price)) { showToast('❌ ' + car.price.toLocaleString() + ' OP gerekli', 'error'); return; } g.owned.push(key); saveGarage(g); playSound('coin'); showToast('✅ ' + car.name, 'gold'); renderGarage(); };
+window.selectCar = function(key) { const g = getGarage(); if (!g.owned.includes(key)) return; g.selected = key; saveGarage(g); loadPlayerCar(key); state.playerCar = key; showToast('🚗 ' + CARS[key].name, 'info'); renderGarage(); };
+
+// ==================== SİGORTA ====================
+window.renderInsurance = function() {
+  const ins = getInsurance(); const list = document.getElementById('insuranceList'); const w = getWallet();
+  let html = '';
+  if (ins.remaining > 0) html += `<div class="insurance-card active"><h3>🛡️</h3><div style="font-size:36px;margin:8px 0;">${ins.remaining}</div></div>`;
+  html += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => { const p = INSURANCE_PLANS[key]; return `<div class="insurance-card"><h3>${p.name}</h3><div class="price">${p.price} ₺</div><div class="desc">${p.desc}</div><button class="task-btn" style="width:100%" onclick="buyInsurance('${key}')">AL</button></div>`; }).join('');
+  list.innerHTML = html;
+};
+window.buyInsurance = function(planKey) { const p = INSURANCE_PLANS[planKey]; if (!p || p.price === 0) return; if (!spendTL(p.price)) { showToast('❌ ' + p.price + ' ₺ gerekli', 'error'); return; } const ins = getInsurance(); ins.plan = planKey; ins.remaining = p.crashes; saveInsurance(ins); playSound('coin'); showToast('✅ ' + p.name, 'gold'); renderInsurance(); };
+
 // ==================== SAHNE ====================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87CEEB);
 scene.fog = new THREE.Fog(0x87CEEB, 90, 350);
-
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
 camera.position.set(0, 6.5, 13);
 camera.lookAt(0, 1.0, -15);
-
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -785,291 +852,84 @@ renderer.toneMappingExposure = 1.0;
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
-scene.add(ambientLight);
-const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.9);
-scene.add(hemiLight);
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.4); scene.add(ambientLight);
+const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.9); scene.add(hemiLight);
 const sunLight = new THREE.DirectionalLight(0xffffff, 1.6);
-sunLight.position.set(15, 30, 15);
-sunLight.castShadow = true;
-sunLight.shadow.mapSize.width = 1024;
-sunLight.shadow.mapSize.height = 1024;
-sunLight.shadow.camera.left = -40;
-sunLight.shadow.camera.right = 40;
-sunLight.shadow.camera.top = 40;
-sunLight.shadow.camera.bottom = -40;
-sunLight.shadow.bias = -0.0005;
-scene.add(sunLight);
+sunLight.position.set(15, 30, 15); sunLight.castShadow = true;
+sunLight.shadow.mapSize.width = 1024; sunLight.shadow.mapSize.height = 1024;
+sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
+sunLight.shadow.camera.top = 40; sunLight.shadow.camera.bottom = -40;
+sunLight.shadow.bias = -0.0005; scene.add(sunLight);
 
 const fogLayer = new THREE.Mesh(new THREE.PlaneGeometry(200, 400), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
 fogLayer.position.set(0, 2, -100); fogLayer.rotation.x = -Math.PI/2; fogLayer.renderOrder = 999; scene.add(fogLayer);
 
-const ROAD_WIDTH = 11;
-const ROAD_LENGTH = 300;
-
+const ROAD_WIDTH = 11; const ROAD_LENGTH = 300;
 const road = new THREE.Mesh(new THREE.PlaneGeometry(ROAD_WIDTH, ROAD_LENGTH), new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.9, metalness: 0.1 }));
 road.rotation.x = -Math.PI/2; road.position.z = -ROAD_LENGTH/2 + 20; road.receiveShadow = true; scene.add(road);
-
 const laneMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.4 });
 const laneDashes = [];
 for (let i = 0; i < 50; i++) {
-  const dash = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 2.2), laneMat);
-  dash.rotation.x = -Math.PI/2; dash.position.set(-ROAD_WIDTH/6, 0.01, -i * 6 + 20);
-  scene.add(dash); laneDashes.push(dash);
-  const dash2 = dash.clone(); dash2.position.x = ROAD_WIDTH/6; scene.add(dash2); laneDashes.push(dash2);
+  const d = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 2.2), laneMat);
+  d.rotation.x = -Math.PI/2; d.position.set(-ROAD_WIDTH/6, 0.01, -i*6+20); scene.add(d); laneDashes.push(d);
+  const d2 = d.clone(); d2.position.x = ROAD_WIDTH/6; scene.add(d2); laneDashes.push(d2);
 }
 const edgeMat = new THREE.MeshStandardMaterial({ color: 0xffdd00, emissive: 0xffdd00, emissiveIntensity: 0.3 });
 const edge1 = new THREE.Mesh(new THREE.PlaneGeometry(0.35, ROAD_LENGTH), edgeMat);
-edge1.rotation.x = -Math.PI/2; edge1.position.set(-ROAD_WIDTH/2 + 0.4, 0.01, -ROAD_LENGTH/2 + 20); scene.add(edge1);
-const edge2 = edge1.clone(); edge2.position.x = ROAD_WIDTH/2 - 0.4; scene.add(edge2);
-
+edge1.rotation.x = -Math.PI/2; edge1.position.set(-ROAD_WIDTH/2+0.4, 0.01, -ROAD_LENGTH/2+20); scene.add(edge1);
+const edge2 = edge1.clone(); edge2.position.x = ROAD_WIDTH/2-0.4; scene.add(edge2);
 const groundMat = new THREE.MeshStandardMaterial({ color: 0x2d5016, roughness: 1 });
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), groundMat);
 ground.rotation.x = -Math.PI/2; ground.position.set(0, -0.15, -100); ground.receiveShadow = true; scene.add(ground);
 
 // ==================== MANZARA ====================
-const scenery = [];
-const SCENERY_LENGTH = 400;
-const SCENERY_DESPAWN = 40;
-const SCENERY_SPAWN = -SCENERY_LENGTH + 20;
+const scenery = []; const SCENERY_LENGTH = 400; const SCENERY_DESPAWN = 40; const SCENERY_SPAWN = -SCENERY_LENGTH + 20;
 let currentMapType = 'city';
 
-function createTree() {
-  const group = new THREE.Group();
-  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x6b3d1f, roughness: 1 });
-  const leafMat = new THREE.MeshStandardMaterial({ color: 0x2d8a2d, roughness: 1 });
-  const leafMat2 = new THREE.MeshStandardMaterial({ color: 0x3da63d, roughness: 1 });
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.2, 1.2, 6), trunkMat);
-  trunk.position.y = 0.6; trunk.castShadow = true; group.add(trunk);
-  const leafCount = 2 + Math.floor(Math.random() * 2);
-  for (let i = 0; i < leafCount; i++) {
-    const size = 1.4 - i * 0.35;
-    const leaf = new THREE.Mesh(new THREE.ConeGeometry(size, 1.2, 8), i % 2 ? leafMat : leafMat2);
-    leaf.position.y = 1.3 + i * 0.7;
-    leaf.castShadow = true; group.add(leaf);
-  }
-  return group;
-}
-
-function createBuilding() {
-  const group = new THREE.Group();
-  const height = 4 + Math.random() * 8;
-  const width = 2 + Math.random() * 2;
-  const depth = 2 + Math.random() * 2;
-  const colors = [0x8899aa, 0xaa9988, 0xbbbbbb, 0x7788aa, 0xaabbcc, 0x99aaaa];
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  const buildingMat = new THREE.MeshStandardMaterial({ color, roughness: 0.7, metalness: 0.1 });
-  const building = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), buildingMat);
-  building.position.y = height / 2; building.castShadow = true; building.receiveShadow = true; group.add(building);
-  const windowMat = new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0x222222, emissiveIntensity: 0.3 });
-  const rows = Math.floor(height / 1.5);
-  const cols = Math.floor(width / 0.8);
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      if (Math.random() < 0.6) {
-        const w = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.5), windowMat);
-        w.position.set(-width/2 + 0.6 + c * 0.8, 1 + r * 1.5, depth/2 + 0.01);
-        group.add(w);
-      }
-    }
-  }
-  return group;
-}
-
-function createMountain() {
-  const group = new THREE.Group();
-  const height = 8 + Math.random() * 12;
-  const radius = 5 + Math.random() * 4;
-  const mountainMat = new THREE.MeshStandardMaterial({ color: 0x556677, roughness: 0.95 });
-  const snowMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 });
-  const base = new THREE.Mesh(new THREE.ConeGeometry(radius, height, 8), mountainMat);
-  base.position.y = height / 2; base.castShadow = true; group.add(base);
-  if (height > 12) {
-    const snow = new THREE.Mesh(new THREE.ConeGeometry(radius * 0.4, height * 0.25, 8), snowMat);
-    snow.position.y = height * 0.88; group.add(snow);
-  }
-  return group;
-}
-
-function createLake() {
-  const group = new THREE.Group();
-  const size = 8 + Math.random() * 8;
-  const lakeMat = new THREE.MeshStandardMaterial({ color: 0x2a6bb5, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 });
-  const lake = new THREE.Mesh(new THREE.CircleGeometry(size, 16), lakeMat);
-  lake.rotation.x = -Math.PI/2;
-  lake.position.y = -0.08;
-  group.add(lake);
-  return group;
-}
-
-function createRock() {
-  const size = 0.5 + Math.random() * 1.2;
-  const rockMat = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.95, flatShading: true });
-  const geo = new THREE.DodecahedronGeometry(size, 0);
-  const pos = geo.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    pos.setXYZ(i, pos.getX(i) + (Math.random()-0.5)*0.3, pos.getY(i) + (Math.random()-0.5)*0.3, pos.getZ(i) + (Math.random()-0.5)*0.3);
-  }
-  geo.computeVertexNormals();
-  const rock = new THREE.Mesh(geo, rockMat);
-  rock.position.y = size * 0.5;
-  rock.castShadow = true;
-  return rock;
-}
-
-function createSign() {
-  const group = new THREE.Group();
-  const poleMat = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 });
-  const signMat = new THREE.MeshStandardMaterial({ color: 0x2196F3, emissive: 0x2196F3, emissiveIntensity: 0.3 });
-  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2, 6), poleMat);
-  pole.position.y = 1; pole.castShadow = true; group.add(pole);
-  const sign = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.6), signMat);
-  sign.position.y = 2; sign.rotation.y = Math.random() < 0.5 ? Math.PI/2 : -Math.PI/2;
-  group.add(sign);
-  return group;
-}
-
-function createStreetLight() {
-  const group = new THREE.Group();
-  const poleMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
-  const lightMat = new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0xffdd88, emissiveIntensity: 0.8 });
-  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 4, 6), poleMat);
-  pole.position.y = 2; pole.castShadow = true; group.add(pole);
-  const light = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), lightMat);
-  light.position.y = 4; group.add(light);
-  return group;
-}
+function createTree() { const g = new THREE.Group(); const tm = new THREE.MeshStandardMaterial({ color: 0x6b3d1f, roughness: 1 }); const lm = new THREE.MeshStandardMaterial({ color: 0x2d8a2d, roughness: 1 }); const lm2 = new THREE.MeshStandardMaterial({ color: 0x3da63d, roughness: 1 }); const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,1.2,6), tm); tr.position.y=0.6; tr.castShadow=true; g.add(tr); const lc = 2+Math.floor(Math.random()*2); for(let i=0;i<lc;i++){ const sz=1.4-i*0.35; const l=new THREE.Mesh(new THREE.ConeGeometry(sz,1.2,8), i%2?lm:lm2); l.position.y=1.3+i*0.7; l.castShadow=true; g.add(l);} return g; }
+function createBuilding() { const g = new THREE.Group(); const h = 4+Math.random()*8; const w = 2+Math.random()*2; const d = 2+Math.random()*2; const cs = [0x8899aa,0xaa9988,0xbbbbbb,0x7788aa,0xaabbcc,0x99aaaa]; const c = cs[Math.floor(Math.random()*cs.length)]; const bm = new THREE.MeshStandardMaterial({ color: c, roughness: 0.7, metalness: 0.1 }); const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), bm); b.position.y=h/2; b.castShadow=true; b.receiveShadow=true; g.add(b); const wm = new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0x222222, emissiveIntensity: 0.3 }); for(let r=0;r<Math.floor(h/1.5);r++)for(let c2=0;c2<Math.floor(w/0.8);c2++){ if(Math.random()<0.6){ const wn=new THREE.Mesh(new THREE.PlaneGeometry(0.4,0.5),wm); wn.position.set(-w/2+0.6+c2*0.8,1+r*1.5,d/2+0.01); g.add(wn);} } return g; }
+function createMountain() { const g = new THREE.Group(); const h = 8+Math.random()*12; const r = 5+Math.random()*4; const mm = new THREE.MeshStandardMaterial({ color: 0x556677, roughness: 0.95 }); const sm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }); const b = new THREE.Mesh(new THREE.ConeGeometry(r,h,8), mm); b.position.y=h/2; b.castShadow=true; g.add(b); if(h>12){ const s=new THREE.Mesh(new THREE.ConeGeometry(r*0.4,h*0.25,8),sm); s.position.y=h*0.88; g.add(s);} return g; }
+function createLake() { const g = new THREE.Group(); const s = 8+Math.random()*8; const lm = new THREE.MeshStandardMaterial({ color: 0x2a6bb5, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 }); const l = new THREE.Mesh(new THREE.CircleGeometry(s,16),lm); l.rotation.x=-Math.PI/2; l.position.y=-0.08; g.add(l); return g; }
+function createRock() { const s = 0.5+Math.random()*1.2; const rm = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.95, flatShading: true }); const geo = new THREE.DodecahedronGeometry(s,0); const pos = geo.attributes.position; for(let i=0;i<pos.count;i++){ pos.setXYZ(i,pos.getX(i)+(Math.random()-0.5)*0.3,pos.getY(i)+(Math.random()-0.5)*0.3,pos.getZ(i)+(Math.random()-0.5)*0.3); } geo.computeVertexNormals(); const r = new THREE.Mesh(geo,rm); r.position.y=s*0.5; r.castShadow=true; return r; }
+function createSign() { const g = new THREE.Group(); const pm = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 }); const sm = new THREE.MeshStandardMaterial({ color: 0x2196F3, emissive: 0x2196F3, emissiveIntensity: 0.3 }); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,2,6),pm); p.position.y=1; p.castShadow=true; g.add(p); const s = new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.6),sm); s.position.y=2; s.rotation.y = Math.random()<0.5?Math.PI/2:-Math.PI/2; g.add(s); return g; }
+function createStreetLight() { const g = new THREE.Group(); const pm = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 }); const lm = new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0xffdd88, emissiveIntensity: 0.8 }); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,4,6),pm); p.position.y=2; p.castShadow=true; g.add(p); const l = new THREE.Mesh(new THREE.SphereGeometry(0.2,8,8),lm); l.position.y=4; g.add(l); return g; }
 
 function spawnSceneryItem(type) {
-  const side = Math.random() < 0.5 ? -1 : 1;
-  const distance = 8 + Math.random() * 25;
-  const x = side * (ROAD_WIDTH/2 + distance);
-  const z = SCENERY_SPAWN + Math.random() * SCENERY_LENGTH;
-  
-  let item;
-  const rand = Math.random();
-  
-  // Haritaya göre manzara seçimi
-  if (type === 'city') {
-    if (rand < 0.4) item = createBuilding();
-    else if (rand < 0.6) item = createTree();
-    else if (rand < 0.8) item = createStreetLight();
-    else item = createSign();
-  } else if (type === 'highway') {
-    if (rand < 0.5) item = createStreetLight();
-    else if (rand < 0.8) item = createTree();
-    else item = createSign();
-  } else if (type === 'mountain') {
-    if (rand < 0.3) item = createTree();
-    else if (rand < 0.5) item = createMountain();
-    else if (rand < 0.7) item = createRock();
-    else if (rand < 0.9) item = createTree();
-    else item = createLake();
-  } else {
-    // Karışık (varsayılan)
-    if (rand < 0.3) item = createTree();
-    else if (rand < 0.5) item = createBuilding();
-    else if (rand < 0.65) item = createMountain();
-    else if (rand < 0.78) item = createLake();
-    else if (rand < 0.9) item = createRock();
-    else item = createSign();
-  }
-  
-  item.position.set(x, 0, z);
-  item.rotation.y = Math.random() * Math.PI * 2;
-  const scale = 0.8 + Math.random() * 0.6;
-  item.scale.set(scale, scale, scale);
-  
-  scene.add(item);
-  scenery.push({ mesh: item, baseX: x });
+  const side = Math.random()<0.5?-1:1; const d = 8+Math.random()*25; const x = side*(ROAD_WIDTH/2+d); const z = SCENERY_SPAWN+Math.random()*SCENERY_LENGTH;
+  let item; const r = Math.random();
+  if (type === 'city') { if (r<0.4) item=createBuilding(); else if (r<0.6) item=createTree(); else if (r<0.8) item=createStreetLight(); else item=createSign(); }
+  else if (type === 'highway') { if (r<0.5) item=createStreetLight(); else if (r<0.8) item=createTree(); else item=createSign(); }
+  else if (type === 'mountain') { if (r<0.3) item=createTree(); else if (r<0.5) item=createMountain(); else if (r<0.7) item=createRock(); else if (r<0.9) item=createTree(); else item=createLake(); }
+  else { if (r<0.3) item=createTree(); else if (r<0.5) item=createBuilding(); else if (r<0.65) item=createMountain(); else if (r<0.78) item=createLake(); else if (r<0.9) item=createRock(); else item=createSign(); }
+  item.position.set(x,0,z); item.rotation.y = Math.random()*Math.PI*2; const sc = 0.8+Math.random()*0.6; item.scale.set(sc,sc,sc);
+  scene.add(item); scenery.push({ mesh: item, baseX: x });
 }
-
-function initScenery(mapType) {
-  currentMapType = mapType || 'city';
-  // Önce eskileri sil
-  scenery.forEach(s => scene.remove(s.mesh));
-  scenery.length = 0;
-  // Yenileri oluştur
-  const itemCount = currentMapType === 'city' ? 150 : (currentMapType === 'highway' ? 80 : 120);
-  for (let i = 0; i < itemCount; i++) {
-    spawnSceneryItem(currentMapType);
-  }
-}
-
-function scrollScenery(moveAmount) {
-  for (let i = scenery.length - 1; i >= 0; i--) {
-    const item = scenery[i];
-    item.mesh.position.z += moveAmount;
-    if (item.mesh.position.z > SCENERY_DESPAWN) {
-      scene.remove(item.mesh);
-      const side = Math.random() < 0.5 ? -1 : 1;
-      const distance = 8 + Math.random() * 25;
-      const x = side * (ROAD_WIDTH/2 + distance);
-      item.mesh.position.set(x, 0, SCENERY_SPAWN + Math.random() * 30);
-      item.mesh.rotation.y = Math.random() * Math.PI * 2;
-      const scale = 0.8 + Math.random() * 0.6;
-      item.mesh.scale.set(scale, scale, scale);
-      scene.add(item.mesh);
-    }
-  }
-}
+function initScenery(mapType) { currentMapType = mapType||'city'; scenery.forEach(s => scene.remove(s.mesh)); scenery.length = 0; const cnt = currentMapType==='city'?150:(currentMapType==='highway'?80:120); for(let i=0;i<cnt;i++) spawnSceneryItem(currentMapType); }
+function scrollScenery(ma) { for(let i=scenery.length-1;i>=0;i--){ const it = scenery[i]; it.mesh.position.z += ma; if(it.mesh.position.z > SCENERY_DESPAWN){ scene.remove(it.mesh); const s = Math.random()<0.5?-1:1; const d = 8+Math.random()*25; const x = s*(ROAD_WIDTH/2+d); it.mesh.position.set(x,0,SCENERY_SPAWN+Math.random()*30); it.mesh.rotation.y = Math.random()*Math.PI*2; const sc = 0.8+Math.random()*0.6; it.mesh.scale.set(sc,sc,sc); scene.add(it.mesh); } } }
 
 // ==================== YAĞMUR VE KAR ====================
-const rainCount = 500;
-const rainGeo = new THREE.BufferGeometry();
-const rainPositions = new Float32Array(rainCount * 3);
-for (let i = 0; i < rainCount * 3; i += 3) { rainPositions[i] = (Math.random() - 0.5) * 60; rainPositions[i+1] = Math.random() * 40; rainPositions[i+2] = (Math.random() - 0.5) * 100; }
-rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
-const rainParticles = new THREE.Points(rainGeo, new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.15, transparent: true, opacity: 0.6 }));
-rainParticles.visible = false; scene.add(rainParticles);
-
-const snowCount = 300;
-const snowGeo = new THREE.BufferGeometry();
-const snowPositions = new Float32Array(snowCount * 3);
-for (let i = 0; i < snowCount * 3; i += 3) { snowPositions[i] = (Math.random() - 0.5) * 60; snowPositions[i+1] = Math.random() * 40; snowPositions[i+2] = (Math.random() - 0.5) * 100; }
-snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions, 3));
-const snowParticles = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.8 }));
-snowParticles.visible = false; scene.add(snowParticles);
+const rainCount = 500; const rainGeo = new THREE.BufferGeometry(); const rainPositions = new Float32Array(rainCount*3);
+for(let i=0;i<rainCount*3;i+=3){ rainPositions[i]=(Math.random()-0.5)*60; rainPositions[i+1]=Math.random()*40; rainPositions[i+2]=(Math.random()-0.5)*100; }
+rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions,3));
+const rainParticles = new THREE.Points(rainGeo, new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.15, transparent: true, opacity: 0.6 })); rainParticles.visible = false; scene.add(rainParticles);
+const snowCount = 300; const snowGeo = new THREE.BufferGeometry(); const snowPositions = new Float32Array(snowCount*3);
+for(let i=0;i<snowCount*3;i+=3){ snowPositions[i]=(Math.random()-0.5)*60; snowPositions[i+1]=Math.random()*40; snowPositions[i+2]=(Math.random()-0.5)*100; }
+snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions,3));
+const snowParticles = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.8 })); snowParticles.visible = false; scene.add(snowParticles);
 
 // ==================== MODEL YÜKLEME ====================
-const gltfLoader = new GLTFLoader();
-let kenneyColormap = null;
-function getKenneyColormap() { if (kenneyColormap) return kenneyColormap; kenneyColormap = new THREE.TextureLoader().load('models/colormap.png'); kenneyColormap.magFilter = THREE.NearestFilter; kenneyColormap.minFilter = THREE.NearestFilter; kenneyColormap.colorSpace = THREE.SRGBColorSpace; return kenneyColormap; }
-function prepareModel(model) { const colormap = getKenneyColormap(); model.traverse((child) => { if (child.isMesh) { child.castShadow = true; child.receiveShadow = true; if (child.material) { child.material.map = colormap; child.material.needsUpdate = true; } } }); return model; }
-function loadCarModel(path, fallbackColor = 0x00cc44) { return new Promise((resolve) => { gltfLoader.load(path, (gltf) => resolve(prepareModel(gltf.scene)), undefined, () => resolve(createFallbackCar(fallbackColor))); }); }
-function createFallbackCar(color) {
-  const car = new THREE.Group(); car.userData.isFallback = true;
-  const body = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.6, 3.2), new THREE.MeshStandardMaterial({ color, metalness: 0.7, roughness: 0.3 }));
-  body.position.y = 0.5; body.castShadow = true; car.add(body);
-  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.5, 1.4), new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.9, roughness: 0.1, transparent: true, opacity: 0.85 }));
-  cabin.position.set(0, 1.0, -0.1); cabin.castShadow = true; car.add(cabin);
-  const wheelGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.25, 16); const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
-  [[-0.8, 0.32, 1.0], [0.8, 0.32, 1.0], [-0.8, 0.32, -1.0], [0.8, 0.32, -1.0]].forEach(pos => { const wheel = new THREE.Mesh(wheelGeo, wheelMat); wheel.rotation.z = Math.PI/2; wheel.position.set(...pos); wheel.castShadow = true; car.add(wheel); });
-  return car;
-}
+const gltfLoader = new GLTFLoader(); let kenneyColormap = null;
+function getKenneyColormap() { if(kenneyColormap) return kenneyColormap; kenneyColormap = new THREE.TextureLoader().load('models/colormap.png'); kenneyColormap.magFilter = THREE.NearestFilter; kenneyColormap.minFilter = THREE.NearestFilter; kenneyColormap.colorSpace = THREE.SRGBColorSpace; return kenneyColormap; }
+function prepareModel(m) { const c = getKenneyColormap(); m.traverse(ch => { if(ch.isMesh){ ch.castShadow=true; ch.receiveShadow=true; if(ch.material){ ch.material.map=c; ch.material.needsUpdate=true; } } }); return m; }
+function loadCarModel(p, fc=0x00cc44) { return new Promise(res => { gltfLoader.load(p, g => res(prepareModel(g.scene)), undefined, () => res(createFallbackCar(fc))); }); }
+function createFallbackCar(c) { const g = new THREE.Group(); g.userData.isFallback = true; const b = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.6,3.2), new THREE.MeshStandardMaterial({ color:c, metalness:0.7, roughness:0.3 })); b.position.y=0.5; b.castShadow=true; g.add(b); const cb = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.5,1.4), new THREE.MeshStandardMaterial({ color:0x111111, metalness:0.9, roughness:0.1, transparent:true, opacity:0.85 })); cb.position.set(0,1,-0.1); cb.castShadow=true; g.add(cb); const wg = new THREE.CylinderGeometry(0.32,0.32,0.25,16); const wm = new THREE.MeshStandardMaterial({ color:0x111111 }); [[-0.8,0.32,1],[0.8,0.32,1],[-0.8,0.32,-1],[0.8,0.32,-1]].forEach(p => { const w = new THREE.Mesh(wg,wm); w.rotation.z = Math.PI/2; w.position.set(...p); w.castShadow=true; g.add(w); }); return g; }
 
 // ==================== DURUM ====================
 const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race-future', handling: 0.15, baseMaxSpeed: 2.8, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0 };
-const CAR_SCALE = 1.4;
-const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
+const CAR_SCALE = 1.4; const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
 
-let player = createFallbackCar(0x00cc44);
-player.position.set(0, 0, 4); scene.add(player);
-
-function loadPlayerCar(carKey) {
-  const carConfig = CARS[carKey] || CARS['race-future'];
-  const modelMap = { 'race-future': 'models/race-future.glb', 'police': 'models/police.glb', 'taxi': 'models/taxi.glb', 'suv-luxury': 'models/suv-luxury.glb', 'truck': 'models/truck.glb' };
-  const modelPath = modelMap[carKey] || 'models/race-future.glb';
-  loadCarModel(modelPath, 0x00cc44).then((model) => {
-    scene.remove(player);
-    model.scale.set(CAR_SCALE, CAR_SCALE, CAR_SCALE);
-    model.rotation.y = Math.PI;
-    model.position.set(0, 0, 4);
-    scene.add(model);
-    player = model; state.modelLoaded = true;
-    state.baseMaxSpeed = carConfig.speed; state.handling = carConfig.handling;
-  });
-}
+let player = createFallbackCar(0x00cc44); player.position.set(0,0,4); scene.add(player);
+function loadPlayerCar(k) { const c = CARS[k]||CARS['race-future']; const mm = { 'race-future':'models/race-future.glb', 'police':'models/police.glb', 'taxi':'models/taxi.glb', 'suv-luxury':'models/suv-luxury.glb', 'truck':'models/truck.glb' }; const p = mm[k]||'models/race-future.glb'; loadCarModel(p, 0x00cc44).then(m => { scene.remove(player); m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); m.rotation.y = Math.PI; m.position.set(0,0,4); scene.add(m); player = m; state.modelLoaded = true; state.baseMaxSpeed = c.speed; state.handling = c.handling; }); }
 loadPlayerCar('race-future');
 
 document.addEventListener('keydown', e => {
@@ -1078,31 +938,37 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') state.targetLane = Math.min(1, state.targetLane + 1);
   if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pauseGame();
 });
+
 let lastTouchTime = 0;
-function handleGameTouch(clientX) { if (!state.running || state.paused) return; const now = Date.now(); if (now - lastTouchTime < 150) return; lastTouchTime = now; const half = window.innerWidth / 2; if (clientX < half) state.targetLane = Math.max(-1, state.targetLane - 1); else state.targetLane = Math.min(1, state.targetLane + 1); }
-document.addEventListener('touchstart', e => { const target = e.target; if (target.tagName === 'BUTTON' || target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.closest('button') || target.closest('input') || target.closest('select')) return; if (state.running && !state.paused) handleGameTouch(e.touches[0].clientX); }, { passive: true });
+function handleGameTouch(cx) { if (!state.running || state.paused) return; const n = Date.now(); if (n - lastTouchTime < 150) return; lastTouchTime = n; const h = window.innerWidth/2; if (cx < h) state.targetLane = Math.max(-1, state.targetLane - 1); else state.targetLane = Math.min(1, state.targetLane + 1); }
+document.addEventListener('touchstart', e => { const tg = e.target; if (tg.tagName === 'BUTTON' || tg.tagName === 'INPUT' || tg.tagName === 'SELECT' || tg.closest('button') || tg.closest('input') || tg.closest('select')) return; if (state.running && !state.paused) handleGameTouch(e.touches[0].clientX); }, { passive: true });
 
-const carColors = [0xe74c3c, 0x3498db, 0x9b59b6, 0xe67e22, 0x1abc9c, 0xf39c12, 0x34495e];
-const enemyModels = ['models/sedan.glb', 'models/suv.glb', 'models/taxi.glb', 'models/van.glb'];
-async function spawnEnemyCar() {
-  const lane = Math.floor(Math.random() * 3) - 1;
-  const randomModel = enemyModels[Math.floor(Math.random() * enemyModels.length)];
-  const fallbackColor = carColors[Math.floor(Math.random() * carColors.length)];
-  const car = await loadCarModel(randomModel, fallbackColor);
-  car.scale.set(CAR_SCALE, CAR_SCALE, CAR_SCALE);
-  car.rotation.y = Math.PI;
-  car.position.set(LANES[lane + 1], 0, -150);
-  scene.add(car); state.cars.push(car);
+const carColors = [0xe74c3c,0x3498db,0x9b59b6,0xe67e22,0x1abc9c,0xf39c12,0x34495e];
+const enemyModels = ['models/sedan.glb','models/suv.glb','models/taxi.glb','models/van.glb'];
+async function spawnEnemyCar() { const l = Math.floor(Math.random()*3)-1; const m = enemyModels[Math.floor(Math.random()*enemyModels.length)]; const fc = carColors[Math.floor(Math.random()*carColors.length)]; const c = await loadCarModel(m, fc); c.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); c.rotation.y = Math.PI; c.position.set(LANES[l+1],0,-150); scene.add(c); state.cars.push(c); }
+
+// ==================== OP KAZANMA ====================
+function OPPerMeter() {
+  // OP bol kazanılır (oyun içi motive için)
+  let base = 1; // 1 metre = 1 OP (temel)
+  if (state.distance >= 5000) base = 10;
+  else if (state.distance >= 3000) base = 6;
+  else if (state.distance >= 1500) base = 3;
+  else if (state.distance >= 500) base = 1.5;
+  if (state.weather === 'rain') base *= 1.3;
+  if (state.weather === 'snow') base *= 1.5;
+  if (state.weather === 'fog') base *= 1.4;
+  if (state.timeOfDay === 'night') base *= 1.2;
+  base *= state.mapBonus;
+  return base;
 }
-
-function moneyPerMeter() { let base = 0.005; if (state.distance >= 5000) base = 0.05; else if (state.distance >= 3000) base = 0.035; else if (state.distance >= 1500) base = 0.02; else if (state.distance >= 500) base = 0.01; if (state.weather === 'rain') base *= 1.3; if (state.weather === 'snow') base *= 1.5; if (state.weather === 'fog') base *= 1.4; if (state.timeOfDay === 'night') base *= 1.2; base *= state.mapBonus; return base; }
 function checkCollision(a, b) { return Math.abs(a.position.x - b.position.x) < 1.2 && Math.abs(a.position.z - b.position.z) < 2.8; }
 
 function randomizeWeatherAndTime() {
-  const weathers = ['sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'rain', 'rain', 'snow', 'fog'];
-  state.weather = weathers[Math.floor(Math.random() * weathers.length)];
-  const times = ['day', 'day', 'day', 'night', 'night', 'sunset'];
-  state.timeOfDay = times[Math.floor(Math.random() * times.length)];
+  const ws = ['sunny','sunny','sunny','sunny','sunny','rain','rain','snow','fog'];
+  state.weather = ws[Math.floor(Math.random()*ws.length)];
+  const ts = ['day','day','day','night','night','sunset'];
+  state.timeOfDay = ts[Math.floor(Math.random()*ts.length)];
   applyWeather(); applyTimeOfDay(); updateWeatherBadge();
 }
 function applyWeather() {
@@ -1115,61 +981,15 @@ function applyWeather() {
 }
 function applyTimeOfDay() {
   if (state.weather === 'sunny' || state.weather === 'fog') {
-    if (state.timeOfDay === 'day') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; sunLight.color.setHex(0xffffff); sunLight.position.set(15, 30, 15); }
-    else if (state.timeOfDay === 'sunset') { scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; sunLight.color.setHex(0xffaa66); sunLight.position.set(30, 10, 15); }
-    else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x0a0a2e); scene.fog.color = new THREE.Color(0x0a0a2e); ambientLight.intensity = 0.35; sunLight.intensity = 0.2; hemiLight.intensity = 0.2; sunLight.color.setHex(0x4466aa); sunLight.position.set(-15, 20, 15); }
-  } else {
-    if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; }
-  }
+    if (state.timeOfDay === 'day') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; sunLight.color.setHex(0xffffff); sunLight.position.set(15,30,15); }
+    else if (state.timeOfDay === 'sunset') { scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; sunLight.color.setHex(0xffaa66); sunLight.position.set(30,10,15); }
+    else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x0a0a2e); scene.fog.color = new THREE.Color(0x0a0a2e); ambientLight.intensity = 0.35; sunLight.intensity = 0.2; hemiLight.intensity = 0.2; sunLight.color.setHex(0x4466aa); sunLight.position.set(-15,20,15); }
+  } else { if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; } }
 }
-function updateWeatherBadge() {
-  const badge = document.getElementById('weatherBadge');
-  const icons = { sunny: '☀️', rain: '🌧️', snow: '❄️', fog: '🌫️' };
-  const times = { day: '☀️ Gündüz', sunset: '🌅 Gün Batımı', night: '🌙 Gece' };
-  const mapIcons = { city: '🏙️', highway: '🛣️', mountain: '⛰️' };
-  badge.textContent = mapIcons[state.currentMap] + ' ' + icons[state.weather] + ' ' + times[state.timeOfDay];
-  badge.classList.add('visible');
-}
-
-function resetDailyQuestsIfNeeded() { const stats = getStats(); const today = new Date().toDateString(); if (stats.lastQuestResetDate !== today) { stats.quests = { distance5000: { progress: 0, claimed: false }, ads5: { progress: 0, claimed: false }, cars3: { progress: 0, claimed: false } }; stats.lastQuestResetDate = today; stats.carsUsed = []; saveStats(stats); } }
-function checkDailyLogin() { const stats = getStats(); const today = new Date().toDateString(); if (stats.dailyLoginDate !== today) document.getElementById('dailyPopup').style.display = 'flex'; }
-window.claimDailyReward = function() { const stats = getStats(); stats.dailyLoginDate = new Date().toDateString(); stats.dailyLoginClaimed = true; saveStats(stats); addToWallet(1); updateWalletUI(); playSound('coin'); document.getElementById('dailyPopup').style.display = 'none'; showToast('🎁 +1.00 ₺', 'gold'); };
-function checkAchievements() {
-  const stats = getStats(); let newAchievements = [];
-  if (stats.bestDistance >= 1000 && !stats.achievements.first1000) { stats.achievements.first1000 = true; addToWallet(5); newAchievements.push('🏆 +5 ₺'); }
-  if (state.distance >= 5000 && state.gameCrashes === 0 && !stats.achievements.noCrash5000) { stats.achievements.noCrash5000 = true; addToWallet(20); newAchievements.push('🏆 +20 ₺'); }
-  if (stats.totalDistance >= 10000 && !stats.achievements.total10000) { stats.achievements.total10000 = true; addToWallet(10); newAchievements.push('🏆 +10 ₺'); }
-  saveStats(stats);
-  newAchievements.forEach((msg, idx) => { setTimeout(() => { showToast(msg, 'gold'); playSound('coin'); }, idx * 1500); });
-}
-window.claimQuest = function(questKey) { const stats = getStats(); const quest = stats.quests[questKey]; if (!quest || quest.claimed) return; const rewards = { distance5000: 3, ads5: 2, cars3: 1 }; const requiredProgress = { distance5000: 5000, ads5: 5, cars3: 3 }; if (quest.progress < requiredProgress[questKey]) { showToast('❌', 'info'); return; } quest.claimed = true; saveStats(stats); addToWallet(rewards[questKey]); updateWalletUI(); playSound('coin'); showToast('✅ +' + rewards[questKey] + ' ₺', 'gold'); renderQuests(); };
-window.renderQuests = function() { const stats = getStats(); const list = document.getElementById('questsList'); const quests = [{ key: 'distance5000', title: '📏 5000m', max: 5000, reward: 3 }, { key: 'ads5', title: '📺 5x reklam', max: 5, reward: 2 }, { key: 'cars3', title: '🚗 3 araba', max: 3, reward: 1 }]; list.innerHTML = quests.map(q => { const quest = stats.quests[q.key] || { progress: 0, claimed: false }; const progress = Math.min(quest.progress, q.max); const percent = (progress / q.max) * 100; const isComplete = progress >= q.max; const isClaimed = quest.claimed; return `<div class="task-card ${isClaimed ? 'claimed' : (isComplete ? 'completed' : '')}"><div class="task-title">${q.title}</div><div class="task-progress"><div class="task-progress-bar" style="width: ${percent}%"></div></div><div class="task-reward">💰 ${q.reward} ₺ (${progress}/${q.max})</div><button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isComplete || isClaimed) ? 'disabled' : ''}>${isClaimed ? '✅' : (isComplete ? '🎁' : '...')}</button></div>`; }).join(''); };
-window.renderAchievements = function() { const stats = getStats(); const list = document.getElementById('achievementsList'); const achievements = [{ key: 'first1000', title: '🥇 1000m', reward: 5 }, { key: 'noCrash5000', title: '🛡️ 5000m kazasız', reward: 20 }, { key: 'total10000', title: '🏁 10.000m toplam', reward: 10 }]; list.innerHTML = achievements.map(a => { const unlocked = stats.achievements[a.key]; return `<div class="task-card ${unlocked ? 'completed' : ''}"><div class="task-title">${a.title}</div><div class="task-reward">💰 ${a.reward} ₺</div><div style="margin-top: 8px; font-size: 13px; color: ${unlocked ? '#4CAF50' : '#888'};">${unlocked ? '✅' : '🔒'}</div></div>`; }).join(''); };
-
-window.renderGarage = function() {
-  const garage = getGarage(); const list = document.getElementById('garageList');
-  list.innerHTML = Object.keys(CARS).map(key => {
-    const car = CARS[key]; const owned = garage.owned.includes(key); const selected = garage.selected === key;
-    let actionBtn = selected ? '<button class="car-action selected">✅</button>' : (owned ? `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>` : `<button class="car-action buy" onclick="buyCar('${key}')">AL</button>`);
-    return `<div class="car-card ${selected ? 'selected' : (owned ? 'owned' : '')}"><div class="car-icon">${car.icon}</div><div class="car-info"><div class="car-name">${car.name}</div><div class="car-stats">⚡ ${car.speed} | 🎯 ${(car.handling * 100).toFixed(0)}%</div>${!owned ? `<div class="car-price">💰 ${car.price} ₺</div>` : ''}</div>${actionBtn}</div>`;
-  }).join('');
-};
-window.buyCar = function(key) { const car = CARS[key]; const garage = getGarage(); if (garage.owned.includes(key)) return; const w = getWallet(); if (w.balance < car.price) { showToast('❌ ' + car.price + ' ₺', 'error'); return; } w.balance -= car.price; saveWallet(w); garage.owned.push(key); saveGarage(garage); updateWalletUI(); playSound('coin'); showToast('✅ ' + car.name, 'gold'); renderGarage(); };
-window.selectCar = function(key) { const garage = getGarage(); if (!garage.owned.includes(key)) return; garage.selected = key; saveGarage(garage); loadPlayerCar(key); state.playerCar = key; showToast('🚗 ' + CARS[key].name, 'info'); renderGarage(); };
-
-window.renderInsurance = function() {
-  const insurance = getInsurance(); const list = document.getElementById('insuranceList');
-  let html = '';
-  if (insurance.remaining > 0) html += `<div class="insurance-card active"><h3>🛡️</h3><div style="font-size: 40px; margin: 10px 0;">${insurance.remaining}</div></div>`;
-  html += Object.keys(INSURANCE_PLANS).filter(k => k !== 'none').map(key => { const plan = INSURANCE_PLANS[key]; return `<div class="insurance-card"><h3>${plan.name}</h3><div class="price">${plan.price} ₺</div><div class="desc">${plan.desc}</div><button class="task-btn" style="width: 100%;" onclick="buyInsurance('${key}')">AL</button></div>`; }).join('');
-  list.innerHTML = html;
-};
-window.buyInsurance = function(planKey) { const plan = INSURANCE_PLANS[planKey]; if (!plan || plan.price === 0) return; const w = getWallet(); if (w.balance < plan.price) { showToast('❌ ' + plan.price + ' ₺', 'error'); return; } w.balance -= plan.price; saveWallet(w); const insurance = getInsurance(); insurance.plan = planKey; insurance.remaining = plan.crashes; saveInsurance(insurance); updateWalletUI(); playSound('coin'); showToast('✅ ' + plan.name, 'gold'); renderInsurance(); };
+function updateWeatherBadge() { const b = document.getElementById('weatherBadge'); const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; b.classList.add('visible'); }
 
 // ==================== DÖNGÜ ====================
-let lastTime = performance.now();
-let animationRunning = false;
-
+let lastTime = performance.now(); let animationRunning = false;
 function animate() {
   if (!animationRunning) return;
   requestAnimationFrame(animate);
@@ -1179,9 +999,9 @@ function animate() {
   if (!state.running || state.paused) { renderer.render(scene, camera); return; }
   
   state.timeAccumulator += dt;
-  if (state.timeAccumulator > 1800) { state.timeAccumulator = 0; const times = ['day', 'sunset', 'night']; const currentIdx = times.indexOf(state.timeOfDay); state.timeOfDay = times[(currentIdx + 1) % times.length]; applyTimeOfDay(); updateWeatherBadge(); }
+  if (state.timeAccumulator > 1800) { state.timeAccumulator = 0; const ts = ['day','sunset','night']; const ci = ts.indexOf(state.timeOfDay); state.timeOfDay = ts[(ci+1)%ts.length]; applyTimeOfDay(); updateWeatherBadge(); }
   state.weatherAccumulator += dt;
-  if (state.weatherAccumulator > 3600) { state.weatherAccumulator = 0; const weathers = ['sunny', 'sunny', 'rain', 'fog']; state.weather = weathers[Math.floor(Math.random() * weathers.length)]; applyWeather(); applyTimeOfDay(); updateWeatherBadge(); }
+  if (state.weatherAccumulator > 3600) { state.weatherAccumulator = 0; const ws = ['sunny','sunny','rain','fog']; state.weather = ws[Math.floor(Math.random()*ws.length)]; applyWeather(); applyTimeOfDay(); updateWeatherBadge(); }
   
   state.maxSpeed = state.baseMaxSpeed;
   state.speed = Math.min(state.maxSpeed, state.speed + 0.0004 * dt);
@@ -1190,91 +1010,115 @@ function animate() {
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   updateEngineSpeed(state.speed);
   
-  if (state.weather === 'rain') { const positions = rainGeo.attributes.position.array; for (let i = 0; i < positions.length; i += 3) { positions[i+1] -= state.speed * 8 * dt / 2; if (positions[i+1] < 0) { positions[i+1] = 40; positions[i] = (Math.random() - 0.5) * 60; positions[i+2] = (Math.random() - 0.5) * 100; } } rainGeo.attributes.position.needsUpdate = true; }
-  if (state.weather === 'snow') { const positions = snowGeo.attributes.position.array; for (let i = 0; i < positions.length; i += 3) { positions[i+1] -= state.speed * 3 * dt / 2; positions[i] += Math.sin(now / 500 + i) * 0.05; if (positions[i+1] < 0) { positions[i+1] = 40; positions[i] = (Math.random() - 0.5) * 60; positions[i+2] = (Math.random() - 0.5) * 100; } } snowGeo.attributes.position.needsUpdate = true; }
+  if (state.weather === 'rain') { const p = rainGeo.attributes.position.array; for(let i=0;i<p.length;i+=3){ p[i+1] -= state.speed*8*dt/2; if(p[i+1]<0){ p[i+1]=40; p[i]=(Math.random()-0.5)*60; p[i+2]=(Math.random()-0.5)*100; } } rainGeo.attributes.position.needsUpdate = true; }
+  if (state.weather === 'snow') { const p = snowGeo.attributes.position.array; for(let i=0;i<p.length;i+=3){ p[i+1] -= state.speed*3*dt/2; p[i] += Math.sin(now/500+i)*0.05; if(p[i+1]<0){ p[i+1]=40; p[i]=(Math.random()-0.5)*60; p[i+2]=(Math.random()-0.5)*100; } } snowGeo.attributes.position.needsUpdate = true; }
   
   state.shake = Math.max(0, state.shake - 0.05 * dt);
-  const shakeX = (Math.random() - 0.5) * state.shake * 0.08;
-  const shakeY = (Math.random() - 0.5) * state.shake * 0.08;
-  camera.position.x = player.position.x * 0.5 + shakeX;
-  camera.position.y = 6.5 + shakeY;
+  const sx = (Math.random()-0.5)*state.shake*0.08; const sy = (Math.random()-0.5)*state.shake*0.08;
+  camera.position.x = player.position.x * 0.5 + sx;
+  camera.position.y = 6.5 + sy;
   camera.position.z = 13;
   camera.lookAt(player.position.x * 0.35, 1.0, -15);
   
-  const moveAmount = state.speed * dt * 2;
-  laneDashes.forEach(d => { d.position.z += moveAmount; if (d.position.z > 20) d.position.z -= 300; });
-  scrollScenery(moveAmount);
+  const ma = state.speed * dt * 2;
+  laneDashes.forEach(d => { d.position.z += ma; if (d.position.z > 20) d.position.z -= 300; });
+  scrollScenery(ma);
   
-  for (let i = state.cars.length - 1; i >= 0; i--) { const car = state.cars[i]; car.position.z += moveAmount; if (car.position.z > 15) { scene.remove(car); state.cars.splice(i, 1); } }
-  state.lastSpawn += moveAmount;
+  for (let i = state.cars.length - 1; i >= 0; i--) { const c = state.cars[i]; c.position.z += ma; if (c.position.z > 15) { scene.remove(c); state.cars.splice(i, 1); } }
+  state.lastSpawn += ma;
   if (state.lastSpawn > 75) { spawnEnemyCar(); state.lastSpawn = 0; }
   
-  const oldMoney = state.money;
+  const old = state.money;
   state.distance += state.speed * dt / 5;
-  state.money += moneyPerMeter() * (state.speed * dt / 5);
-  state.coinTimer += state.money - oldMoney;
-  if (state.coinTimer >= 0.5) { state.coinTimer = 0; playSound('coin'); }
-  if (state.speed > 1.5) state.shake = Math.min(0.8, state.shake + 0.015 * dt);
-  for (const car of state.cars) { if (checkCollision(player, car)) { state.gameCrashes++; endGame(); return; } }
+  state.money += OPPerMeter() * (state.speed * dt / 5);
   
-  document.getElementById('moneyHud').textContent = state.money.toFixed(2);
+  state.coinTimer += state.money - old;
+  if (state.coinTimer >= 500) { state.coinTimer = 0; playSound('coin'); }
+  if (state.speed > 1.5) state.shake = Math.min(0.8, state.shake + 0.015 * dt);
+  for (const c of state.cars) { if (checkCollision(player, c)) { state.gameCrashes++; endGame(); return; } }
+  
+  document.getElementById('moneyHud').textContent = Math.floor(state.money);
   document.getElementById('distance').textContent = Math.floor(state.distance);
   document.getElementById('speed').textContent = Math.floor(state.speed * 60);
   renderer.render(scene, camera);
 }
-
 function startAnimationLoop() { if (!animationRunning) { animationRunning = true; lastTime = performance.now(); animate(); } }
 
+// ==================== OYUN KONTROL ====================
 window.pauseGame = function() { if (!state.running || state.paused) return; state.paused = true; document.getElementById('pauseScreen').style.display = 'flex'; document.getElementById('gameButtons').classList.remove('visible'); stopEngine(); stopBgMusic(); };
 window.resumeGame = function() { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); startEngine(); startBgMusic(); lastTime = performance.now(); };
 window.restartFromPause = function() { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; resetGameState(); state.running = true; document.getElementById('gameButtons').classList.add('visible'); randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); };
-window.goHomeFromGame = function() { if (state.money > 0) { addToWallet(state.money); const stats = getStats(); stats.totalEarned += state.money; stats.totalDistance += state.distance; if (state.distance > stats.bestDistance) stats.bestDistance = state.distance; saveStats(stats); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameOver').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); renderer.domElement.style.display = 'none'; document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateWalletUI(); };
+window.goHomeFromGame = function() { if (state.money > 0) { addOP(state.money); const s = getStats(); s.totalDistance += state.distance; if (state.distance > s.bestDistance) s.bestDistance = state.distance; saveStats(s); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameOver').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); renderer.domElement.style.display = 'none'; document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateWalletUI(); };
 
 let penaltyAmount = 0;
 function endGame() {
   state.running = false; state.paused = false;
-  const insurance = getInsurance(); let insuranceUsed = false;
-  if (insurance.remaining > 0) { insurance.remaining -= 1; if (insurance.remaining === 0) insurance.plan = 'none'; saveInsurance(insurance); penaltyAmount = 0; insuranceUsed = true; }
-  else { penaltyAmount = state.money / 2; }
+  const ins = getInsurance(); let used = false;
+  if (ins.remaining > 0) { ins.remaining -= 1; if (ins.remaining === 0) ins.plan = 'none'; saveInsurance(ins); penaltyAmount = 0; used = true; }
+  else { penaltyAmount = Math.floor(state.money / 2); }
   playSound('crash'); stopEngine(); stopBgMusic();
   const stats = getStats();
-  stats.totalDistance += state.distance; stats.totalCrashes += 1; stats.totalEarned += state.money; stats.gamesPlayed += 1;
+  stats.totalDistance += state.distance;
+  stats.totalCrashes += 1;
+  stats.gamesPlayed += 1;
   if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
   stats.quests.distance5000.progress += Math.floor(state.distance);
-  const carKey = getGarage().selected;
-  if (!stats.carsUsed.includes(carKey)) stats.carsUsed.push(carKey);
+  const ck = getGarage().selected;
+  if (!stats.carsUsed.includes(ck)) stats.carsUsed.push(ck);
   stats.quests.cars3.progress = stats.carsUsed.length;
   saveStats(stats);
   checkAchievements();
-  document.getElementById('earned').textContent = state.money.toFixed(2);
-  document.getElementById('penalty').textContent = penaltyAmount.toFixed(2);
-  const insMsg = document.getElementById('insuranceMsg');
-  if (insuranceUsed) { insMsg.textContent = t('ins_used'); insMsg.style.color = '#4CAF50'; } else { insMsg.textContent = ''; }
+  document.getElementById('earned').textContent = Math.floor(state.money);
+  document.getElementById('penalty').textContent = penaltyAmount;
+  const im = document.getElementById('insuranceMsg');
+  if (used) { im.textContent = t('ins_used'); im.style.color = '#4CAF50'; } else { im.textContent = ''; }
   document.getElementById('gameOver').style.display = 'flex';
   document.getElementById('gameButtons').classList.remove('visible');
 }
 
 window.watchAd = function() {
-  showToast('📺...', 'info');
+  if (!checkDailyAdLimit()) { showToast(t('ad_limit'), 'error'); return; }
+  showToast('📺 ' + t('ad_watched'), 'info');
   setTimeout(() => {
-    addToWallet(state.money); playSound('coin');
-    const stats = getStats(); stats.adsWatched += 1; stats.quests.ads5.progress += 1; stats.totalEarned += state.money; stats.totalDistance += state.distance;
+    addOP(Math.floor(state.money / 2));
+    playSound('coin');
+    const stats = getStats();
+    stats.adsWatched += 1;
+    stats.quests.ads5.progress += 1;
+    stats.totalDistance += state.distance;
     if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
     saveStats(stats);
+    incrementDailyAds();
     state.running = true; state.paused = false;
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('gameButtons').classList.add('visible');
     player.position.x = 0; state.playerLane = 0; state.targetLane = 0;
     for (let i = state.cars.length - 1; i >= 0; i--) { if (state.cars[i].position.z > player.position.z - 20) { scene.remove(state.cars[i]); state.cars.splice(i, 1); } }
     startEngine(); startBgMusic(); startAnimationLoop();
-    showToast('✅ +' + state.money.toFixed(2) + ' ₺', 'gold');
+    showToast('✅ +' + Math.floor(state.money/2) + ' OP', 'gold');
   }, 1500);
 };
 
-window.restart = function() { const remaining = Math.max(0, state.money - penaltyAmount); addToWallet(remaining); const stats = getStats(); stats.totalEarned += remaining; saveStats(stats); resetGameState(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); state.running = true; state.paused = false; randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); updateWalletUI(); };
+window.restart = function() {
+  const rem = Math.max(0, state.money - penaltyAmount);
+  addOP(rem);
+  const stats = getStats();
+  stats.totalDistance += state.distance;
+  saveStats(stats);
+  resetGameState();
+  document.getElementById('gameOver').style.display = 'none';
+  document.getElementById('gameButtons').classList.add('visible');
+  state.running = true; state.paused = false;
+  randomizeWeatherAndTime();
+  startEngine(); startBgMusic(); startAnimationLoop();
+  updateWalletUI();
+};
 
 window.goHome = function() {
-  if (state.running || state.money > 0) { const remaining = Math.max(0, state.money - (state.running ? 0 : penaltyAmount)); addToWallet(remaining); }
+  if (state.running || state.money > 0) {
+    const rem = Math.max(0, state.money - (state.running ? 0 : penaltyAmount));
+    addOP(rem);
+  }
   state.running = false; state.paused = false; animationRunning = false;
   stopEngine(); stopBgMusic();
   document.getElementById('gameOver').style.display = 'none';
@@ -1289,26 +1133,27 @@ window.goHome = function() {
   document.getElementById('garageScreen').style.display = 'none';
   document.getElementById('insuranceScreen').style.display = 'none';
   document.getElementById('profileScreen').style.display = 'none';
+  document.getElementById('kasaScreen').style.display = 'none';
   renderer.domElement.style.display = 'none';
   document.getElementById('homeScreen').style.display = 'flex';
-  resetGameState(); updateWalletUI(); checkDailyLogin();
+  resetGameState(); updateWalletUI(); checkDailyLogin(); updateKasaUI();
 };
 
-window.startGame = function() { unlockAudio(); const insurance = getInsurance(); if (insurance.remaining === 0) { showInsurance(); return; } beginGame(); };
+window.startGame = function() {
+  unlockAudio();
+  const ins = getInsurance();
+  if (ins.remaining === 0) { showInsurance(); return; }
+  beginGame();
+};
 window.startWithoutInsurance = function() { document.getElementById('insuranceScreen').style.display = 'none'; beginGame(); };
 window.beginGame = function() {
-  resetGameState(); resetDailyQuestsIfNeeded();
-  
-  // Haritayı seç (rastgele veya seçili)
-  let mapChoice = getMapChoice();
-  if (mapChoice === 'random') {
-    const maps = ['city', 'highway', 'mountain'];
-    mapChoice = maps[Math.floor(Math.random() * maps.length)];
-  }
-  state.currentMap = mapChoice;
-  state.mapBonus = MAPS[mapChoice].bonus;
-  initScenery(mapChoice);
-  
+  resetGameState();
+  resetDailyQuestsIfNeeded();
+  let mc = 'random';
+  if (mc === 'random') { const ms = ['city','highway','mountain']; mc = ms[Math.floor(Math.random()*ms.length)]; }
+  state.currentMap = mc;
+  state.mapBonus = MAPS[mc].bonus;
+  initScenery(mc);
   document.getElementById('homeScreen').style.display = 'none';
   document.getElementById('questsScreen').style.display = 'none';
   document.getElementById('achievementsScreen').style.display = 'none';
@@ -1317,6 +1162,7 @@ window.beginGame = function() {
   document.getElementById('garageScreen').style.display = 'none';
   document.getElementById('insuranceScreen').style.display = 'none';
   document.getElementById('profileScreen').style.display = 'none';
+  document.getElementById('kasaScreen').style.display = 'none';
   document.getElementById('hud').style.display = 'block';
   document.getElementById('gameButtons').classList.add('visible');
   renderer.domElement.style.display = 'block';
@@ -1325,58 +1171,39 @@ window.beginGame = function() {
   startEngine(); startBgMusic(); startAnimationLoop();
 };
 
-window.showGarage = function() { renderGarage(); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('garageScreen').style.display = 'flex'; };
-window.showInsurance = function() { renderInsurance(); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('garageScreen').style.display = 'none'; document.getElementById('insuranceScreen').style.display = 'flex'; };
-window.showQuests = function() { renderQuests(); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('questsScreen').style.display = 'flex'; };
-window.showAchievements = function() { renderAchievements(); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('achievementsScreen').style.display = 'flex'; };
-window.showWallet = function() { updateWalletUI(); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('walletScreen').style.display = 'flex'; };
-window.showSettings = function() { updateSettingsUI(); applyTranslations(); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('settingsScreen').style.display = 'flex'; };
-
-window.requestWithdraw = async function() {
-  const method = document.getElementById('withdrawMethod').value;
-  const account = document.getElementById('withdrawAccount').value.trim();
-  const amount = parseFloat(document.getElementById('withdrawAmount').value);
-  if (!account) { alert('⚠️'); return; }
-  if (isNaN(amount) || amount < 10) { alert('⚠️ min 10₺'); return; }
-  const w = getWallet();
-  if (amount > w.balance) { alert('⚠️'); return; }
-  w.balance -= amount; w.pending += amount;
-  w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' });
-  saveWallet(w);
-  try { await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() }) }); } catch (err) {}
-  alert('✅');
-  updateWalletUI();
-  document.getElementById('withdrawAccount').value = '';
-  document.getElementById('withdrawAmount').value = '';
-};
-
-function updateWalletUI() { const w = getWallet(); const el1 = document.getElementById('walletBalance'); const el2 = document.getElementById('walletPending'); if (el1) el1.textContent = w.balance.toFixed(2); if (el2) el2.textContent = w.pending.toFixed(2); }
+window.showGarage = function() { renderGarage(); document.getElementById('homeScreen').style.display='none'; document.getElementById('garageScreen').style.display='flex'; };
+window.showInsurance = function() { renderInsurance(); document.getElementById('homeScreen').style.display='none'; document.getElementById('insuranceScreen').style.display='flex'; };
+window.showQuests = function() { renderQuests(); document.getElementById('homeScreen').style.display='none'; document.getElementById('questsScreen').style.display='flex'; };
+window.showAchievements = function() { renderAchievements(); document.getElementById('homeScreen').style.display='none'; document.getElementById('achievementsScreen').style.display='flex'; };
+window.showSettings = function() { updateSettingsUI(); applyTranslations(); document.getElementById('homeScreen').style.display='none'; document.getElementById('settingsScreen').style.display='flex'; };
 
 function resetGameState() {
   state.money = 0; state.distance = 0; state.speed = 0.4;
   state.playerLane = 0; state.targetLane = 0; state.shake = 0;
   state.lastSpawn = 0; state.coinTimer = 0;
   state.timeAccumulator = 0; state.weatherAccumulator = 0;
-  if (player) { player.position.set(0, 0, 4); player.rotation.z = 0; }
+  if (player) { player.position.set(0,0,4); player.rotation.z = 0; }
   state.cars.forEach(c => scene.remove(c)); state.cars = [];
   penaltyAmount = 0;
-  camera.position.set(0, 6.5, 13);
-  document.getElementById('moneyHud').textContent = '0.00';
+  camera.position.set(0,6.5,13);
+  document.getElementById('moneyHud').textContent = '0';
   document.getElementById('distance').textContent = '0';
   document.getElementById('speed').textContent = '0';
 }
 
-function resizeRenderer() { const w = window.innerWidth; const h = window.innerHeight; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h); renderer.domElement.style.width = w + 'px'; renderer.domElement.style.height = h + 'px'; }
+function resizeRenderer() { const w = window.innerWidth; const h = window.innerHeight; camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h); renderer.domElement.style.width = w+'px'; renderer.domElement.style.height = h+'px'; }
 window.addEventListener('resize', resizeRenderer);
 window.addEventListener('orientationchange', () => { setTimeout(resizeRenderer, 100); setTimeout(resizeRenderer, 300); setTimeout(resizeRenderer, 600); });
 
 // ==================== BAŞLAT ====================
 resizeRenderer();
-initScenery('city');  // İlk açılışta şehir
+initScenery('city');
 applyTranslations();
 updateWalletUI();
 updateSettingsUI();
+updateKasaUI();
 resetDailyQuestsIfNeeded();
+updateHUD();
 setTimeout(checkDailyLogin, 500);
 </script>
 </body>
