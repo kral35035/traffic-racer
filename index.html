@@ -526,7 +526,144 @@ window.toggleEngine = function() { settings.engineEnabled = !settings.engineEnab
 window.toggleSfx = function() { settings.sfxEnabled = !settings.sfxEnabled; saveSettings(settings); updateSettingsUI(); };
 window.toggleMasterFromGame = function() { toggleMaster(); };
 window.testSound = function(name) { try { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
-window.setLanguage = function(lang) { try { if (!['tr','en','ru'].includes(lang)) return; currentLang = lang; saveLanguage(lang); showToast('🌍 Dil: ' + lang.toUpperCase(), 'info'); } catch(e) {} };
+// Çeviri sözlüğü
+const TRANSLATIONS = {
+  tr: {
+    home_title: "🏎️ TRAFFIC RACER",
+    home_subtitle: "Kaza yapmadan ilerle, para kazan!",
+    play: "🎮 OYNAMAYA BAŞLA",
+    wallet: "💰 CÜZDAN",
+    garage: "🚗 GARAJ",
+    profile: "👤 PROFİL",
+    settings: "⚙️ AYARLAR",
+    fullscreen: "⛶ TAM EKRAN",
+    back: "← Ana Sayfa",
+    kasa_tab: "🎁 Kasa",
+    bakiye_tab: "💰 Bakiye",
+    cekim_tab: "💸 Çekim",
+    stats_tab: "📊 İstatistik",
+    quests_tab: "🎯 Görevler",
+    ach_tab: "🏆 Başarımlar",
+    kasa_ready: "🎁 KASA DOLDU!",
+    kasa_waiting: "⏳ Kasa Doluyor...",
+    lang_changed: "🌍 Dil değiştirildi",
+    master_vol: "🔊 Ana Ses",
+    music_vol: "🎵 Müzik",
+    engine_vol: "🚗 Motor Sesi",
+    sfx_vol: "💥 Efekt Sesleri",
+    on: "AÇIK",
+    off: "KAPALI"
+  },
+  en: {
+    home_title: "🏎️ TRAFFIC RACER",
+    home_subtitle: "Race without crashing, earn rewards!",
+    play: "🎮 START GAME",
+    wallet: "💰 WALLET",
+    garage: "🚗 GARAGE",
+    profile: "👤 PROFILE",
+    settings: "⚙️ SETTINGS",
+    fullscreen: "⛶ FULLSCREEN",
+    back: "← Home",
+    kasa_tab: "🎁 Chest",
+    bakiye_tab: "💰 Balance",
+    cekim_tab: "💸 Withdraw",
+    stats_tab: "📊 Stats",
+    quests_tab: "🎯 Quests",
+    ach_tab: "🏆 Achievements",
+    kasa_ready: "🎁 CHEST READY!",
+    kasa_waiting: "⏳ Chest Filling...",
+    lang_changed: "🌍 Language changed",
+    master_vol: "🔊 Master Volume",
+    music_vol: "🎵 Music",
+    engine_vol: "🚗 Engine Sound",
+    sfx_vol: "💥 Sound Effects",
+    on: "ON",
+    off: "OFF"
+  },
+  ru: {
+    home_title: "🏎️ TRAFFIC RACER",
+    home_subtitle: "Гоняй без аварий, зарабатывай!",
+    play: "🎮 НАЧАТЬ ИГРУ",
+    wallet: "💰 КОШЕЛЁК",
+    garage: "🚗 ГАРАЖ",
+    profile: "👤 ПРОФИЛЬ",
+    settings: "⚙️ НАСТРОЙКИ",
+    fullscreen: "⛶ ПОЛНЫЙ ЭКРАН",
+    back: "← Домой",
+    kasa_tab: "🎁 Сундук",
+    bakiye_tab: "💰 Баланс",
+    cekim_tab: "💸 Вывод",
+    stats_tab: "📊 Статистика",
+    quests_tab: "🎯 Задания",
+    ach_tab: "🏆 Достижения",
+    kasa_ready: "🎁 СУНДУК ГОТОВ!",
+    kasa_waiting: "⏳ Заполняется...",
+    lang_changed: "🌍 Язык изменён",
+    master_vol: "🔊 Общая громкость",
+    music_vol: "🎵 Музыка",
+    engine_vol: "🚗 Двигатель",
+    sfx_vol: "💥 Эффекты",
+    on: "ВКЛ",
+    off: "ВЫКЛ"
+  }
+};
+
+function t(key) {
+  try { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || (TRANSLATIONS.tr && TRANSLATIONS.tr[key]) || key; }
+  catch(e) { return key; }
+}
+
+function applyTranslations() {
+  try {
+    // Ana sayfa
+    const el = document.getElementById('t_home_title'); if (el) el.textContent = t('home_title');
+    const el2 = document.getElementById('t_home_subtitle'); if (el2) el2.textContent = t('home_subtitle');
+    const pb = document.getElementById('playBtn'); if (pb) pb.textContent = t('play');
+    const wb = document.getElementById('walletBtn'); if (wb) { const badge = wb.querySelector('.btn-badge'); wb.textContent = t('wallet'); if (badge) wb.appendChild(badge); }
+    const gb = document.getElementById('garageBtn'); if (gb) gb.textContent = t('garage');
+    const prb = document.getElementById('profileBtn'); if (prb) prb.textContent = t('profile');
+    const sb = document.getElementById('settingsBtn'); if (sb) sb.textContent = t('settings');
+    const fb = document.getElementById('fullscreenBtn'); if (fb) fb.textContent = t('fullscreen');
+    
+    // Cüzdan tab'ları
+    const tk = document.getElementById('tabKasa'); if (tk) tk.textContent = t('kasa_tab');
+    const tb = document.getElementById('tabBakiye'); if (tb) tb.textContent = t('bakiye_tab');
+    const tc = document.getElementById('tabCekim'); if (tc) tc.textContent = t('cekim_tab');
+    
+    // Profil tab'ları
+    const ts = document.getElementById('tabStats'); if (ts) ts.textContent = t('stats_tab');
+    const tq = document.getElementById('tabQuests'); if (tq) tq.textContent = t('quests_tab');
+    const ta = document.getElementById('tabAch'); if (ta) ta.textContent = t('ach_tab');
+    
+    // Geri butonları
+    document.querySelectorAll('.back-btn').forEach(b => { b.textContent = t('back'); });
+    
+    // Ayarlar
+    const mv = document.getElementById('masterToggle'); if (mv) mv.textContent = settings.masterEnabled ? t('on') : t('off');
+    const mu = document.getElementById('musicToggle'); if (mu) mu.textContent = settings.musicEnabled ? t('on') : t('off');
+    const ev = document.getElementById('engineToggle'); if (ev) ev.textContent = settings.engineEnabled ? t('on') : t('off');
+    const sv = document.getElementById('sfxToggle'); if (sv) sv.textContent = settings.sfxEnabled ? t('on') : t('off');
+    
+    // Kasa başlığı
+    updateKasaUI();
+    
+    // Dil butonlarını vurgula
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    const map = { tr: 'langTR', en: 'langEN', ru: 'langRU' };
+    const active = document.getElementById(map[currentLang]);
+    if (active) active.classList.add('active');
+  } catch(e) { console.error('applyTranslations:', e); }
+}
+
+window.setLanguage = function(lang) {
+  try {
+    if (!['tr','en','ru'].includes(lang)) return;
+    currentLang = lang;
+    saveLanguage(lang);
+    applyTranslations();
+    showToast(t('lang_changed') + ' (' + lang.toUpperCase() + ')', 'info');
+  } catch(e) { console.error('setLanguage:', e); }
+};
 window.toggleFullscreen = function() { try { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) {} };
 
 // ==================== ARAÇLAR ====================
