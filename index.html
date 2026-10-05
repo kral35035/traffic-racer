@@ -623,21 +623,47 @@ function getInsurance() { try { const d = localStorage.getItem('trafficRacerInsu
 function saveInsurance(i) { try { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); } catch(e) {} }
 
 // ==================== ADMOB KÖPRÜSÜ ====================
-// Kodular'a mesaj gönder
+// Kodular'a mesaj gönder - ÇOKLU KÖPRÜ DESTEĞİ
 function triggerAdMob(adType) {
   try {
-    // Kodular WebViewer: setWebViewString
+    console.log('🎯 Reklam isteniyor:', adType);
+    
+    // 1. Kodular standart WebViewer
     if (window.Kodular && typeof window.Kodular.setWebViewString === 'function') {
+      console.log('✅ Kodular bridge kullanılıyor');
       window.Kodular.setWebViewString(adType);
       return true;
     }
-    // Alternatif: window.Android (Kodular WebViewer setWebViewString'i doğrudan desteklemiyorsa)
+    
+    // 2. AppInventor (Kodular ile aynı temel)
+    if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') {
+      console.log('✅ AppInventor bridge kullanılıyor');
+      window.AppInventor.setWebViewString(adType);
+      return true;
+    }
+    
+    // 3. CustomWebView alternatif
+    if (window.CustomWebView && typeof window.CustomWebView.setWebViewString === 'function') {
+      console.log('✅ CustomWebView bridge kullanılıyor');
+      window.CustomWebView.setWebViewString(adType);
+      return true;
+    }
+    
+    // 4. Android native köprü
     if (window.Android && typeof window.Android.setWebViewString === 'function') {
+      console.log('✅ Android bridge kullanılıyor');
       window.Android.setWebViewString(adType);
       return true;
     }
-    return false;
-  } catch(e) { console.error('triggerAdMob:', e); return false; }
+    
+    // 5. Son çare: URL hash
+    console.log('⚠️ Bridge bulunamadı, URL hash kullanılıyor');
+    window.location.hash = adType;
+    return true;
+  } catch(e) { 
+    console.error('❌ triggerAdMob hatası:', e); 
+    return false; 
+  }
 }
 
 // Kodular'dan reklam izlendi onayı gelince (ödül verilir)
