@@ -418,6 +418,8 @@ window.onKodularAdRewarded = function() {
     if (rand < 0.10) { addTL(0.10); showToast('🎁 +2000 OP + 0.10 ₺!', 'gold'); }
     else if (rand < 0.40) { addTL(0.05); showToast('🎁 +2000 OP + 0.05 ₺!', 'gold'); }
     else { showToast('✅ +2000 OP!', 'gold'); }
+       // Büyük bildirim
+    showBigRewardPopup(KASA_REWARD_OP);
     playSound('coin');
     const k = getKasaState(); 
     k.readyAt = Date.now() + KASA_COOLDOWN_MS; 
@@ -433,11 +435,11 @@ window.onKodularAdRewarded = function() {
   } catch(e) { console.error('onKodularAdRewarded:', e); }
 };
 
-// Kodular'dan OYUN SONU reklamı ödülü gelince
 window.onKodularGameOverAdRewarded = function() {
   try {
     console.log('✅ Kodular: Oyun sonu reklamı ödülü alındı');
-    addOP(Math.floor(state.money / 2));
+    const reward = Math.floor(state.money / 2);
+    addOP(reward);
     playSound('coin');
     const stats = getStats();
     stats.adsWatched = (stats.adsWatched || 0) + 1;
@@ -468,7 +470,9 @@ window.onKodularGameOverAdRewarded = function() {
     startBgMusic();
     startAnimationLoop();
     updateHUD();
-    showToast('✅ +' + Math.floor(state.money/2) + ' OP', 'gold');
+    
+    // BÜYÜK BİLDİRİM - kullanıcı görsün
+    showBigRewardPopup(reward);
   } catch(e) { console.error('onKodularGameOverAdRewarded:', e); }
 };
 
@@ -481,7 +485,71 @@ window.onKodularAdClosed = function() {
     if (btn) { btn.disabled = false; }
   } catch(e) {}
 };
-
+// Büyük ödül bildirimi - ekranın ortasında belirgin
+function showBigRewardPopup(amount) {
+  try {
+    // Varsa eski popup'ı sil
+    const old = document.getElementById('rewardPopup');
+    if (old) old.remove();
+    
+    // Yeni popup oluştur
+    const popup = document.createElement('div');
+    popup.id = 'rewardPopup';
+    popup.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.5);
+        background: linear-gradient(135deg, #4CAF50, #2e7d32);
+        color: white;
+        padding: 30px 40px;
+        border-radius: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        z-index: 9999;
+        box-shadow: 0 0 60px rgba(76, 175, 80, 0.8), 0 10px 30px rgba(0,0,0,0.5);
+        border: 3px solid #fff;
+        animation: rewardPop 0.5s ease-out forwards;
+        pointer-events: none;
+        max-width: 90vw;
+      ">
+        <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+        <div>REKLAM TAMAMLANDI!</div>
+        <div style="font-size: 42px; color: #FFD700; margin-top: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+          +${amount.toLocaleString()} OP
+        </div>
+        <div style="font-size: 16px; margin-top: 10px; opacity: 0.9;">Kaldığın yerden devam ediliyor...</div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+    
+    // Animasyon için stil ekle (bir kez)
+    if (!document.getElementById('rewardPopStyle')) {
+      const style = document.createElement('style');
+      style.id = 'rewardPopStyle';
+      style.textContent = `
+        @keyframes rewardPop {
+          0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+          50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        @keyframes rewardFade {
+          0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+          100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    // 2.5 saniye sonra kaybol
+    setTimeout(() => {
+      popup.style.animation = 'rewardFade 0.5s ease-in forwards';
+      setTimeout(() => { if (popup.parentNode) popup.remove(); }, 500);
+    }, 2500);
+  } catch(e) { console.error('showBigRewardPopup:', e); }
+}
 // Kodular'dan reklam yüklenemedi bilgisi
 window.onKodularAdFailed = function() {
   try {
