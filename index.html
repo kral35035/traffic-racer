@@ -138,7 +138,6 @@
   .convert-box h3 { color: #FFD700; font-size: 14px; margin-bottom: 8px; }
   .convert-box .rate { font-size: 12px; color: #aaa; margin-bottom: 8px; }
   .convert-input { width: 100%; padding: 11px; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 13px; margin: 4px 0; }
-  /* TURNUVA */
   .tournament-header { background: linear-gradient(135deg, #FF6F00, #E65100); border-radius: 12px; padding: 15px; text-align: center; margin: 10px 0; }
   .tournament-header h3 { color: white; font-size: 18px; margin-bottom: 5px; }
   .tournament-header .timer { color: #FFD700; font-size: 22px; font-weight: bold; letter-spacing: 2px; }
@@ -149,11 +148,9 @@
   .tournament-prize .place.bronze { border-color: #CD7F32; }
   .tournament-prize .medal { font-size: 30px; }
   .tournament-prize .prize { font-size: 16px; font-weight: bold; color: #4CAF50; margin-top: 5px; }
-  /* REFERANS */
   .referral-box { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 16px; margin: 10px 0; border: 2px solid rgba(76,175,80,0.3); text-align: center; }
   .referral-code { font-size: 24px; font-weight: bold; color: #FFD700; letter-spacing: 4px; padding: 12px; background: #1a1a2e; border-radius: 10px; margin: 10px 0; }
   .referral-input { width: 100%; padding: 11px; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 8px; font-size: 14px; margin: 4px 0; text-align: center; text-transform: uppercase; }
-  /* KAPLAMA */
   .paint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
   .paint-item { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 10px; text-align: center; cursor: pointer; border: 2px solid transparent; touch-action: manipulation; }
   .paint-item.selected { border-color: #4CAF50; box-shadow: 0 0 16px rgba(76,175,80,0.5); }
@@ -188,7 +185,6 @@
   <button class="home-btn" id="fullscreenBtn" onclick="toggleFullscreen()">⛶ TAM EKRAN</button>
 </div>
 
-<!-- CÜZDAN -->
 <div id="walletScreen" class="modal-screen">
   <h2>💰 CÜZDAN</h2>
   <div class="modal-content">
@@ -251,7 +247,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- TURNUVA -->
 <div id="tournamentScreen" class="modal-screen">
   <h2>🏆 HAFTALIK TURNUVA</h2>
   <div class="modal-content">
@@ -260,18 +255,9 @@
       <div class="timer" id="tournamentTimer">--:--:--</div>
     </div>
     <div class="tournament-prize">
-      <div class="place gold">
-        <div class="medal">🥇</div>
-        <div class="prize">50 ₺</div>
-      </div>
-      <div class="place silver">
-        <div class="medal">🥈</div>
-        <div class="prize">30 ₺</div>
-      </div>
-      <div class="place bronze">
-        <div class="medal">🥉</div>
-        <div class="prize">20 ₺</div>
-      </div>
+      <div class="place gold"><div class="medal">🥇</div><div class="prize">50 ₺</div></div>
+      <div class="place silver"><div class="medal">🥈</div><div class="prize">30 ₺</div></div>
+      <div class="place bronze"><div class="medal">🥉</div><div class="prize">20 ₺</div></div>
     </div>
     <div class="task-card">
       <div class="task-title">📊 Senin Skorun</div>
@@ -291,7 +277,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- PROFİL -->
 <div id="profileScreen" class="modal-screen">
   <h2>👤 PROFİL</h2>
   <div class="modal-content">
@@ -345,7 +330,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- GARAJ -->
 <div id="garageScreen" class="modal-screen">
   <h2>🚗 GARAJ</h2>
   <div class="modal-content">
@@ -365,7 +349,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- SİGORTA -->
 <div id="insuranceScreen" class="modal-screen">
   <h2>🛡️ SİGORTA</h2>
   <div class="modal-content" id="insuranceList"></div>
@@ -373,7 +356,6 @@
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
-<!-- AYARLAR -->
 <div id="settingsScreen" class="modal-screen">
   <h2>⚙️ AYARLAR</h2>
   <div class="modal-content">
@@ -486,52 +468,38 @@ const KASA_COOLDOWN_MS = 5 * 60 * 60 * 1000;
 const KASA_REWARD_OP = 2000;
 const DAILY_AD_LIMIT = 15;
 const INTERSTITIAL_EVERY_N = 3;
-const REFERRAL_JOIN_BONUS = 5; // TL
-const REFERRAL_5000M_BONUS = 10; // TL
+const REFERRAL_JOIN_BONUS = 5;
+const REFERRAL_5000M_BONUS = 10;
 const PAINT_PRICE_OP = 100000;
-const TOURNAMENT_PRIZES = [50, 30, 20]; // TL
+const TOURNAMENT_PRIZES = [50, 30, 20];
 
-// ==================== GEÇİŞ REKLAMI ====================
 let interstitialCounter = parseInt(localStorage.getItem('trafficRacerInterCounter') || '0');
 
 // ==================== ADMOB KÖPRÜSÜ ====================
 function triggerAdMob(adType) {
   try {
     console.log('🎯 Reklam isteniyor:', adType);
-    if (window.Kodular && typeof window.Kodular.setWebViewString === 'function') {
-      window.Kodular.setWebViewString(adType);
-      return true;
-    }
-    if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') {
-      window.AppInventor.setWebViewString(adType);
-      return true;
-    }
-    if (window.CustomWebView && typeof window.CustomWebView.setWebViewString === 'function') {
-      window.CustomWebView.setWebViewString(adType);
-      return true;
-    }
-    if (window.Android && typeof window.Android.setWebViewString === 'function') {
-      window.Android.setWebViewString(adType);
-      return true;
-    }
+    if (window.Kodular && typeof window.Kodular.setWebViewString === 'function') { window.Kodular.setWebViewString(adType); return true; }
+    if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') { window.AppInventor.setWebViewString(adType); return true; }
+    if (window.CustomWebView && typeof window.CustomWebView.setWebViewString === 'function') { window.CustomWebView.setWebViewString(adType); return true; }
+    if (window.Android && typeof window.Android.setWebViewString === 'function') { window.Android.setWebViewString(adType); return true; }
     window.location.hash = adType;
     return true;
   } catch(e) { console.error('❌ triggerAdMob:', e); return false; }
 }
 
-// Büyük ödül bildirimi
 function showBigRewardPopup(amount) {
   try {
     const old = document.getElementById('rewardPopup');
     if (old) old.remove();
     const popup = document.createElement('div');
     popup.id = 'rewardPopup';
-    popup.innerHTML = `<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 30px 40px; border-radius: 20px; font-size: 28px; font-weight: bold; text-align: center; z-index: 9999; box-shadow: 0 0 60px rgba(76, 175, 80, 0.8), 0 10px 30px rgba(0,0,0,0.5); border: 3px solid #fff; animation: rewardPop 0.5s ease-out forwards; pointer-events: none; max-width: 90vw;"><div style="font-size: 60px; margin-bottom: 10px;">🎉</div><div>REKLAM TAMAMLANDI!</div><div style="font-size: 42px; color: #FFD700; margin-top: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">+${amount.toLocaleString()} OP</div><div style="font-size: 16px; margin-top: 10px; opacity: 0.9;">Kaldığın yerden devam ediliyor...</div></div>`;
+    popup.innerHTML = `<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; padding: 30px 40px; border-radius: 20px; font-size: 28px; font-weight: bold; text-align: center; z-index: 9999; box-shadow: 0 0 60px rgba(76, 175, 80, 0.8); border: 3px solid #fff; animation: rewardPop 0.5s ease-out forwards; pointer-events: none; max-width: 90vw;"><div style="font-size: 60px; margin-bottom: 10px;">🎉</div><div>REKLAM TAMAMLANDI!</div><div style="font-size: 42px; color: #FFD700; margin-top: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">+${amount.toLocaleString()} OP</div><div style="font-size: 16px; margin-top: 10px; opacity: 0.9;">Kaldığın yerden devam ediliyor...</div></div>`;
     document.body.appendChild(popup);
     if (!document.getElementById('rewardPopStyle')) {
       const style = document.createElement('style');
       style.id = 'rewardPopStyle';
-      style.textContent = `@keyframes rewardPop { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } } @keyframes rewardFade { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } }`;
+      style.textContent = `@keyframes rewardPop { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } } @keyframes rewardFade { 0% { opacity: 1; } 100% { opacity: 0; } }`;
       document.head.appendChild(style);
     }
     setTimeout(() => {
@@ -543,7 +511,6 @@ function showBigRewardPopup(amount) {
 
 window.onKodularAdRewarded = function() {
   try {
-    console.log('✅ Kodular: Kasa ödülü');
     addOP(KASA_REWARD_OP);
     const rand = Math.random();
     let extraMsg = '';
@@ -553,8 +520,7 @@ window.onKodularAdRewarded = function() {
     const k = getKasaState(); k.readyAt = Date.now() + KASA_COOLDOWN_MS; saveKasaState(k);
     const stats = getStats(); stats.adsWatched = (stats.adsWatched || 0) + 1; saveStats(stats);
     updateKasaUI(); updateWalletUI(); updateHUD();
-    const btn = document.getElementById('kasaClaimBtn');
-    if (btn) { btn.disabled = true; }
+    const btn = document.getElementById('kasaClaimBtn'); if (btn) { btn.disabled = true; }
     showBigRewardPopup(KASA_REWARD_OP);
     showToast('🎁 +2000 OP' + extraMsg, 'gold');
   } catch(e) {}
@@ -562,7 +528,6 @@ window.onKodularAdRewarded = function() {
 
 window.onKodularGameOverAdRewarded = function() {
   try {
-    console.log('✅ Kodular: Oyun sonu ödülü');
     const reward = Math.floor(state.money / 2);
     addOP(reward);
     playSound('coin');
@@ -588,27 +553,13 @@ window.onKodularGameOverAdRewarded = function() {
 };
 
 window.onKodularAdClosed = function() {
-  try {
-    const btn = document.getElementById('kasaClaimBtn');
-    if (btn) { btn.disabled = false; }
-  } catch(e) {}
+  try { const btn = document.getElementById('kasaClaimBtn'); if (btn) { btn.disabled = false; } } catch(e) {}
 };
-
 window.onKodularAdFailed = function() {
-  try {
-    showToast('❌ Reklam yüklenemedi', 'error');
-    const btn = document.getElementById('kasaClaimBtn');
-    if (btn) { btn.disabled = false; }
-    updateKasaUI();
-  } catch(e) {}
+  try { showToast('❌ Reklam yüklenemedi', 'error'); const btn = document.getElementById('kasaClaimBtn'); if (btn) { btn.disabled = false; } updateKasaUI(); } catch(e) {}
 };
-
-window.onKodularInterstitialClosed = function() {
-  try { doRestart(); } catch(e) {}
-};
-window.onKodularInterstitialFailed = function() {
-  try { doRestart(); } catch(e) {}
-};
+window.onKodularInterstitialClosed = function() { try { doRestart(); } catch(e) {} };
+window.onKodularInterstitialFailed = function() { try { doRestart(); } catch(e) {} };
 
 // ==================== ÇOKLU DİL ====================
 const TRANSLATIONS = {
@@ -708,13 +659,12 @@ function updateKasaUI() {
 setInterval(() => { try { const ws = document.getElementById('walletScreen'); if (ws && ws.style.display === 'flex') updateKasaUI(); } catch(e){} }, 1000);
 setInterval(() => { try { const b = document.getElementById('kasaBadge'); if (b) b.style.display = isKasaReady() ? 'flex' : 'none'; } catch(e){} }, 1000);
 
-// ==================== BİLDİRİM: KASA DOLDU ====================
 let lastKasaNotified = 0;
 setInterval(() => {
   try {
     if (isKasaReady() && !state.running) {
       const now = Date.now();
-      if (now - lastKasaNotified > 300000) { // 5 dakika arayla
+      if (now - lastKasaNotified > 300000) {
         const popup = document.getElementById('kasaDolduPopup');
         const home = document.getElementById('homeScreen');
         if (popup && home && home.style.display === 'flex') {
@@ -724,7 +674,7 @@ setInterval(() => {
       }
     }
   } catch(e) {}
-}, 10000); // Her 10 saniyede kontrol
+}, 10000);
 
 window.closeKasaDolduPopup = function() {
   const popup = document.getElementById('kasaDolduPopup');
@@ -738,300 +688,48 @@ function checkDailyAdLimit() { const stats = getStats(); const today = new Date(
 function incrementDailyAds() { const stats = getStats(); stats.dailyAdsCount = (stats.dailyAdsCount || 0) + 1; saveStats(stats); }
 
 // ==================== TURNUVA ====================
-function getWeekKey() {
-  const now = new Date();
-  const day = now.getDay();
-  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(now.setDate(diff));
-  monday.setHours(0, 0, 0, 0);
-  return monday.toISOString().slice(0, 10);
-}
-
-function getTournamentState() {
-  try {
-    const d = localStorage.getItem('trafficRacerTournament');
-    if (d) {
-      const p = JSON.parse(d);
-      if (p.weekKey === getWeekKey()) return p;
-    }
-  } catch(e) {}
-  const s = { weekKey: getWeekKey(), myDistance: 0, claimed: false, rank: 0 };
-  try { localStorage.setItem('trafficRacerTournament', JSON.stringify(s)); } catch(e) {}
-  return s;
-}
+function getWeekKey() { const now = new Date(); const day = now.getDay(); const diff = now.getDate() - day + (day === 0 ? -6 : 1); const monday = new Date(now.setDate(diff)); monday.setHours(0, 0, 0, 0); return monday.toISOString().slice(0, 10); }
+function getTournamentState() { try { const d = localStorage.getItem('trafficRacerTournament'); if (d) { const p = JSON.parse(d); if (p.weekKey === getWeekKey()) return p; } } catch(e) {} const s = { weekKey: getWeekKey(), myDistance: 0, claimed: false, rank: 0 }; try { localStorage.setItem('trafficRacerTournament', JSON.stringify(s)); } catch(e) {} return s; }
 function saveTournamentState(s) { try { localStorage.setItem('trafficRacerTournament', JSON.stringify(s)); } catch(e) {} }
+function getTournamentEndMs() { const now = new Date(); const day = now.getDay(); const daysUntilMonday = day === 0 ? 1 : (8 - day); const end = new Date(now); end.setDate(now.getDate() + daysUntilMonday); end.setHours(0, 0, 0, 0); return end.getTime() - now.getTime(); }
+function formatTournamentTime(ms) { const s = Math.floor(ms / 1000); const d = Math.floor(s / 86400); const h = Math.floor((s % 86400) / 3600); const m = Math.floor((s % 3600) / 60); const sc = s % 60; if (d > 0) return d + 'g ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sc).padStart(2,'0'); return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sc).padStart(2,'0'); }
+function getFakeLeaderboard(myDistance) { const bots = [ { name: '🚗 Ahmet', score: 45230 }, { name: '🏎️ Mehmet', score: 38760 }, { name: '🚕 Ayşe', score: 31240 }, { name: '🚙 Ali', score: 28100 }, { name: '🚓 Fatma', score: 23450 }, { name: '🚚 Hasan', score: 19870 }, { name: '🚗 Zeynep', score: 15420 }, { name: '🏎️ Mustafa', score: 12030 }, { name: '🚕 Elif', score: 8750 }, { name: '🚙 Can', score: 5200 } ]; bots.push({ name: '👤 SEN', score: Math.floor(myDistance) }); bots.sort((a, b) => b.score - a.score); return bots.slice(0, 10); }
 
-function getTournamentEndMs() {
-  const now = new Date();
-  const day = now.getDay();
-  const daysUntilMonday = day === 0 ? 1 : (8 - day);
-  const end = new Date(now);
-  end.setDate(now.getDate() + daysUntilMonday);
-  end.setHours(0, 0, 0, 0);
-  return end.getTime() - now.getTime();
-}
-
-function formatTournamentTime(ms) {
-  const s = Math.floor(ms / 1000);
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sc = s % 60;
-  if (d > 0) return d + 'g ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sc).padStart(2,'0');
-  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sc).padStart(2,'0');
-}
-
-// Fake leaderboard - gerçek oyunda Supabase'den gelecek
-function getFakeLeaderboard(myDistance) {
-  const bots = [
-    { name: '🚗 Ahmet', score: 45230 },
-    { name: '🏎️ Mehmet', score: 38760 },
-    { name: '🚕 Ayşe', score: 31240 },
-    { name: '🚙 Ali', score: 28100 },
-    { name: '🚓 Fatma', score: 23450 },
-    { name: '🚚 Hasan', score: 19870 },
-    { name: '🚗 Zeynep', score: 15420 },
-    { name: '🏎️ Mustafa', score: 12030 },
-    { name: '🚕 Elif', score: 8750 },
-    { name: '🚙 Can', score: 5200 }
-  ];
-  bots.push({ name: '👤 SEN', score: Math.floor(myDistance) });
-  bots.sort((a, b) => b.score - a.score);
-  return bots.slice(0, 10);
-}
-
-window.showTournament = function() {
-  try {
-    renderTournament();
-    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-    document.getElementById('homeScreen').style.display = 'none';
-    document.getElementById('tournamentScreen').style.display = 'flex';
-  } catch(e) {}
-};
-
+window.showTournament = function() { try { renderTournament(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('tournamentScreen').style.display = 'flex'; } catch(e) {} };
 window.renderTournament = function() {
   try {
     const t = getTournamentState();
     const timer = document.getElementById('tournamentTimer');
     if (timer) timer.textContent = formatTournamentTime(getTournamentEndMs());
-    
     const myScore = document.getElementById('tournamentMyScore');
     if (myScore) myScore.textContent = Math.floor(t.myDistance).toLocaleString() + ' m';
-    
     const lb = document.getElementById('tournamentLeaderboard');
     if (lb) {
       const board = getFakeLeaderboard(t.myDistance);
-      lb.innerHTML = board.map((b, i) => {
-        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1) + '.';
-        const isMe = b.name.includes('SEN');
-        return `<div style="display: flex; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); ${isMe ? 'background: rgba(76,175,80,0.2); border-radius: 6px;' : ''}"><span style="font-size: 13px;">${medal} ${b.name}</span><span style="color: #4CAF50; font-weight: bold; font-size: 13px;">${Math.floor(b.score).toLocaleString()} m</span></div>`;
-      }).join('');
+      lb.innerHTML = board.map((b, i) => { const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1) + '.'; const isMe = b.name.includes('SEN'); return `<div style="display: flex; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); ${isMe ? 'background: rgba(76,175,80,0.2); border-radius: 6px;' : ''}"><span style="font-size: 13px;">${medal} ${b.name}</span><span style="color: #4CAF50; font-weight: bold; font-size: 13px;">${Math.floor(b.score).toLocaleString()} m</span></div>`; }).join('');
     }
-    
     const claimBtn = document.getElementById('tournamentClaimBtn');
-    if (claimBtn) {
-      // Ödül talebi aktif olacak mı? (Turnuva bittiğinde)
-      const tournamentEnded = getTournamentEndMs() < 1000; // son 1 saniye
-      if (t.claimed) {
-        claimBtn.disabled = true;
-        claimBtn.textContent = '✅ ALINDI';
-      } else if (tournamentEnded && t.rank > 0 && t.rank <= 3) {
-        claimBtn.disabled = false;
-        claimBtn.textContent = '🎁 ' + TOURNAMENT_PRIZES[t.rank - 1] + ' TL TALEP ET';
-      } else {
-        claimBtn.disabled = true;
-        claimBtn.textContent = '⏳ TURNUVA DEVAM EDİYOR';
-      }
-    }
+    if (claimBtn) { const tournamentEnded = getTournamentEndMs() < 1000; if (t.claimed) { claimBtn.disabled = true; claimBtn.textContent = '✅ ALINDI'; } else if (tournamentEnded && t.rank > 0 && t.rank <= 3) { claimBtn.disabled = false; claimBtn.textContent = '🎁 ' + TOURNAMENT_PRIZES[t.rank - 1] + ' TL TALEP ET'; } else { claimBtn.disabled = true; claimBtn.textContent = '⏳ TURNUVA DEVAM EDİYOR'; } }
   } catch(e) {}
 };
-
-setInterval(() => {
-  try {
-    const ts = document.getElementById('tournamentScreen');
-    if (ts && ts.style.display === 'flex') renderTournament();
-  } catch(e) {}
-}, 1000);
-
-window.claimTournamentPrize = function() {
-  try {
-    const t = getTournamentState();
-    if (t.claimed) return;
-    const tournamentEnded = getTournamentEndMs() < 1000;
-    if (!tournamentEnded || t.rank < 1 || t.rank > 3) {
-      showToast('❌ Ödül talep edilemez', 'error');
-      return;
-    }
-    const prize = TOURNAMENT_PRIZES[t.rank - 1];
-    addTL(prize);
-    t.claimed = true;
-    saveTournamentState(t);
-    playSound('coin');
-    showToast('🏆 +' + prize + ' TL kazandın!', 'gold');
-    renderTournament();
-  } catch(e) {}
-};
+setInterval(() => { try { const ts = document.getElementById('tournamentScreen'); if (ts && ts.style.display === 'flex') renderTournament(); } catch(e) {} }, 1000);
+window.claimTournamentPrize = function() { try { const t = getTournamentState(); if (t.claimed) return; const tournamentEnded = getTournamentEndMs() < 1000; if (!tournamentEnded || t.rank < 1 || t.rank > 3) { showToast('❌ Ödül talep edilemez', 'error'); return; } const prize = TOURNAMENT_PRIZES[t.rank - 1]; addTL(prize); t.claimed = true; saveTournamentState(t); playSound('coin'); showToast('🏆 +' + prize + ' TL kazandın!', 'gold'); renderTournament(); } catch(e) {} };
 
 // ==================== REFERANS ====================
-function getReferralState() {
-  try {
-    const d = localStorage.getItem('trafficRacerReferral');
-    if (d) return JSON.parse(d);
-  } catch(e) {}
-  // Yeni kullanıcı için kod oluştur
-  const code = 'TR' + Math.floor(10000 + Math.random() * 90000);
-  const s = { code: code, usedCode: '', invitedUsers: [], totalEarned: 0 };
-  try { localStorage.setItem('trafficRacerReferral', JSON.stringify(s)); } catch(e) {}
-  return s;
-}
+function getReferralState() { try { const d = localStorage.getItem('trafficRacerReferral'); if (d) return JSON.parse(d); } catch(e) {} const code = 'TR' + Math.floor(10000 + Math.random() * 90000); const s = { code: code, usedCode: '', invitedUsers: [], totalEarned: 0 }; try { localStorage.setItem('trafficRacerReferral', JSON.stringify(s)); } catch(e) {} return s; }
 function saveReferralState(s) { try { localStorage.setItem('trafficRacerReferral', JSON.stringify(s)); } catch(e) {} }
-
-window.copyReferralCode = function() {
-  try {
-    const s = getReferralState();
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(s.code).then(() => {
-        showToast('📋 Kod kopyalandı: ' + s.code, 'gold');
-      }).catch(() => {
-        // Fallback
-        const el = document.createElement('textarea');
-        el.value = s.code;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        el.remove();
-        showToast('📋 Kod kopyalandı: ' + s.code, 'gold');
-      });
-    } else {
-      showToast('📋 Kodun: ' + s.code, 'info');
-    }
-  } catch(e) {}
-};
-
-window.useReferralCode = function() {
-  try {
-    const s = getReferralState();
-    if (s.usedCode) {
-      showToast('⚠️ Zaten bir davet kodu kullandın', 'info');
-      return;
-    }
-    const input = document.getElementById('referralInput');
-    const code = (input.value || '').toUpperCase().trim();
-    if (!code) { showToast('⚠️ Kod gir', 'error'); return; }
-    if (code === s.code) { showToast('❌ Kendi kodunu kullanamazsın', 'error'); return; }
-    if (!code.startsWith('TR')) { showToast('❌ Geçersiz kod', 'error'); return; }
-    
-    s.usedCode = code;
-    saveReferralState(s);
-    addTL(REFERRAL_JOIN_BONUS);
-    playSound('coin');
-    showToast('🎁 +' + REFERRAL_JOIN_BONUS + ' TL kazandın!', 'gold');
-    input.value = '';
-    renderReferral();
-  } catch(e) {}
-};
-
-window.renderReferral = function() {
-  try {
-    const s = getReferralState();
-    const codeEl = document.getElementById('myReferralCode');
-    if (codeEl) codeEl.textContent = s.code;
-    const totalEl = document.getElementById('refTotal');
-    if (totalEl) totalEl.textContent = (s.invitedUsers || []).length;
-    const earnedEl = document.getElementById('refEarned');
-    if (earnedEl) earnedEl.textContent = (s.totalEarned || 0).toFixed(2) + ' ₺';
-  } catch(e) {}
-};
+window.copyReferralCode = function() { try { const s = getReferralState(); if (navigator.clipboard) { navigator.clipboard.writeText(s.code).then(() => { showToast('📋 Kod kopyalandı: ' + s.code, 'gold'); }).catch(() => { const el = document.createElement('textarea'); el.value = s.code; document.body.appendChild(el); el.select(); document.execCommand('copy'); el.remove(); showToast('📋 Kod kopyalandı: ' + s.code, 'gold'); }); } else { showToast('📋 Kodun: ' + s.code, 'info'); } } catch(e) {} };
+window.useReferralCode = function() { try { const s = getReferralState(); if (s.usedCode) { showToast('⚠️ Zaten bir davet kodu kullandın', 'info'); return; } const input = document.getElementById('referralInput'); const code = (input.value || '').toUpperCase().trim(); if (!code) { showToast('⚠️ Kod gir', 'error'); return; } if (code === s.code) { showToast('❌ Kendi kodunu kullanamazsın', 'error'); return; } if (!code.startsWith('TR')) { showToast('❌ Geçersiz kod', 'error'); return; } s.usedCode = code; saveReferralState(s); addTL(REFERRAL_JOIN_BONUS); playSound('coin'); showToast('🎁 +' + REFERRAL_JOIN_BONUS + ' TL kazandın!', 'gold'); input.value = ''; renderReferral(); } catch(e) {} };
+window.renderReferral = function() { try { const s = getReferralState(); const codeEl = document.getElementById('myReferralCode'); if (codeEl) codeEl.textContent = s.code; const totalEl = document.getElementById('refTotal'); if (totalEl) totalEl.textContent = (s.invitedUsers || []).length; const earnedEl = document.getElementById('refEarned'); if (earnedEl) earnedEl.textContent = (s.totalEarned || 0).toFixed(2) + ' ₺'; } catch(e) {} };
 
 // ==================== KAPLAMALAR ====================
-const PAINTS = [
-  { id: 'default', name: 'Standart', color: 0x00cc44, price: 0 },
-  { id: 'red', name: 'Kırmızı', color: 0xff3333, price: PAINT_PRICE_OP },
-  { id: 'blue', name: 'Mavi', color: 0x3366ff, price: PAINT_PRICE_OP },
-  { id: 'yellow', name: 'Sarı', color: 0xffdd00, price: PAINT_PRICE_OP },
-  { id: 'purple', name: 'Mor', color: 0x9933ff, price: PAINT_PRICE_OP },
-  { id: 'black', name: 'Siyah', color: 0x222222, price: PAINT_PRICE_OP },
-  { id: 'orange', name: 'Turuncu', color: 0xff8800, price: PAINT_PRICE_OP },
-  { id: 'white', name: 'Beyaz', color: 0xeeeeee, price: PAINT_PRICE_OP },
-  { id: 'rainbow', name: 'Gökkuşağı', color: 0xff00ff, price: PAINT_PRICE_OP * 2 }
-];
-
-function getPaintState() {
-  try {
-    const d = localStorage.getItem('trafficRacerPaints');
-    if (d) return JSON.parse(d);
-  } catch(e) {}
-  return { owned: ['default'], selected: 'default' };
-}
+const PAINTS = [ { id: 'default', name: 'Standart', color: 0x00cc44, price: 0 }, { id: 'red', name: 'Kırmızı', color: 0xff3333, price: PAINT_PRICE_OP }, { id: 'blue', name: 'Mavi', color: 0x3366ff, price: PAINT_PRICE_OP }, { id: 'yellow', name: 'Sarı', color: 0xffdd00, price: PAINT_PRICE_OP }, { id: 'purple', name: 'Mor', color: 0x9933ff, price: PAINT_PRICE_OP }, { id: 'black', name: 'Siyah', color: 0x222222, price: PAINT_PRICE_OP }, { id: 'orange', name: 'Turuncu', color: 0xff8800, price: PAINT_PRICE_OP }, { id: 'white', name: 'Beyaz', color: 0xeeeeee, price: PAINT_PRICE_OP }, { id: 'rainbow', name: 'Gökkuşağı', color: 0xff00ff, price: PAINT_PRICE_OP * 2 } ];
+function getPaintState() { try { const d = localStorage.getItem('trafficRacerPaints'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['default'], selected: 'default' }; }
 function savePaintState(s) { try { localStorage.setItem('trafficRacerPaints', JSON.stringify(s)); } catch(e) {} }
-
-window.switchGarageTab = function(tab) {
-  try {
-    ['Cars','Paints'].forEach(x => {
-      const btn = document.getElementById('tab' + x); if (btn) btn.classList.remove('active');
-      const content = document.getElementById('tabContent' + x); if (content) content.classList.remove('active');
-    });
-    const map = { cars: 'Cars', paints: 'Paints' };
-    const btn = document.getElementById('tab' + map[tab]); if (btn) btn.classList.add('active');
-    const content = document.getElementById('tabContent' + map[tab]); if (content) content.classList.add('active');
-    if (tab === 'cars') renderGarage();
-    if (tab === 'paints') renderPaints();
-  } catch(e) {}
-};
-
-window.renderPaints = function() {
-  try {
-    const s = getPaintState();
-    const grid = document.getElementById('paintGrid');
-    if (!grid) return;
-    grid.innerHTML = PAINTS.map(p => {
-      const owned = s.owned.includes(p.id);
-      const selected = s.selected === p.id;
-      const hexColor = '#' + p.color.toString(16).padStart(6, '0');
-      return `<div class="paint-item ${selected ? 'selected' : (owned ? 'owned' : '')}" onclick="selectPaint('${p.id}')">
-        <div class="paint-swatch" style="background: ${hexColor};"></div>
-        <div class="paint-name">${p.name}</div>
-        <div class="paint-price">${owned ? (selected ? '✅ SEÇİLİ' : 'SEÇ') : '🎮 ' + p.price.toLocaleString() + ' OP'}</div>
-      </div>`;
-    }).join('');
-  } catch(e) {}
-};
-
-window.selectPaint = function(id) {
-  try {
-    const paint = PAINTS.find(p => p.id === id);
-    if (!paint) return;
-    const s = getPaintState();
-    if (!s.owned.includes(id)) {
-      // Satın al
-      if (!spendOP(paint.price)) {
-        showToast('❌ ' + paint.price.toLocaleString() + ' OP gerekli', 'error');
-        return;
-      }
-      s.owned.push(id);
-      playSound('coin');
-      showToast('✅ ' + paint.name + ' alındı!', 'gold');
-    }
-    s.selected = id;
-    savePaintState(s);
-    applyPaintToPlayer(paint.color);
-    renderPaints();
-  } catch(e) {}
-};
-
-function applyPaintToPlayer(color) {
-  try {
-    if (!player) return;
-    // Fallback arabaları için
-    if (player.userData && player.userData.isFallback) {
-      player.traverse(c => {
-        if (c.isMesh && c.material && c.geometry && c.geometry.parameters && c.geometry.parameters.width === 1.6) {
-          c.material.color.setHex(color);
-        }
-      });
-    }
-  } catch(e) {}
-}
+window.switchGarageTab = function(tab) { try { ['Cars','Paints'].forEach(x => { const btn = document.getElementById('tab' + x); if (btn) btn.classList.remove('active'); const content = document.getElementById('tabContent' + x); if (content) content.classList.remove('active'); }); const map = { cars: 'Cars', paints: 'Paints' }; const btn = document.getElementById('tab' + map[tab]); if (btn) btn.classList.add('active'); const content = document.getElementById('tabContent' + map[tab]); if (content) content.classList.add('active'); if (tab === 'cars') renderGarage(); if (tab === 'paints') renderPaints(); } catch(e) {} };
+window.renderPaints = function() { try { const s = getPaintState(); const grid = document.getElementById('paintGrid'); if (!grid) return; grid.innerHTML = PAINTS.map(p => { const owned = s.owned.includes(p.id); const selected = s.selected === p.id; const hexColor = '#' + p.color.toString(16).padStart(6, '0'); return `<div class="paint-item ${selected ? 'selected' : (owned ? 'owned' : '')}" onclick="selectPaint('${p.id}')"><div class="paint-swatch" style="background: ${hexColor};"></div><div class="paint-name">${p.name}</div><div class="paint-price">${owned ? (selected ? '✅ SEÇİLİ' : 'SEÇ') : '🎮 ' + p.price.toLocaleString() + ' OP'}</div></div>`; }).join(''); } catch(e) {} };
+window.selectPaint = function(id) { try { const paint = PAINTS.find(p => p.id === id); if (!paint) return; const s = getPaintState(); if (!s.owned.includes(id)) { if (!spendOP(paint.price)) { showToast('❌ ' + paint.price.toLocaleString() + ' OP gerekli', 'error'); return; } s.owned.push(id); playSound('coin'); showToast('✅ ' + paint.name + ' alındı!', 'gold'); } s.selected = id; savePaintState(s); applyPaintToPlayer(paint.color); renderPaints(); } catch(e) {} };
+function applyPaintToPlayer(color) { try { if (!player) return; if (player.userData && player.userData.isFallback) { player.traverse(c => { if (c.isMesh && c.material && c.geometry && c.geometry.parameters && c.geometry.parameters.width === 1.6) { c.material.color.setHex(color); } }); } } catch(e) {} }
 
 // ==================== TOAST ====================
 function showToast(msg, type = '') { try { const el = document.getElementById('toast'); if (!el) return; el.textContent = msg; el.className = 'show ' + (type || ''); clearTimeout(el._timer); el._timer = setTimeout(() => { el.className = ''; }, 2500); } catch(e) {} }
@@ -1056,14 +754,7 @@ function startBgMusic(){const s=sounds.bgmusic;if(!s)return;const v=getEffective
 function stopBgMusic(){if(sounds.bgmusic){try{sounds.bgmusic.pause();}catch(e){}}}
 function updateAllVolumes(){try{if(sounds.engine){const v=getEffectiveVolume('engine');sounds.engine.volume=v;if(v<=0)stopEngine();else if(state.running&&!state.paused)startEngine();}if(sounds.bgmusic){const v=getEffectiveVolume('bgmusic');sounds.bgmusic.volume=v;if(v<=0)stopBgMusic();else if(state.running&&!state.paused)startBgMusic();}}catch(e){}}
 function updateSettingsUI(){try{const mv=document.getElementById('masterVal');if(mv)mv.textContent=settings.masterVolume+'%';const mu=document.getElementById('musicVal');if(mu)mu.textContent=settings.musicVolume+'%';const ev=document.getElementById('engineVal');if(ev)ev.textContent=settings.engineVolume+'%';const sv=document.getElementById('sfxVal');if(sv)sv.textContent=settings.sfxVolume+'%';const mt=document.getElementById('masterToggle');if(mt){mt.textContent=settings.masterEnabled?t('on'):t('off');mt.className='toggle-btn '+(settings.masterEnabled?'toggle-on':'toggle-off');}const mut=document.getElementById('musicToggle');if(mut){mut.textContent=settings.musicEnabled?t('on'):t('off');mut.className='toggle-btn '+(settings.musicEnabled?'toggle-on':'toggle-off');}const et=document.getElementById('engineToggle');if(et){et.textContent=settings.engineEnabled?t('on'):t('off');et.className='toggle-btn '+(settings.engineEnabled?'toggle-on':'toggle-off');}const st=document.getElementById('sfxToggle');if(st){st.textContent=settings.sfxEnabled?t('on'):t('off');st.className='toggle-btn '+(settings.sfxEnabled?'toggle-on':'toggle-off');}const gsb=document.getElementById('gameSoundBtn');if(gsb)gsb.textContent=settings.masterEnabled?'🔊':'🔇';}catch(e){}}
-document.addEventListener('input', e => {
-  try {
-    if (e.target.id === 'masterVol') { settings.masterVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-    if (e.target.id === 'musicVol') { settings.musicVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-    if (e.target.id === 'engineVol') { settings.engineVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-    if (e.target.id === 'sfxVol') { settings.sfxVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); }
-  } catch(e) {}
-});
+document.addEventListener('input', e => { try { if (e.target.id === 'masterVol') { settings.masterVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); } if (e.target.id === 'musicVol') { settings.musicVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); } if (e.target.id === 'engineVol') { settings.engineVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); } if (e.target.id === 'sfxVol') { settings.sfxVolume = parseInt(e.target.value); saveSettings(settings); updateSettingsUI(); updateAllVolumes(); } } catch(e) {} });
 window.toggleMaster = function() { try { settings.masterEnabled = !settings.masterEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); if (!settings.masterEnabled) { stopEngine(); stopBgMusic(); } showToast(settings.masterEnabled ? '🔊' : '🔇', 'info'); } catch(e) {} };
 window.toggleMusic = function() { settings.musicEnabled = !settings.musicEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
 window.toggleEngine = function() { settings.engineEnabled = !settings.engineEnabled; saveSettings(settings); updateSettingsUI(); updateAllVolumes(); };
@@ -1072,60 +763,64 @@ window.toggleMasterFromGame = function() { toggleMaster(); };
 window.testSound = function(name) { try { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
 window.toggleFullscreen = function() { try { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) {} };
 
-// ==================== ARAÇLAR ====================
+// ==================== ARAÇLAR (YENİ LİSTE) ====================
 const CARS = {
-  // ÜCRETSİZ
-  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, model: 'models/race-future.glb' },
+  '2001_honda_s2000': { name: 'Honda S2000', icon: '🏎️', price: 0, speed: 3.0, handling: 0.15, model: 'models/2001_honda_s2000.glb' },
   
-  // EKONOMİK (50K OP)
+  '1991_honda_civic_eg6': { name: 'Honda Civic EG6', icon: '🏎️', price: 75000, speed: 2.8, handling: 0.17, model: 'models/1991_honda_civic_eg6.glb' },
+  'adodge': { name: 'Dodge', icon: '🚗', price: 75000, speed: 2.8, handling: 0.15, model: 'models/adodge.glb' },
   'sedan': { name: 'Sedan', icon: '🚗', price: 50000, speed: 2.5, handling: 0.16, model: 'models/sedan.glb' },
-  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, model: 'models/taxi.glb' },
-  'van': { name: 'Van', icon: '🚐', price: 50000, speed: 2.4, handling: 0.14, model: 'models/van.glb' },
-  'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18, model: 'models/police.glb' },
- 
-  
-  // ORTA (100K OP)
   'sedan-sports': { name: 'Sports Sedan', icon: '🚗', price: 100000, speed: 2.7, handling: 0.17, model: 'models/sedan-sports.glb' },
-  'hatchback-sports': { name: 'Sports Hatchback', icon: '🚙', price: 100000, speed: 2.7, handling: 0.18, model: 'models/hatchback-sports.glb' },
-  'race': { name: 'Race', icon: '🏎️', price: 100000, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
-  '1991_honda_civic_eg6': { name: 'Honda Civic EG6', icon: '🏎️', price: 100000, speed: 2.8, handling: 0.17, model: 'models/1991_honda_civic_eg6.glb' },
-  'adodge': { name: 'Dodge', icon: '🚗', price: 100000, speed: 2.8, handling: 0.15, model: 'models/adodge.glb' },
   
-  // PAHALI (200K OP)
-  'suv': { name: 'SUV', icon: '🚙', price: 200000, speed: 2.7, handling: 0.13, model: 'models/suv.glb' },
-  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 200000, speed: 3.0, handling: 0.12, model: 'models/suv-luxury.glb' },
-  '2001_honda_s2000': { name: 'Honda S2000', icon: '🏎️', price: 200000, speed: 3.0, handling: 0.15, model: 'models/2001_honda_s2000.glb' },
-  'ambulance': { name: 'Ambulance', icon: '🚑', price: 200000, speed: 2.6, handling: 0.12, model: 'models/ambulance.glb' },
-  'firetruck': { name: 'Fire Truck', icon: '🚒', price: 200000, speed: 2.5, handling: 0.10, model: 'models/firetruck.glb' },
-  'garbage-truck': { name: 'Garbage Truck', icon: '🚛', price: 200000, speed: 2.4, handling: 0.10, model: 'models/garbage-truck.glb' },
-  'truck': { name: 'Truck', icon: '🚚', price: 200000, speed: 3.2, handling: 0.10, model: 'models/truck.glb' },
-  'truck-flat': { name: 'Flat Truck', icon: '🚚', price: 200000, speed: 3.2, handling: 0.10, model: 'models/truck-flat.glb' },
-  'delivery': { name: 'Delivery', icon: '🚚', price: 200000, speed: 2.6, handling: 0.12, model: 'models/delivery.glb' },
-  'delivery-flat': { name: 'Delivery Flat', icon: '🚚', price: 200000, speed: 2.6, handling: 0.12, model: 'models/delivery-flat.glb' },
-  'tractor': { name: 'Tractor', icon: '🚜', price: 200000, speed: 2.0, handling: 0.20, model: 'models/tractor.glb' },
-  'tractor-police': { name: 'Police Tractor', icon: '🚜', price: 200000, speed: 2.0, handling: 0.20, model: 'models/tractor-police.glb' },
-  'tractor-shovel': { name: 'Shovel', icon: '🚜', price: 200000, speed: 1.8, handling: 0.22, model: 'models/tractor-shovel.glb' }
+  'hatchback-sports': { name: 'Sports Hatchback', icon: '🚙', price: 100000, speed: 2.7, handling: 0.18, model: 'models/hatchback-sports.glb' },
+  'race': { name: 'Race', icon: '🏎️', price: 150000, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
+  'race-future': { name: 'Race Future', icon: '🏎️', price: 150000, speed: 2.9, handling: 0.15, model: 'models/race-future.glb' },
+  
+  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, model: 'models/taxi.glb' },
+  'police': { name: 'Police', icon: '🚓', price: 75000, speed: 2.6, handling: 0.18, model: 'models/police.glb' },
+  'ambulance': { name: 'Ambulance', icon: '🚑', price: 150000, speed: 2.6, handling: 0.12, model: 'models/ambulance.glb' },
+  'delivery': { name: 'Delivery', icon: '🚚', price: 100000, speed: 2.6, handling: 0.12, model: 'models/delivery.glb' },
+  'delivery-flat': { name: 'Delivery Flat', icon: '🚚', price: 100000, speed: 2.6, handling: 0.12, model: 'models/delivery-flat.glb' },
+  'truck': { name: 'Truck', icon: '🚚', price: 150000, speed: 3.2, handling: 0.10, model: 'models/truck.glb' },
+  'suv': { name: 'SUV', icon: '🚙', price: 100000, speed: 2.7, handling: 0.13, model: 'models/suv.glb' },
+  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150000, speed: 3.0, handling: 0.12, model: 'models/suv-luxury.glb' }
 };
-function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race-future'], selected: 'race-future' }; }
+
+// TRAFİK İÇİN ENEMY MODELLERİ (aynı arabalar)
+const ENEMY_MODELS = [
+  'models/1991_honda_civic_eg6.glb',
+  'models/adodge.glb',
+  'models/sedan.glb',
+  'models/sedan-sports.glb',
+  'models/hatchback-sports.glb',
+  'models/taxi.glb',
+  'models/police.glb',
+  'models/suv.glb',
+  'models/suv-luxury.glb',
+  'models/delivery.glb',
+  'models/delivery-flat.glb',
+  'models/ambulance.glb',
+  'models/truck.glb'
+];
+
+function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['2001_honda_s2000'], selected: '2001_honda_s2000' }; }
 function saveGarage(g) { try { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); } catch(e) {} }
 const MAPS = { city: { name: '🏙️ Şehir', bonus: 1.0 }, highway: { name: '🛣️ Otoban', bonus: 1.1 }, mountain: { name: '⛰️ Dağ', bonus: 1.3 } };
 const AVATARS = ['🏎️','🚗','🚓','🚕','🚙','🚚','🏁','🏆','👑','⭐','🔥','⚡','🎯','💎','🚀','🐎'];
 function getAvatar() { return localStorage.getItem('trafficRacerAvatar') || '🏎️'; }
 function saveAvatar(a) { localStorage.setItem('trafficRacerAvatar', a); }
 
-// ==================== SİGORTA (GENİŞLETİLDİ) ====================
+// ==================== SİGORTA ====================
 const INSURANCE_PLANS = {
   'basic': { name: 'Temel Sigorta', op: 50000, tl: 5, crashes: 1, desc: '1 kaza bedava', emoji: '🛡️' },
   'premium': { name: 'Premium Sigorta', op: 200000, tl: 20, crashes: 5, desc: '5 kaza bedava', emoji: '⭐' },
   'weekly': { name: 'Haftalık Sigorta', op: 500000, tl: 50, crashes: -1, days: 7, desc: '7 gün sınırsız kaza', emoji: '📅' },
   'monthly': { name: 'Aylık Sigorta', op: 1500000, tl: 150, crashes: -1, days: 30, desc: '30 gün sınırsız kaza', emoji: '🗓️' }
 };
-function getInsurance() { try { const d = localStorage.getItem('trafficRacerInsurance'); if (d) { const p = JSON.parse(d); // Süre kontrolü
-    if (p.expiresAt && Date.now() > p.expiresAt) { return { plan: 'none', remaining: 0, expiresAt: 0 }; } return p; } } catch(e) {} return { plan: 'none', remaining: 0, expiresAt: 0 }; }
+function getInsurance() { try { const d = localStorage.getItem('trafficRacerInsurance'); if (d) { const p = JSON.parse(d); if (p.expiresAt && Date.now() > p.expiresAt) { return { plan: 'none', remaining: 0, expiresAt: 0 }; } return p; } } catch(e) {} return { plan: 'none', remaining: 0, expiresAt: 0 }; }
 function saveInsurance(i) { try { localStorage.setItem('trafficRacerInsurance', JSON.stringify(i)); } catch(e) {} }
 
 window.showInsurance = function() { try { renderInsurance(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('insuranceScreen').style.display='flex'; } catch(e) {} };
-
 window.renderInsurance = function() {
   try {
     const ins = getInsurance();
@@ -1134,84 +829,19 @@ window.renderInsurance = function() {
     let html = '';
     if (ins.remaining > 0 || (ins.expiresAt && Date.now() < ins.expiresAt)) {
       let statusText = '';
-      if (ins.expiresAt && Date.now() < ins.expiresAt) {
-        const days = Math.ceil((ins.expiresAt - Date.now()) / (24 * 60 * 60 * 1000));
-        statusText = days + ' gün kaldı (sınırsız)';
-      } else {
-        statusText = ins.remaining + ' kaza hakkı';
-      }
+      if (ins.expiresAt && Date.now() < ins.expiresAt) { const days = Math.ceil((ins.expiresAt - Date.now()) / (24 * 60 * 60 * 1000)); statusText = days + ' gün kaldı (sınırsız)'; }
+      else { statusText = ins.remaining + ' kaza hakkı'; }
       html += `<div class="insurance-card active"><h3>🛡️ Aktif Sigorta</h3><div style="font-size:14px;color:#4CAF50;text-align:center;margin:8px 0;">${statusText}</div></div>`;
     }
-    html += Object.keys(INSURANCE_PLANS).map(key => {
-      const p = INSURANCE_PLANS[key];
-      return `<div class="insurance-card">
-        <h3>${p.emoji} ${p.name}</h3>
-        <div class="price-row">
-          <div class="price-opt op-opt" onclick="buyInsurance('${key}', 'op')">
-            <div class="opt-label">🎮 OP</div>
-            <div class="opt-val">${(p.op/1000).toFixed(0)}K</div>
-          </div>
-          <div class="price-opt tl-opt" onclick="buyInsurance('${key}', 'tl')">
-            <div class="opt-label">💵 TL</div>
-            <div class="opt-val">${p.tl} ₺</div>
-          </div>
-        </div>
-        <div class="desc">${p.desc}</div>
-      </div>`;
-    }).join('');
+    html += Object.keys(INSURANCE_PLANS).map(key => { const p = INSURANCE_PLANS[key]; return `<div class="insurance-card"><h3>${p.emoji} ${p.name}</h3><div class="price-row"><div class="price-opt op-opt" onclick="buyInsurance('${key}', 'op')"><div class="opt-label">🎮 OP</div><div class="opt-val">${(p.op/1000).toFixed(0)}K</div></div><div class="price-opt tl-opt" onclick="buyInsurance('${key}', 'tl')"><div class="opt-label">💵 TL</div><div class="opt-val">${p.tl} ₺</div></div></div><div class="desc">${p.desc}</div></div>`; }).join('');
     list.innerHTML = html;
-  } catch(e) { console.error('renderInsurance:', e); }
+  } catch(e) {}
 };
-
-window.buyInsurance = function(planKey, payMethod) {
-  try {
-    const p = INSURANCE_PLANS[planKey];
-    if (!p) return;
-    const price = payMethod === 'op' ? p.op : p.tl;
-    const w = getWallet();
-    if (payMethod === 'op') {
-      if (!spendOP(p.op)) { showToast('❌ ' + p.op.toLocaleString() + ' OP gerekli', 'error'); return; }
-    } else {
-      if (!spendTL(p.tl)) { showToast('❌ ' + p.tl + ' TL gerekli', 'error'); return; }
-    }
-    const ins = { plan: planKey, remaining: p.crashes > 0 ? p.crashes : 0, expiresAt: p.days ? Date.now() + p.days * 24 * 60 * 60 * 1000 : 0 };
-    saveInsurance(ins);
-    playSound('coin');
-    showToast('✅ ' + p.name + ' aktif!', 'gold');
-    renderInsurance();
-  } catch(e) { console.error('buyInsurance:', e); }
-};
+window.buyInsurance = function(planKey, payMethod) { try { const p = INSURANCE_PLANS[planKey]; if (!p) return; const w = getWallet(); if (payMethod === 'op') { if (!spendOP(p.op)) { showToast('❌ ' + p.op.toLocaleString() + ' OP gerekli', 'error'); return; } } else { if (!spendTL(p.tl)) { showToast('❌ ' + p.tl + ' TL gerekli', 'error'); return; } } const ins = { plan: planKey, remaining: p.crashes > 0 ? p.crashes : 0, expiresAt: p.days ? Date.now() + p.days * 24 * 60 * 60 * 1000 : 0 }; saveInsurance(ins); playSound('coin'); showToast('✅ ' + p.name + ' aktif!', 'gold'); renderInsurance(); } catch(e) {} };
 
 // ==================== SEKME YÖNETİMİ ====================
-window.switchWalletTab = function(tab) {
-  try {
-    ['Kasa','Bakiye','Cekim'].forEach(x => {
-      const btn = document.getElementById('tab' + x); if (btn) btn.classList.remove('active');
-      const content = document.getElementById('tabContent' + x); if (content) content.classList.remove('active');
-    });
-    const map = { kasa: 'Kasa', bakiye: 'Bakiye', cekim: 'Cekim' };
-    const btn = document.getElementById('tab' + map[tab]); if (btn) btn.classList.add('active');
-    const content = document.getElementById('tabContent' + map[tab]); if (content) content.classList.add('active');
-    if (tab === 'kasa') updateKasaUI();
-    if (tab === 'bakiye') renderWallet();
-  } catch(e) {}
-};
-
-window.switchProfileTab = function(tab) {
-  try {
-    ['Stats','Quests','Ach','Ref'].forEach(x => {
-      const btn = document.getElementById('tab' + x); if (btn) btn.classList.remove('active');
-      const content = document.getElementById('tabContent' + x); if (content) content.classList.remove('active');
-    });
-    const map = { stats: 'Stats', quests: 'Quests', ach: 'Ach', ref: 'Ref' };
-    const btn = document.getElementById('tab' + map[tab]); if (btn) btn.classList.add('active');
-    const content = document.getElementById('tabContent' + map[tab]); if (content) content.classList.add('active');
-    if (tab === 'stats') renderProfile();
-    if (tab === 'quests') renderQuests();
-    if (tab === 'ach') renderAchievements();
-    if (tab === 'ref') renderReferral();
-  } catch(e) {}
-};
+window.switchWalletTab = function(tab) { try { ['Kasa','Bakiye','Cekim'].forEach(x => { const btn = document.getElementById('tab' + x); if (btn) btn.classList.remove('active'); const content = document.getElementById('tabContent' + x); if (content) content.classList.remove('active'); }); const map = { kasa: 'Kasa', bakiye: 'Bakiye', cekim: 'Cekim' }; const btn = document.getElementById('tab' + map[tab]); if (btn) btn.classList.add('active'); const content = document.getElementById('tabContent' + map[tab]); if (content) content.classList.add('active'); if (tab === 'kasa') updateKasaUI(); if (tab === 'bakiye') renderWallet(); } catch(e) {} };
+window.switchProfileTab = function(tab) { try { ['Stats','Quests','Ach','Ref'].forEach(x => { const btn = document.getElementById('tab' + x); if (btn) btn.classList.remove('active'); const content = document.getElementById('tabContent' + x); if (content) content.classList.remove('active'); }); const map = { stats: 'Stats', quests: 'Quests', ach: 'Ach', ref: 'Ref' }; const btn = document.getElementById('tab' + map[tab]); if (btn) btn.classList.add('active'); const content = document.getElementById('tabContent' + map[tab]); if (content) content.classList.add('active'); if (tab === 'stats') renderProfile(); if (tab === 'quests') renderQuests(); if (tab === 'ach') renderAchievements(); if (tab === 'ref') renderReferral(); } catch(e) {} };
 
 // ==================== PROFİL ====================
 window.showProfile = function() { try { renderProfile(); renderReferral(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('profileScreen').style.display='flex'; } catch(e) {} };
@@ -1358,27 +988,8 @@ function scrollScenery(ma) {
   } 
 }
 
-function updateStreetLights(isNight) {
-  streetLights.forEach(sl => {
-    try {
-      if (sl.userData.lamp) {
-        sl.userData.lamp.material.emissiveIntensity = isNight ? 2.0 : 0.2;
-      }
-    } catch(e) {}
-  });
-}
-
-function updateBuildingWindows(isNight) {
-  scenery.forEach(s => {
-    try {
-      if (s.mesh.userData.windows) {
-        s.mesh.userData.windows.forEach(w => {
-          w.material.emissiveIntensity = isNight ? 0.9 : 0;
-        });
-      }
-    } catch(e) {}
-  });
-}
+function updateStreetLights(isNight) { streetLights.forEach(sl => { try { if (sl.userData.lamp) { sl.userData.lamp.material.emissiveIntensity = isNight ? 2.0 : 0.2; } } catch(e) {} }); }
+function updateBuildingWindows(isNight) { scenery.forEach(s => { try { if (s.mesh.userData.windows) { s.mesh.userData.windows.forEach(w => { w.material.emissiveIntensity = isNight ? 0.9 : 0; }); } } catch(e) {} }); }
 
 // ==================== YAĞMUR/KAR ====================
 const rainCount = 500; const rainGeo = new THREE.BufferGeometry(); const rainPositions = new Float32Array(rainCount*3);
@@ -1394,7 +1005,7 @@ const snowParticles = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color
 const gltfLoader = new GLTFLoader(); let kenneyColormap = null;
 function getKenneyColormap() { if(kenneyColormap) return kenneyColormap; kenneyColormap = new THREE.TextureLoader().load('models/colormap.png'); kenneyColormap.magFilter = THREE.NearestFilter; kenneyColormap.minFilter = THREE.NearestFilter; kenneyColormap.colorSpace = THREE.SRGBColorSpace; return kenneyColormap; }
 function prepareModel(m) { const c = getKenneyColormap(); m.traverse(ch => { if(ch.isMesh){ ch.castShadow=true; ch.receiveShadow=true; if(ch.material){ ch.material.map=c; ch.material.needsUpdate=true; } } }); return m; }
-function loadCarModel(p, fc=0x00cc44) { return new Promise(res => { gltfLoader.load(p, g => res(prepareModel(g.scene)), undefined, () => res(createFallbackCar(fc))); }); }
+function loadCarModel(p, fc=0x00cc44) { return new Promise(res => { gltfLoader.load(p, g => res(prepareModel(g.scene)), undefined, () => { console.warn('Model yüklenemedi:', p); res(createFallbackCar(fc)); }); }); }
 function createFallbackCar(c) { 
   const g = new THREE.Group(); 
   g.userData.isFallback = true; 
@@ -1410,34 +1021,29 @@ function createFallbackCar(c) {
   return g; 
 }
 
-// Far ve stop lambaları KALDIRILDI
-function addLightsToCar(carGroup) {
-  carGroup.userData.headlights = [];
-  carGroup.userData.taillights = [];
-}
+function addLightsToCar(carGroup) { carGroup.userData.headlights = []; carGroup.userData.taillights = []; }
 
 // ==================== DURUM ====================
-const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race-future', handling: 0.15, baseMaxSpeed: 2.8, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0, isNight: false };
+const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: '2001_honda_s2000', handling: 0.15, baseMaxSpeed: 2.8, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0, isNight: false };
 const CAR_SCALE = 1.4; const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
 let player = createFallbackCar(0x00cc44); player.position.set(0,0,4); addLightsToCar(player); scene.add(player);
 
 function loadPlayerCar(k) { 
   try { 
-    const c = CARS[k]||CARS['race-future']; 
-    const p = c.model || 'models/race-future.glb'; 
+    const c = CARS[k] || CARS['2001_honda_s2000']; 
+    const p = c.model || 'models/2001_honda_s2000.glb'; 
+    console.log('🚗 Araba yükleniyor:', k, '→', p);
     loadCarModel(p, 0x00cc44).then(m => { 
       scene.remove(player); 
       m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
       m.rotation.y = Math.PI;
       m.position.set(0,0,4); 
       addLightsToCar(m);
-      // Kaplama uygula
       const paintState = getPaintState();
-      const paint = PAINTS.find(p => p.id === paintState.selected);
+      const paint = PAINTS.find(pp => pp.id === paintState.selected);
       if (paint && paint.id !== 'default') {
         m.traverse(ch => {
           if (ch.isMesh && ch.material && ch.material.color) {
-            // Sadece ana gövdeyi boya
             if (ch.geometry && ch.geometry.parameters && ch.geometry.parameters.width > 1) {
               ch.material = ch.material.clone();
               ch.material.color.setHex(paint.color);
@@ -1451,10 +1057,23 @@ function loadPlayerCar(k) {
       state.baseMaxSpeed = c.speed; 
       state.handling = c.handling; 
       updatePlayerLights();
+      console.log('✅ Araba yüklendi:', c.name);
     }); 
-  } catch(e) {} 
+  } catch(e) { console.error('❌ loadPlayerCar hatası:', e); } 
 }
-loadPlayerCar('1991_honda_civic_eg6');
+
+// Seçili arabayı yükle
+(function() {
+  try {
+    const g = getGarage();
+    const selected = g.selected || '2001_honda_s2000';
+    console.log('🚗 Yüklenecek araba:', selected);
+    loadPlayerCar(selected);
+  } catch(e) {
+    console.error('Araba yükleme hatası:', e);
+    loadPlayerCar('2001_honda_s2000');
+  }
+})();
 
 document.addEventListener('keydown', e => {
   if (!state.running || state.paused) return;
@@ -1466,12 +1085,12 @@ let lastTouchTime = 0;
 function handleGameTouch(cx) { if (!state.running || state.paused) return; const n = Date.now(); if (n - lastTouchTime < 150) return; lastTouchTime = n; const h = window.innerWidth/2; if (cx < h) state.targetLane = Math.max(-1, state.targetLane - 1); else state.targetLane = Math.min(1, state.targetLane + 1); }
 document.addEventListener('touchstart', e => { const tg = e.target; if (tg.tagName === 'BUTTON' || tg.tagName === 'INPUT' || tg.tagName === 'SELECT' || tg.closest('button') || tg.closest('input') || tg.closest('select')) return; if (state.running && !state.paused) handleGameTouch(e.touches[0].clientX); }, { passive: true });
 
+// Trafik için aynı arabalar - rastgele
 const carColors = [0xe74c3c,0x3498db,0x9b59b6,0xe67e22,0x1abc9c,0xf39c12,0x34495e];
-const enemyModels = ['models/sedan.glb','models/suv.glb','models/taxi.glb','models/van.glb'];
 async function spawnEnemyCar() { 
   try { 
     const l = Math.floor(Math.random()*3)-1; 
-    const m = enemyModels[Math.floor(Math.random()*enemyModels.length)]; 
+    const m = ENEMY_MODELS[Math.floor(Math.random()*ENEMY_MODELS.length)]; 
     const fc = carColors[Math.floor(Math.random()*carColors.length)]; 
     const c = await loadCarModel(m, fc); 
     c.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
@@ -1488,76 +1107,25 @@ function checkCollision(a, b) { return Math.abs(a.position.x - b.position.x) < 1
 function randomizeWeatherAndTime() { const ws = ['sunny','sunny','sunny','sunny','sunny','rain','rain','snow','fog']; state.weather = ws[Math.floor(Math.random()*ws.length)]; const ts = ['day','day','day','night','night','sunset']; state.timeOfDay = ts[Math.floor(Math.random()*ts.length)]; state.isNight = (state.timeOfDay === 'night'); applyWeather(); applyTimeOfDay(); updateWeatherBadge(); updatePlayerLights(); updateStreetLights(state.isNight); updateBuildingWindows(state.isNight); }
 
 function applyWeather() { 
-  rainParticles.visible = false; 
-  snowParticles.visible = false; 
-  fogLayer.material.opacity = 0; 
-  scene.fog.near = 90; 
-  scene.fog.far = 350; 
-  if (state.weather === 'sunny') { 
-    scene.background = new THREE.Color(0x87CEEB); 
-    scene.fog.color = new THREE.Color(0x87CEEB); 
-    state.sliding = 0; 
-  } else if (state.weather === 'rain') { 
-    scene.background = new THREE.Color(0x555566); 
-    scene.fog.color = new THREE.Color(0x555566); 
-    scene.fog.near = 40; scene.fog.far = 200; 
-    rainParticles.visible = true; 
-    state.sliding = 0.4; 
-  } else if (state.weather === 'snow') { 
-    scene.background = new THREE.Color(0xccccdd); 
-    scene.fog.color = new THREE.Color(0xccccdd); 
-    scene.fog.near = 50; scene.fog.far = 250; 
-    snowParticles.visible = true; 
-    state.sliding = 0.6; 
-  } else if (state.weather === 'fog') { 
-    scene.background = new THREE.Color(0xcccccc); 
-    scene.fog.color = new THREE.Color(0xcccccc); 
-    scene.fog.near = 15; scene.fog.far = 100; 
-    fogLayer.material.opacity = 0.4; 
-    state.sliding = 0.2; 
-  } 
+  rainParticles.visible = false; snowParticles.visible = false; fogLayer.material.opacity = 0; scene.fog.near = 90; scene.fog.far = 350; 
+  if (state.weather === 'sunny') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); state.sliding = 0; } 
+  else if (state.weather === 'rain') { scene.background = new THREE.Color(0x555566); scene.fog.color = new THREE.Color(0x555566); scene.fog.near = 40; scene.fog.far = 200; rainParticles.visible = true; state.sliding = 0.4; } 
+  else if (state.weather === 'snow') { scene.background = new THREE.Color(0xccccdd); scene.fog.color = new THREE.Color(0xccccdd); scene.fog.near = 50; scene.fog.far = 250; snowParticles.visible = true; state.sliding = 0.6; } 
+  else if (state.weather === 'fog') { scene.background = new THREE.Color(0xcccccc); scene.fog.color = new THREE.Color(0xcccccc); scene.fog.near = 15; scene.fog.far = 100; fogLayer.material.opacity = 0.4; state.sliding = 0.2; } 
 }
 
 function applyTimeOfDay() { 
   state.isNight = (state.timeOfDay === 'night');
   if (state.weather === 'sunny' || state.weather === 'fog') { 
-    if (state.timeOfDay === 'day') { 
-      scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); 
-      ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; 
-      sunLight.color.setHex(0xffffff); sunLight.position.set(15,30,15); 
-    } else if (state.timeOfDay === 'sunset') { 
-      scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); 
-      ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; 
-      sunLight.color.setHex(0xffaa66); sunLight.position.set(30,10,15); 
-    } else if (state.timeOfDay === 'night') { 
-      scene.background = new THREE.Color(0x0a0a2e); scene.fog.color = new THREE.Color(0x0a0a2e); 
-      ambientLight.intensity = 0.35; sunLight.intensity = 0.2; hemiLight.intensity = 0.2; 
-      sunLight.color.setHex(0x4466aa); sunLight.position.set(-15,20,15); 
-    } 
-  } else { 
-    if (state.timeOfDay === 'night') { 
-      scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); 
-      ambientLight.intensity = 0.5; sunLight.intensity = 0.35; 
-    } 
-  }
-  updateStreetLights(state.isNight);
-  updateBuildingWindows(state.isNight);
-  updatePlayerLights();
+    if (state.timeOfDay === 'day') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; sunLight.color.setHex(0xffffff); sunLight.position.set(15,30,15); } 
+    else if (state.timeOfDay === 'sunset') { scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; sunLight.color.setHex(0xffaa66); sunLight.position.set(30,10,15); } 
+    else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x0a0a2e); scene.fog.color = new THREE.Color(0x0a0a2e); ambientLight.intensity = 0.35; sunLight.intensity = 0.2; hemiLight.intensity = 0.2; sunLight.color.setHex(0x4466aa); sunLight.position.set(-15,20,15); } 
+  } else { if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; } }
+  updateStreetLights(state.isNight); updateBuildingWindows(state.isNight); updatePlayerLights();
 }
 
-function updatePlayerLights() {
-  // Far ve stop lambaları kaldırıldı
-}
-
-function updateWeatherBadge() { 
-  const b = document.getElementById('weatherBadge'); 
-  if (!b) return; 
-  const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; 
-  const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; 
-  const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; 
-  b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; 
-  b.classList.add('visible'); 
-}
+function updatePlayerLights() {}
+function updateWeatherBadge() { const b = document.getElementById('weatherBadge'); if (!b) return; const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; b.classList.add('visible'); }
  
 // ==================== DÖNGÜ ====================
 let lastTime = performance.now(); let animationRunning = false;
@@ -1570,23 +1138,9 @@ function animate() {
   if (!state.running || state.paused) { renderer.render(scene, camera); return; }
   
   state.timeAccumulator += dt;
-  if (state.timeAccumulator > 1800) { 
-    state.timeAccumulator = 0; 
-    const ts = ['day','sunset','night']; 
-    const ci = ts.indexOf(state.timeOfDay); 
-    state.timeOfDay = ts[(ci+1)%ts.length]; 
-    applyTimeOfDay(); 
-    updateWeatherBadge(); 
-  }
+  if (state.timeAccumulator > 1800) { state.timeAccumulator = 0; const ts = ['day','sunset','night']; const ci = ts.indexOf(state.timeOfDay); state.timeOfDay = ts[(ci+1)%ts.length]; applyTimeOfDay(); updateWeatherBadge(); }
   state.weatherAccumulator += dt;
-  if (state.weatherAccumulator > 3600) { 
-    state.weatherAccumulator = 0; 
-    const ws = ['sunny','sunny','rain','fog']; 
-    state.weather = ws[Math.floor(Math.random()*ws.length)]; 
-    applyWeather(); 
-    applyTimeOfDay(); 
-    updateWeatherBadge(); 
-  }
+  if (state.weatherAccumulator > 3600) { state.weatherAccumulator = 0; const ws = ['sunny','sunny','rain','fog']; state.weather = ws[Math.floor(Math.random()*ws.length)]; applyWeather(); applyTimeOfDay(); updateWeatherBadge(); }
   
   state.maxSpeed = state.baseMaxSpeed;
   state.speed = Math.min(state.maxSpeed, state.speed + 0.0004 * dt);
@@ -1595,27 +1149,11 @@ function animate() {
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   updateEngineSpeed(state.speed);
   
-  if (state.weather === 'rain') { 
-    const p = rainGeo.attributes.position.array; 
-    for(let i=0;i<p.length;i+=3){ 
-      p[i+1] -= state.speed*8*dt/2; 
-      if(p[i+1]<0){ p[i+1]=40; p[i]=(Math.random()-0.5)*60; p[i+2]=(Math.random()-0.5)*100; } 
-    } 
-    rainGeo.attributes.position.needsUpdate = true; 
-  }
-  if (state.weather === 'snow') { 
-    const p = snowGeo.attributes.position.array; 
-    for(let i=0;i<p.length;i+=3){ 
-      p[i+1] -= state.speed*3*dt/2; 
-      p[i] += Math.sin(now/500+i)*0.05; 
-      if(p[i+1]<0){ p[i+1]=40; p[i]=(Math.random()-0.5)*60; p[i+2]=(Math.random()-0.5)*100; } 
-    } 
-    snowGeo.attributes.position.needsUpdate = true; 
-  }
+  if (state.weather === 'rain') { const p = rainGeo.attributes.position.array; for(let i=0;i<p.length;i+=3){ p[i+1] -= state.speed*8*dt/2; if(p[i+1]<0){ p[i+1]=40; p[i]=(Math.random()-0.5)*60; p[i+2]=(Math.random()-0.5)*100; } } rainGeo.attributes.position.needsUpdate = true; }
+  if (state.weather === 'snow') { const p = snowGeo.attributes.position.array; for(let i=0;i<p.length;i+=3){ p[i+1] -= state.speed*3*dt/2; p[i] += Math.sin(now/500+i)*0.05; if(p[i+1]<0){ p[i+1]=40; p[i]=(Math.random()-0.5)*60; p[i+2]=(Math.random()-0.5)*100; } } snowGeo.attributes.position.needsUpdate = true; }
   
   state.shake = Math.max(0, state.shake - 0.05 * dt);
-  const sx = (Math.random()-0.5)*state.shake*0.08; 
-  const sy = (Math.random()-0.5)*state.shake*0.08;
+  const sx = (Math.random()-0.5)*state.shake*0.08; const sy = (Math.random()-0.5)*state.shake*0.08;
   camera.position.x = player.position.x * 0.5 + sx;
   camera.position.y = 6.5 + sy;
   camera.position.z = 13;
@@ -1625,14 +1163,7 @@ function animate() {
   laneDashes.forEach(d => { d.position.z += ma; if (d.position.z > 20) d.position.z -= 300; });
   scrollScenery(ma);
   
-  for (let i = state.cars.length - 1; i >= 0; i--) { 
-    const c = state.cars[i]; 
-    c.position.z += ma; 
-    if (c.position.z > 15) { 
-      scene.remove(c); 
-      state.cars.splice(i, 1); 
-    } 
-  }
+  for (let i = state.cars.length - 1; i >= 0; i--) { const c = state.cars[i]; c.position.z += ma; if (c.position.z > 15) { scene.remove(c); state.cars.splice(i, 1); } }
   state.lastSpawn += ma;
   if (state.lastSpawn > 75) { spawnEnemyCar(); state.lastSpawn = 0; }
   
@@ -1643,13 +1174,7 @@ function animate() {
   if (state.coinTimer >= 500) { state.coinTimer = 0; playSound('coin'); }
   if (state.speed > 1.5) state.shake = Math.min(0.8, state.shake + 0.015 * dt);
   
-  for (const c of state.cars) { 
-    if (checkCollision(player, c)) { 
-      state.gameCrashes++; 
-      endGame(); 
-      return; 
-    } 
-  }
+  for (const c of state.cars) { if (checkCollision(player, c)) { state.gameCrashes++; endGame(); return; } }
   
   const mh = document.getElementById('moneyHud'); if (mh) mh.textContent = Math.floor(state.money);
   const de = document.getElementById('distance'); if (de) de.textContent = Math.floor(state.distance);
@@ -1658,7 +1183,6 @@ function animate() {
 }
 function startAnimationLoop() { if (!animationRunning) { animationRunning = true; lastTime = performance.now(); animate(); } }
 
-// ==================== OYUN KONTROL ====================
 window.pauseGame = function() { try { if (!state.running || state.paused) return; state.paused = true; document.getElementById('pauseScreen').style.display = 'flex'; document.getElementById('gameButtons').classList.remove('visible'); stopEngine(); stopBgMusic(); } catch(e) {} };
 window.resumeGame = function() { try { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); startEngine(); startBgMusic(); lastTime = performance.now(); } catch(e) {} };
 window.restartFromPause = function() { try { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; resetGameState(); state.running = true; document.getElementById('gameButtons').classList.add('visible'); randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); } catch(e) {} };
@@ -1670,18 +1194,9 @@ function endGame() {
     state.running = false; state.paused = false;
     const ins = getInsurance(); let used = false;
     const hasUnlimited = ins.expiresAt && Date.now() < ins.expiresAt;
-    if (hasUnlimited) {
-      penaltyAmount = 0;
-      used = true;
-    } else if (ins.remaining > 0) { 
-      ins.remaining -= 1; 
-      if (ins.remaining === 0) ins.plan = 'none'; 
-      saveInsurance(ins); 
-      penaltyAmount = 0; 
-      used = true; 
-    } else { 
-      penaltyAmount = Math.floor(state.money / 2); 
-    }
+    if (hasUnlimited) { penaltyAmount = 0; used = true; }
+    else if (ins.remaining > 0) { ins.remaining -= 1; if (ins.remaining === 0) ins.plan = 'none'; saveInsurance(ins); penaltyAmount = 0; used = true; }
+    else { penaltyAmount = Math.floor(state.money / 2); }
     playSound('crash'); stopEngine(); stopBgMusic();
     const stats = getStats();
     stats.totalDistance += state.distance;
@@ -1699,7 +1214,6 @@ function endGame() {
     stats.quests.cars3.progress = stats.carsUsed.length;
     saveStats(stats);
     
-    // Turnuva güncelle
     const tour = getTournamentState();
     tour.myDistance = (tour.myDistance || 0) + state.distance;
     saveTournamentState(tour);
@@ -1714,186 +1228,23 @@ function endGame() {
   } catch(e) {}
 }
 
-// ==================== REKLAM: KASA ====================
-window.watchKasaAd = function() {
-  try {
-    if (!isKasaReady()) { showToast('⏳ ' + formatKasaTime(getKasaRemainingMs()), 'info'); return; }
-    const triggered = triggerAdMob('show_rewarded_ad');
-    if (triggered) {
-      showToast('📺 Reklam yükleniyor...', 'info');
-      const btn = document.getElementById('kasaClaimBtn');
-      if (btn) { btn.disabled = true; btn.textContent = '📺 Reklam yükleniyor...'; }
-      setTimeout(() => {
-        const btn2 = document.getElementById('kasaClaimBtn');
-        if (btn2 && btn2.disabled && btn2.textContent.includes('yükleniyor')) {
-          showToast('❌ Reklam yüklenemedi', 'error');
-          updateKasaUI();
-        }
-      }, 60000);
-    } else {
-      simulateKasaAd();
-    }
-  } catch(e) {}
-};
+window.watchKasaAd = function() { try { if (!isKasaReady()) { showToast('⏳ ' + formatKasaTime(getKasaRemainingMs()), 'info'); return; } const triggered = triggerAdMob('show_rewarded_ad'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); const btn = document.getElementById('kasaClaimBtn'); if (btn) { btn.disabled = true; btn.textContent = '📺 Reklam yükleniyor...'; } setTimeout(() => { const btn2 = document.getElementById('kasaClaimBtn'); if (btn2 && btn2.disabled && btn2.textContent.includes('yükleniyor')) { showToast('❌ Reklam yüklenemedi', 'error'); updateKasaUI(); } }, 60000); } else { simulateKasaAd(); } } catch(e) {} };
+function simulateKasaAd() { showToast('📺 Reklam (simülasyon)...', 'info'); const btn = document.getElementById('kasaClaimBtn'); if (btn) { btn.disabled = true; } let sec = 5; const iv = setInterval(() => { sec--; if (btn) btn.textContent = '📺 Reklam... ' + sec + 's'; if (sec <= 0) { clearInterval(iv); window.onKodularAdRewarded(); } }, 1000); }
 
-function simulateKasaAd() {
-  showToast('📺 Reklam (simülasyon)...', 'info');
-  const btn = document.getElementById('kasaClaimBtn');
-  if (btn) { btn.disabled = true; }
-  let sec = 5;
-  const iv = setInterval(() => {
-    sec--;
-    if (btn) btn.textContent = '📺 Reklam... ' + sec + 's';
-    if (sec <= 0) {
-      clearInterval(iv);
-      window.onKodularAdRewarded();
-    }
-  }, 1000);
-}
+window.watchAd = function() { try { if (!checkDailyAdLimit()) { showToast('⚠️ Günlük reklam limiti (15)', 'error'); return; } const triggered = triggerAdMob('show_rewarded_ad_gameover'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { showToast('❌ Reklam yüklenemedi', 'error'); } }, 60000); } else { simulateGameOverAd(); } } catch(e) {} };
+function simulateGameOverAd() { showToast('📺 Reklam (simülasyon)...', 'info'); setTimeout(() => { window.onKodularGameOverAdRewarded(); }, 3000); }
 
-// ==================== REKLAM: OYUN SONU ====================
-window.watchAd = function() {
-  try {
-    if (!checkDailyAdLimit()) { showToast('⚠️ Günlük reklam limiti (15)', 'error'); return; }
-    const triggered = triggerAdMob('show_rewarded_ad_gameover');
-    if (triggered) {
-      showToast('📺 Reklam yükleniyor...', 'info');
-      setTimeout(() => {
-        if (!state.running) { showToast('❌ Reklam yüklenemedi', 'error'); }
-      }, 60000);
-    } else {
-      simulateGameOverAd();
-    }
-  } catch(e) {}
-};
+window.restart = function() { try { interstitialCounter++; localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString()); console.log('📊 Geçiş reklamı sayacı:', interstitialCounter, '| Her', INTERSTITIAL_EVERY_N, 'tıkta bir reklam'); if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) { console.log('✅ GEÇİŞ REKLAMI GÖSTERİLECEK (' + interstitialCounter + '. tık)'); showInterstitialThenRestart(); } else { console.log('⏭️ Reklam yok, direkt başla (' + interstitialCounter + '. tık)'); doRestart(); } } catch(e) { console.error('restart:', e); doRestart(); } };
+function showInterstitialThenRestart() { try { const triggered = triggerAdMob('show_interstitial'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { console.log('⏰ Geçiş reklamı timeout'); doRestart(); } }, 15000); } else { doRestart(); } } catch(e) { doRestart(); } }
+function doRestart() { try { const rem = Math.max(0, state.money - penaltyAmount); addOP(rem); const stats = getStats(); stats.totalDistance += state.distance; if (state.distance > stats.bestDistance) stats.bestDistance = state.distance; saveStats(stats); resetGameState(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); state.running = true; state.paused = false; randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); updateHUD(); } catch(e) { console.error('doRestart:', e); } }
 
-function simulateGameOverAd() {
-  showToast('📺 Reklam (simülasyon)...', 'info');
-  setTimeout(() => { window.onKodularGameOverAdRewarded(); }, 3000);
-}
+window.goHome = function() { try { if (state.running || state.money > 0) { const rem = Math.max(0, state.money - (state.running ? 0 : penaltyAmount)); addOP(rem); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); renderer.domElement.style.display = 'none'; document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateHUD(); checkDailyLogin(); updateKasaUI(); } catch(e) {} };
 
-// ==================== YENİDEN BAŞLA (GEÇİŞ REKLAMI - Her 3) ====================
-window.restart = function() {
-  try {
-    interstitialCounter++;
-    localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString());
-    console.log('📊 Geçiş reklamı sayacı:', interstitialCounter, '| Her', INTERSTITIAL_EVERY_N, 'tıkta bir reklam');
-    
-    if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) {
-      console.log('✅ GEÇİŞ REKLAMI GÖSTERİLECEK (' + interstitialCounter + '. tık)');
-      showInterstitialThenRestart();
-    } else {
-      console.log('⏭️ Reklam yok, direkt başla (' + interstitialCounter + '. tık)');
-      doRestart();
-    }
-  } catch(e) { 
-    console.error('restart:', e); 
-    doRestart(); 
-  }
-};
-
-function showInterstitialThenRestart() {
-  try {
-    const triggered = triggerAdMob('show_interstitial');
-    if (triggered) {
-      showToast('📺 Reklam yükleniyor...', 'info');
-      setTimeout(() => {
-        if (!state.running) {
-          console.log('⏰ Geçiş reklamı timeout');
-          doRestart();
-        }
-      }, 15000);
-    } else {
-      doRestart();
-    }
-  } catch(e) { 
-    doRestart(); 
-  }
-}
-
-function doRestart() {
-  try {
-    const rem = Math.max(0, state.money - penaltyAmount);
-    addOP(rem);
-    const stats = getStats();
-    stats.totalDistance += state.distance;
-    if (state.distance > stats.bestDistance) stats.bestDistance = state.distance;
-    saveStats(stats);
-    resetGameState();
-    document.getElementById('gameOver').style.display = 'none';
-    document.getElementById('gameButtons').classList.add('visible');
-    state.running = true; state.paused = false;
-    randomizeWeatherAndTime();
-    startEngine(); startBgMusic(); startAnimationLoop();
-    updateHUD();
-  } catch(e) { console.error('doRestart:', e); }
-}
-
-// ==================== ANA MENÜ (REKLAMSIZ) ====================
-window.goHome = function() {
-  try {
-    if (state.running || state.money > 0) { 
-      const rem = Math.max(0, state.money - (state.running ? 0 : penaltyAmount)); 
-      addOP(rem); 
-    }
-    state.running = false; state.paused = false; animationRunning = false;
-    stopEngine(); stopBgMusic();
-    document.getElementById('gameOver').style.display = 'none';
-    document.getElementById('pauseScreen').style.display = 'none';
-    document.getElementById('hud').style.display = 'none';
-    document.getElementById('gameButtons').classList.remove('visible');
-    document.getElementById('weatherBadge').classList.remove('visible');
-    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-    renderer.domElement.style.display = 'none';
-    document.getElementById('homeScreen').style.display = 'flex';
-    resetGameState(); updateHUD(); checkDailyLogin(); updateKasaUI();
-  } catch(e) {}
-};
-
-window.startGame = function() {
-  try {
-    unlockAudio();
-    const ins = getInsurance();
-    // Aktif sigorta var mı kontrol
-    const hasActive = (ins.remaining > 0) || (ins.expiresAt && Date.now() < ins.expiresAt);
-    if (!hasActive) { showInsurance(); return; }
-    beginGame();
-  } catch(e) {}
-};
+window.startGame = function() { try { unlockAudio(); const ins = getInsurance(); const hasActive = (ins.remaining > 0) || (ins.expiresAt && Date.now() < ins.expiresAt); if (!hasActive) { showInsurance(); return; } beginGame(); } catch(e) {} };
 window.startWithoutInsurance = function() { try { document.getElementById('insuranceScreen').style.display = 'none'; beginGame(); } catch(e) {} };
-window.beginGame = function() {
-  try {
-    resetGameState();
-    resetDailyQuestsIfNeeded();
-    const ms = ['city','highway','mountain']; 
-    const mc = ms[Math.floor(Math.random()*ms.length)];
-    state.currentMap = mc;
-    state.mapBonus = MAPS[mc].bonus;
-    initScenery(mc);
-    document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none');
-    document.getElementById('homeScreen').style.display = 'none';
-    document.getElementById('hud').style.display = 'block';
-    document.getElementById('gameButtons').classList.add('visible');
-    renderer.domElement.style.display = 'block';
-    state.running = true; state.paused = false; state.gameCrashes = 0;
-    randomizeWeatherAndTime();
-    startEngine(); startBgMusic(); startAnimationLoop();
-  } catch(e) {}
-};
+window.beginGame = function() { try { resetGameState(); resetDailyQuestsIfNeeded(); const ms = ['city','highway','mountain']; const mc = ms[Math.floor(Math.random()*ms.length)]; state.currentMap = mc; state.mapBonus = MAPS[mc].bonus; initScenery(mc); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display = 'none'; document.getElementById('hud').style.display = 'block'; document.getElementById('gameButtons').classList.add('visible'); renderer.domElement.style.display = 'block'; state.running = true; state.paused = false; state.gameCrashes = 0; randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); } catch(e) {} };
 
-function resetGameState() {
-  state.money = 0; state.distance = 0; state.speed = 0.4;
-  state.playerLane = 0; state.targetLane = 0; state.shake = 0;
-  state.lastSpawn = 0; state.coinTimer = 0;
-  state.timeAccumulator = 0; state.weatherAccumulator = 0;
-  if (player) { player.position.set(0,0,4); player.rotation.z = 0; }
-  state.cars.forEach(c => scene.remove(c)); state.cars = [];
-  penaltyAmount = 0;
-  camera.position.set(0,6.5,13);
-  const mh = document.getElementById('moneyHud'); if (mh) mh.textContent = '0';
-  const de = document.getElementById('distance'); if (de) de.textContent = '0';
-  const se = document.getElementById('speed'); if (se) se.textContent = '0';
-}
+function resetGameState() { state.money = 0; state.distance = 0; state.speed = 0.4; state.playerLane = 0; state.targetLane = 0; state.shake = 0; state.lastSpawn = 0; state.coinTimer = 0; state.timeAccumulator = 0; state.weatherAccumulator = 0; if (player) { player.position.set(0,0,4); player.rotation.z = 0; } state.cars.forEach(c => scene.remove(c)); state.cars = []; penaltyAmount = 0; camera.position.set(0,6.5,13); const mh = document.getElementById('moneyHud'); if (mh) mh.textContent = '0'; const de = document.getElementById('distance'); if (de) de.textContent = '0'; const se = document.getElementById('speed'); if (se) se.textContent = '0'; }
 
 function resizeRenderer() { const w = window.innerWidth; const h = window.innerHeight; camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h); renderer.domElement.style.width = w+'px'; renderer.domElement.style.height = h+'px'; }
 window.addEventListener('resize', resizeRenderer);
@@ -1909,10 +1260,6 @@ resetDailyQuestsIfNeeded();
 updateHUD();
 renderReferral();
 setTimeout(checkDailyLogin, 500);
-setTimeout(() => {
-  // Kasa doldu mu kontrol
-  if (isKasaReady()) closeKasaDolduPopup();
-}, 2000);
 </script>
 </body>
 </html>
