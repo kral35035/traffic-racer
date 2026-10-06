@@ -751,15 +751,8 @@ sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
 sunLight.shadow.camera.top = 40; sunLight.shadow.camera.bottom = -40;
 sunLight.shadow.bias = -0.0005; scene.add(sunLight);
 
-// Far ışığı - hafif yol önüne düşen görsel
-const headlightBeam = new THREE.Mesh(
-  new THREE.PlaneGeometry(6, 15),
-  new THREE.MeshBasicMaterial({ color: 0xffffcc, transparent: true, opacity: 0.15, depthWrite: false, side: THREE.DoubleSide })
-);
-headlightBeam.rotation.x = -Math.PI/2;
-headlightBeam.position.set(0, 0.05, 5);
-headlightBeam.visible = false;
-scene.add(headlightBeam);
+// Far huzmesi KALDIRILDI
+const headlightBeam = null;
 
 const fogLayer = new THREE.Mesh(new THREE.PlaneGeometry(200, 400), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
 fogLayer.position.set(0, 2, -100); fogLayer.rotation.x = -Math.PI/2; fogLayer.renderOrder = 999; scene.add(fogLayer);
@@ -905,42 +898,12 @@ function createFallbackCar(c) {
   return g; 
 }
 
-// ==================== ARABAYA FAR EKLE (Sadece görsel) ====================
-// Kenney Car Kit modelleri -Z yönüne doğru ön kısım (araba ileri -Z'ye gider)
-// Far önde (-Z), stop lambaları arkada (+Z) olmalı
+// ==================== ARABAYA FAR EKLE ====================
+// Far ve stop lambaları KALDIRILDI - görsel karışıklık için
 function addLightsToCar(carGroup) {
-  try {
-    // Ön farlar (beyaz) - ÖN = -Z yönü
-    const headlightMat = new THREE.MeshStandardMaterial({ 
-      color: 0xffffdd, 
-      emissive: 0xffffdd, 
-      emissiveIntensity: 0.9 
-    });
-    const headlightGeo = new THREE.BoxGeometry(0.2, 0.12, 0.06);
-    const hl1 = new THREE.Mesh(headlightGeo, headlightMat);
-    hl1.position.set(-0.5, 0.45, -1.6); // Sol ön
-    carGroup.add(hl1);
-    const hl2 = new THREE.Mesh(headlightGeo, headlightMat);
-    hl2.position.set(0.5, 0.45, -1.6); // Sağ ön
-    carGroup.add(hl2);
-    
-    // Arka stop lambaları (kırmızı) - ARKA = +Z yönü
-    const taillightMat = new THREE.MeshStandardMaterial({ 
-      color: 0xff2222, 
-      emissive: 0xff0000, 
-      emissiveIntensity: 0.7 
-    });
-    const taillightGeo = new THREE.BoxGeometry(0.2, 0.1, 0.06);
-    const tl1 = new THREE.Mesh(taillightGeo, taillightMat);
-    tl1.position.set(-0.5, 0.45, 1.6); // Sol arka
-    carGroup.add(tl1);
-    const tl2 = new THREE.Mesh(taillightGeo, taillightMat);
-    tl2.position.set(0.5, 0.45, 1.6); // Sağ arka
-    carGroup.add(tl2);
-    
-    carGroup.userData.headlights = [hl1, hl2];
-    carGroup.userData.taillights = [tl1, tl2];
-  } catch(e) { console.error('addLightsToCar:', e); }
+  // Hiçbir şey eklenmiyor
+  carGroup.userData.headlights = [];
+  carGroup.userData.taillights = [];
 }
 
 // ==================== DURUM ====================
@@ -1061,25 +1024,11 @@ function applyTimeOfDay() {
   updateStreetLights(state.isNight);
   updateBuildingWindows(state.isNight);
   updatePlayerLights();
-  // Far huzmesi görünürlüğü
-  if (headlightBeam) headlightBeam.visible = state.isNight;
+   // Far huzmesi kaldırıldı
 }
 
 function updatePlayerLights() {
-  try {
-    if (!player || !player.userData) return;
-    const isNight = state.isNight;
-    if (player.userData.headlights) {
-      player.userData.headlights.forEach(h => {
-        if (h.material) h.material.emissiveIntensity = isNight ? 1.8 : 0.9;
-      });
-    }
-    if (player.userData.taillights) {
-      player.userData.taillights.forEach(t => {
-        if (t.material) t.material.emissiveIntensity = isNight ? 1.4 : 0.7;
-      });
-    }
-  } catch(e) {}
+  // Far ve stop lambaları kaldırıldı, hiçbir şey yapılmıyor
 }
 
 function updateWeatherBadge() { 
@@ -1128,11 +1077,7 @@ function animate() {
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   updateEngineSpeed(state.speed);
   
-  // Far huzmesini oyuncuya takip ettir
-  if (headlightBeam && headlightBeam.visible) {
-    headlightBeam.position.x = player.position.x;
-    headlightBeam.position.z = player.position.z - 5;
-  }
+   // Far huzmesi kaldırıldı
   
   if (state.weather === 'rain') { 
     const p = rainGeo.attributes.position.array; 
