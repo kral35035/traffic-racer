@@ -775,28 +775,8 @@ sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
 sunLight.shadow.camera.top = 40; sunLight.shadow.camera.bottom = -40;
 sunLight.shadow.bias = -0.0005; scene.add(sunLight);
 
-// Far ışıkları - yol önüne düşen
-const headlightTarget = new THREE.Object3D();
-headlightTarget.position.set(0, 0, 20);
-scene.add(headlightTarget);
-
-const headlightLeft = new THREE.SpotLight(0xffffcc, 0);
-headlightLeft.position.set(-0.5, 0.7, 5);
-headlightLeft.target = headlightTarget;
-headlightLeft.angle = 0.5;
-headlightLeft.penumbra = 0.3;
-headlightLeft.decay = 1;
-headlightLeft.distance = 30;
-scene.add(headlightLeft);
-
-const headlightRight = new THREE.SpotLight(0xffffcc, 0);
-headlightRight.position.set(0.5, 0.7, 5);
-headlightRight.target = headlightTarget;
-headlightRight.angle = 0.5;
-headlightRight.penumbra = 0.3;
-headlightRight.decay = 1;
-headlightRight.distance = 30;
-scene.add(headlightRight);
+// SpotLight'lar KALDIRILDI - performans için
+// Far ışıkları artık sadece görsel (mesh) olarak çalışıyor
 
 const fogLayer = new THREE.Mesh(new THREE.PlaneGeometry(200, 400), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
 fogLayer.position.set(0, 2, -100); fogLayer.rotation.x = -Math.PI/2; fogLayer.renderOrder = 999; scene.add(fogLayer);
@@ -831,21 +811,17 @@ function createLake() { const g = new THREE.Group(); const s = 8+Math.random()*8
 function createRock() { const s = 0.5+Math.random()*1.2; const rm = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.95, flatShading: true }); const geo = new THREE.DodecahedronGeometry(s,0); const pos = geo.attributes.position; for(let i=0;i<pos.count;i++){ pos.setXYZ(i,pos.getX(i)+(Math.random()-0.5)*0.3,pos.getY(i)+(Math.random()-0.5)*0.3,pos.getZ(i)+(Math.random()-0.5)*0.3); } geo.computeVertexNormals(); const r = new THREE.Mesh(geo,rm); r.position.y=s*0.5; r.castShadow=true; return r; }
 function createSign() { const g = new THREE.Group(); const pm = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 }); const sm = new THREE.MeshStandardMaterial({ color: 0x2196F3, emissive: 0x2196F3, emissiveIntensity: 0.3 }); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,2,6),pm); p.position.y=1; p.castShadow=true; g.add(p); const s = new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.6),sm); s.position.y=2; s.rotation.y = Math.random()<0.5?Math.PI/2:-Math.PI/2; g.add(s); return g; }
 
-// Sokak lambası - gece parlar
+// Sokak lambası - sadece görsel parlar (performans için PointLight YOK)
 function createStreetLight() {
   const g = new THREE.Group();
   const poleMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
   const lampMat = new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0xffdd88, emissiveIntensity: 0.2 });
   const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 4, 6), poleMat);
-  pole.position.y = 2; pole.castShadow = true; g.add(pole);
+  pole.position.y = 2; pole.castShadow = false; g.add(pole);
   const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), lampMat);
   lamp.position.y = 4; g.add(lamp);
-  // Işık kaynağı (sadece gece aktif)
-  const light = new THREE.PointLight(0xffdd88, 0, 12, 2);
-  light.position.y = 4;
-  g.add(light);
+  // PointLight KALDIRILDI (performans için)
   g.userData.lamp = lamp;
-  g.userData.light = light;
   g.userData.isStreetLight = true;
   streetLights.push(g);
   return g;
@@ -884,9 +860,8 @@ function scrollScenery(ma) {
 function updateStreetLights(isNight) {
   streetLights.forEach(sl => {
     try {
-      if (sl.userData.light) sl.userData.light.intensity = isNight ? 1.5 : 0;
       if (sl.userData.lamp) {
-        sl.userData.lamp.material.emissiveIntensity = isNight ? 1.5 : 0.2;
+        sl.userData.lamp.material.emissiveIntensity = isNight ? 2.0 : 0.2;
       }
     } catch(e) {}
   });
@@ -938,11 +913,11 @@ function createFallbackCar(c) {
 // ==================== ARABAYA FAR EKLE ====================
 function addLightsToCar(carGroup) {
   try {
-    // Ön farlar (beyaz)
+    // Ön farlar (beyaz) - görsel
     const headlightMat = new THREE.MeshStandardMaterial({ 
       color: 0xffffdd, 
       emissive: 0xffffdd, 
-      emissiveIntensity: 0.8 
+      emissiveIntensity: 0.9 
     });
     const headlightGeo = new THREE.BoxGeometry(0.25, 0.15, 0.08);
     const hl1 = new THREE.Mesh(headlightGeo, headlightMat);
@@ -956,7 +931,7 @@ function addLightsToCar(carGroup) {
     const taillightMat = new THREE.MeshStandardMaterial({ 
       color: 0xff2222, 
       emissive: 0xff0000, 
-      emissiveIntensity: 0.6 
+      emissiveIntensity: 0.7 
     });
     const taillightGeo = new THREE.BoxGeometry(0.25, 0.12, 0.08);
     const tl1 = new THREE.Mesh(taillightGeo, taillightMat);
@@ -966,21 +941,8 @@ function addLightsToCar(carGroup) {
     tl2.position.set(0.55, 0.5, 1.65);
     carGroup.add(tl2);
     
-    // Far ışık huzmesi (beyaz silindir, yarı saydam)
-    const beamMat = new THREE.MeshBasicMaterial({ 
-      color: 0xffffcc, 
-      transparent: true, 
-      opacity: 0.15,
-      depthWrite: false
-    });
-    const beamGeo = new THREE.ConeGeometry(1.5, 8, 12);
-    const beam = new THREE.Mesh(beamGeo, beamMat);
-    beam.rotation.x = Math.PI/2;
-    beam.position.set(0, 0.3, -5);
-    carGroup.add(beam);
-    
-    // Far bilgilerini userData'ya kaydet
-    carGroup.userData.headlights = [hl1, hl2, beam];
+    // Beam (ışık huzmesi) KALDIRILDI - görsel karışıklık için
+    carGroup.userData.headlights = [hl1, hl2];
     carGroup.userData.taillights = [tl1, tl2];
   } catch(e) { console.error('addLightsToCar:', e); }
 }
@@ -1101,43 +1063,30 @@ function applyTimeOfDay() {
   updatePlayerLights();
 }
 
-// Oyuncu far ışıklarını gece aç/kapat
+// Oyuncu far ışıklarını gece aç/kapat - SADECE GÖRSEL
 function updatePlayerLights() {
   try {
     if (!player || !player.userData) return;
     const isNight = state.isNight;
-    // Spot ışıkları (yol önüne)
-    headlightLeft.intensity = isNight ? 2.5 : 0;
-    headlightRight.intensity = isNight ? 2.5 : 0;
-    // Far huzmesi görünürlüğü
+    // Sadece far mesh'lerinin parlaklığını artır (performans için SpotLight yok)
     if (player.userData.headlights) {
-      const beam = player.userData.headlights[2]; // Beam
-      if (beam) beam.visible = isNight;
+      player.userData.headlights.forEach(h => {
+        if (h.material) {
+          h.material.emissiveIntensity = isNight ? 1.5 : 0.9;
+        }
+      });
+    }
+    if (player.userData.taillights) {
+      player.userData.taillights.forEach(t => {
+        if (t.material) {
+          t.material.emissiveIntensity = isNight ? 1.2 : 0.7;
+        }
+      });
     }
   } catch(e) {}
 }
-
-// Far pozisyonunu oyuncu arabasına göre güncelle
-function updateHeadlightPosition() {
-  try {
-    if (!player) return;
-    const px = player.position.x;
-    const pz = player.position.z;
-    headlightLeft.position.set(px - 0.5, 0.7, pz - 1.7);
-    headlightRight.position.set(px + 0.5, 0.7, pz - 1.7);
-    headlightTarget.position.set(px, 0.1, pz - 20);
-  } catch(e) {}
-}
-
-function updateWeatherBadge() { 
-  const b = document.getElementById('weatherBadge'); 
-  if (!b) return; 
-  const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; 
-  const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; 
-  const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; 
-  b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; 
-  b.classList.add('visible'); 
-}
+// Far pozisyonu artık gerekmiyor (SpotLight kaldırıldı)
+function updateHeadlightPosition() {}
 
 // ==================== DÖNGÜ ====================
 let lastTime = performance.now(); let animationRunning = false;
@@ -1174,7 +1123,7 @@ function animate() {
   player.position.x = state.playerLane * (ROAD_WIDTH/3);
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   updateEngineSpeed(state.speed);
-  updateHeadlightPosition();
+    // updateHeadlightPosition(); // Kaldırıldı
   
   if (state.weather === 'rain') { 
     const p = rainGeo.attributes.position.array; 
