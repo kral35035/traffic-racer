@@ -473,6 +473,7 @@ window.onKodularGameOverAdRewarded = function() {
     
     // BÜYÜK BİLDİRİM - kullanıcı görsün
     showBigRewardPopup(reward);
+    lastAdTime = Date.now(); // Ödüllü reklam zamanı
   } catch(e) { console.error('onKodularGameOverAdRewarded:', e); }
 };
 
@@ -550,6 +551,28 @@ function showBigRewardPopup(amount) {
     }, 2500);
   } catch(e) { console.error('showBigRewardPopup:', e); }
 }
+ // Kodular'dan geçiş reklamı kapatıldığında
+window.onKodularInterstitialClosed = function() {
+  try {
+    console.log('✅ Kodular: Geçiş reklamı kapatıldı');
+    // Oyun sonu ekranından mı geldi kontrol et
+    const goVisible = document.getElementById('gameOver') && document.getElementById('gameOver').style.display === 'flex';
+    if (goVisible) {
+      doRestart();
+    }
+  } catch(e) { console.error('onKodularInterstitialClosed:', e); }
+};
+
+// Kodular'dan geçiş reklamı yüklenemediğinde
+window.onKodularInterstitialFailed = function() {
+  try {
+    console.log('❌ Kodular: Geçiş reklamı yüklenemedi');
+    const goVisible = document.getElementById('gameOver') && document.getElementById('gameOver').style.display === 'flex';
+    if (goVisible) {
+      doRestart();
+    }
+  } catch(e) { console.error('onKodularInterstitialFailed:', e); }
+};
 // Kodular'dan reklam yüklenemedi bilgisi
 window.onKodularAdFailed = function() {
   try {
@@ -949,7 +972,11 @@ window.pauseGame = function() { try { if (!state.running || state.paused) return
 window.resumeGame = function() { try { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); startEngine(); startBgMusic(); lastTime = performance.now(); } catch(e) {} };
 window.restartFromPause = function() { try { state.paused = false; document.getElementById('pauseScreen').style.display = 'none'; resetGameState(); state.running = true; document.getElementById('gameButtons').classList.add('visible'); randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); } catch(e) {} };
 window.goHomeFromGame = function() { try { if (state.money > 0) { addOP(state.money); const s = getStats(); s.totalDistance += state.distance; if (state.distance > s.bestDistance) s.bestDistance = state.distance; saveStats(s); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('gameOver').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); renderer.domElement.style.display = 'none'; document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateHUD(); updateKasaUI(); } catch(e) {} };
-
+// Geçiş reklamı sistemi
+let interstitialCounter = parseInt(localStorage.getItem('trafficRacerInterCounter') || '0');
+const INTERSTITIAL_EVERY_N = 3; // Her 3. kez göster
+let lastAdTime = 0; // Son reklam zamanı (ödüllü veya geçiş)
+const AD_MIN_GAP = 30000; // 30 saniye minimum aralık
 let penaltyAmount = 0;
 function endGame() {
   try {
@@ -1056,6 +1083,58 @@ function simulateGameOverAd() {
 
 window.restart = function() {
   try {
+    // Ödüllü reklam izlendiyse 30 saniye içinde geçiş reklamı gösterme
+    const now = Date.now();
+    if (now - lastAdTime < AD_MIN_GAP) {
+      console.log('⏸️ Geçiş reklamı atlandı (yakın zamanda reklam izlendi)');
+      doRestart();
+      return;
+    }
+    
+    // Sayaç kontrolü
+    interstitialCounter++;
+    localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString());
+    
+    // Her 3. kez reklam göster
+    if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) {
+      console.log('✅ Geçiş reklamı gösterilecek (' + interstitialCounter + '. kez)');
+      showInterstitialThenRestart();
+    } else {
+      console.log('⏭️ Geçiş reklamı yok (' + interstitialCounter + '. kez)');
+      doRestart();
+    }
+  } catch(e) { 
+    console.error('restart:', e);
+    doRestart();
+  }
+};
+
+function showInterstitialThenRestart() {
+  try {
+    console.log('🎯 Geçiş reklamı isteniyor');
+    const triggered = triggerAdMob('show_interstitial');
+    
+    if (triggered) {
+      showToast('📺 Reklam yükleniyor...', 'info');
+      // 15 saniye timeout
+      setTimeout(() => {
+        if (!state.running) {
+          console.log('⏰ Geçiş reklamı timeout');
+          doRestart();
+        }
+      }, 15000);
+    } else {
+      doRestart();
+    }
+  } catch(e) { 
+    console.error('showInterstitialThenRestart:', e);
+    doRestart();
+  }
+}
+
+function doRestart() {
+  try {
+    lastAdTime = Date.now(); // Reklam zamanını güncelle
     const rem = Math.max(0, state.money - penaltyAmount);
     addOP(rem);
     const stats = getStats();
@@ -1069,8 +1148,8 @@ window.restart = function() {
     randomizeWeatherAndTime();
     startEngine(); startBgMusic(); startAnimationLoop();
     updateHUD();
-  } catch(e) { console.error('restart:', e); }
-};
+  } catch(e) { console.error('doRestart:', e); }
+}
 
 window.goHome = function() {
   try {
