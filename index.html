@@ -1082,7 +1082,7 @@ const CARS = {
   'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, model: 'models/taxi.glb' },
   'van': { name: 'Van', icon: '🚐', price: 50000, speed: 2.4, handling: 0.14, model: 'models/van.glb' },
   'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18, model: 'models/police.glb' },
-  'kart-oobi': { name: 'Kart Oobi', icon: '🏁', price: 50000, speed: 2.2, handling: 0.22, model: 'models/kart-oobi.glb' },
+ 
   
   // ORTA (100K OP)
   'sedan-sports': { name: 'Sports Sedan', icon: '🚗', price: 100000, speed: 2.7, handling: 0.17, model: 'models/sedan-sports.glb' },
@@ -1454,7 +1454,7 @@ function loadPlayerCar(k) {
     }); 
   } catch(e) {} 
 }
-loadPlayerCar('race-future');
+loadPlayerCar('1991_honda_civic_eg6');
 
 document.addEventListener('keydown', e => {
   if (!state.running || state.paused) return;
