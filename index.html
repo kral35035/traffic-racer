@@ -375,9 +375,7 @@ const ADMOB_IDS = {
   APP_ID: 'ca-app-pub-8587230794834510~3124834622',
   BANNER: 'ca-app-pub-8587230794834510/8025807512',
   INTERSTITIAL: 'ca-app-pub-8587230794834510/1811752958',
-  REWARDED: 'ca-app-pub-8587230794834510/5495757809',
-  REWARDED_INTERSTITIAL: 'ca-app-pub-8587230794834510/4302184921',
-  NATIVE_ADVANCED: 'ca-app-pub-8587230794834510/2989103252'
+  REWARDED: 'ca-app-pub-8587230794834510/5495757809'
 };
 
 // ==================== GEÇİŞ REKLAMI ====================
@@ -436,7 +434,6 @@ function showBigRewardPopup(amount) {
   } catch(e) { console.error('showBigRewardPopup:', e); }
 }
 
-// Kodular'dan KASA reklamı ödülü
 window.onKodularAdRewarded = function() {
   try {
     console.log('✅ Kodular: Kasa ödülü');
@@ -457,7 +454,6 @@ window.onKodularAdRewarded = function() {
   } catch(e) { console.error('onKodularAdRewarded:', e); }
 };
 
-// Kodular'dan OYUN SONU reklamı ödülü
 window.onKodularGameOverAdRewarded = function() {
   try {
     console.log('✅ Kodular: Oyun sonu ödülü');
@@ -505,7 +501,6 @@ window.onKodularAdFailed = function() {
   } catch(e) {}
 };
 
-// Geçiş reklamı callback'leri
 window.onKodularInterstitialClosed = function() {
   try {
     console.log('✅ Kodular: Geçiş reklamı kapatıldı');
@@ -534,7 +529,6 @@ function t(k) { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][k
 
 function applyTranslations() {
   try {
-    const setText = (id, key) => { const el = document.getElementById(id); if (el) el.textContent = t(key); };
     const pb = document.getElementById('playBtn'); if (pb) pb.textContent = t('play');
     const wb = document.getElementById('walletBtn'); if (wb) { const b = wb.querySelector('.btn-badge'); wb.textContent = t('wallet'); if (b) wb.appendChild(b); }
     const gb = document.getElementById('garageBtn'); if (gb) gb.textContent = t('garage');
@@ -766,6 +760,7 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
+// Performans için ışıklar sadece gerekli olanlar
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.4); scene.add(ambientLight);
 const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.9); scene.add(hemiLight);
 const sunLight = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -776,7 +771,6 @@ sunLight.shadow.camera.top = 40; sunLight.shadow.camera.bottom = -40;
 sunLight.shadow.bias = -0.0005; scene.add(sunLight);
 
 // SpotLight'lar KALDIRILDI - performans için
-// Far ışıkları artık sadece görsel (mesh) olarak çalışıyor
 
 const fogLayer = new THREE.Mesh(new THREE.PlaneGeometry(200, 400), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
 fogLayer.position.set(0, 2, -100); fogLayer.rotation.x = -Math.PI/2; fogLayer.renderOrder = 999; scene.add(fogLayer);
@@ -801,17 +795,17 @@ ground.rotation.x = -Math.PI/2; ground.position.set(0, -0.15, -100); ground.rece
 
 // ==================== MANZARA ====================
 const scenery = []; const SCENERY_LENGTH = 400; const SCENERY_DESPAWN = 40; const SCENERY_SPAWN = -SCENERY_LENGTH + 20;
-const streetLights = []; // Sokak lambaları için özel liste
+const streetLights = [];
 let currentMapType = 'city';
 
 function createTree() { const g = new THREE.Group(); const tm = new THREE.MeshStandardMaterial({ color: 0x6b3d1f, roughness: 1 }); const lm = new THREE.MeshStandardMaterial({ color: 0x2d8a2d, roughness: 1 }); const lm2 = new THREE.MeshStandardMaterial({ color: 0x3da63d, roughness: 1 }); const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,1.2,6), tm); tr.position.y=0.6; tr.castShadow=true; g.add(tr); const lc = 2+Math.floor(Math.random()*2); for(let i=0;i<lc;i++){ const sz=1.4-i*0.35; const l=new THREE.Mesh(new THREE.ConeGeometry(sz,1.2,8), i%2?lm:lm2); l.position.y=1.3+i*0.7; l.castShadow=true; g.add(l);} return g; }
-function createBuilding() { const g = new THREE.Group(); const h = 4+Math.random()*8; const w = 2+Math.random()*2; const d = 2+Math.random()*2; const cs = [0x8899aa,0xaa9988,0xbbbbbb,0x7788aa,0xaabbcc,0x99aaaa]; const c = cs[Math.floor(Math.random()*cs.length)]; const bm = new THREE.MeshStandardMaterial({ color: c, roughness: 0.7, metalness: 0.1 }); const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), bm); b.position.y=h/2; b.castShadow=true; b.receiveShadow=true; g.add(b); const wm = new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0xffdd88, emissiveIntensity: 0 }); const windows = []; for(let r=0;r<Math.floor(h/1.5);r++)for(let c2=0;c2<Math.floor(w/0.8);c2++){ if(Math.random()<0.6){ const wn=new THREE.Mesh(new THREE.PlaneGeometry(0.4,0.5),wm.clone()); wn.position.set(-w/2+0.6+c2*0.8,1+r*1.5,d/2+0.01); g.add(wn); windows.push(wn);} } g.userData.windows = windows; return g; }
+function createBuilding() { const g = new THREE.Group(); const h = 4+Math.random()*8; const w = 2+Math.random()*2; const d = 2+Math.random()*2; const cs = [0x8899aa,0xaa9988,0xbbbbbb,0x7788aa,0xaabbcc,0x99aaaa]; const c = cs[Math.floor(Math.random()*cs.length)]; const bm = new THREE.MeshStandardMaterial({ color: c, roughness: 0.7, metalness: 0.1 }); const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), bm); b.position.y=h/2; b.castShadow=true; b.receiveShadow=true; g.add(b); const windows = []; for(let r=0;r<Math.floor(h/1.5);r++)for(let c2=0;c2<Math.floor(w/0.8);c2++){ if(Math.random()<0.6){ const wm = new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0xffdd88, emissiveIntensity: 0 }); const wn=new THREE.Mesh(new THREE.PlaneGeometry(0.4,0.5),wm); wn.position.set(-w/2+0.6+c2*0.8,1+r*1.5,d/2+0.01); g.add(wn); windows.push(wn);} } g.userData.windows = windows; return g; }
 function createMountain() { const g = new THREE.Group(); const h = 8+Math.random()*12; const r = 5+Math.random()*4; const mm = new THREE.MeshStandardMaterial({ color: 0x556677, roughness: 0.95 }); const sm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }); const b = new THREE.Mesh(new THREE.ConeGeometry(r,h,8), mm); b.position.y=h/2; b.castShadow=true; g.add(b); if(h>12){ const s=new THREE.Mesh(new THREE.ConeGeometry(r*0.4,h*0.25,8),sm); s.position.y=h*0.88; g.add(s);} return g; }
 function createLake() { const g = new THREE.Group(); const s = 8+Math.random()*8; const lm = new THREE.MeshStandardMaterial({ color: 0x2a6bb5, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 }); const l = new THREE.Mesh(new THREE.CircleGeometry(s,16),lm); l.rotation.x=-Math.PI/2; l.position.y=-0.08; g.add(l); return g; }
 function createRock() { const s = 0.5+Math.random()*1.2; const rm = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.95, flatShading: true }); const geo = new THREE.DodecahedronGeometry(s,0); const pos = geo.attributes.position; for(let i=0;i<pos.count;i++){ pos.setXYZ(i,pos.getX(i)+(Math.random()-0.5)*0.3,pos.getY(i)+(Math.random()-0.5)*0.3,pos.getZ(i)+(Math.random()-0.5)*0.3); } geo.computeVertexNormals(); const r = new THREE.Mesh(geo,rm); r.position.y=s*0.5; r.castShadow=true; return r; }
 function createSign() { const g = new THREE.Group(); const pm = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 }); const sm = new THREE.MeshStandardMaterial({ color: 0x2196F3, emissive: 0x2196F3, emissiveIntensity: 0.3 }); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,2,6),pm); p.position.y=1; p.castShadow=true; g.add(p); const s = new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.6),sm); s.position.y=2; s.rotation.y = Math.random()<0.5?Math.PI/2:-Math.PI/2; g.add(s); return g; }
 
-// Sokak lambası - sadece görsel parlar (performans için PointLight YOK)
+// Sokak lambası - performans için sadece görsel, PointLight YOK
 function createStreetLight() {
   const g = new THREE.Group();
   const poleMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
@@ -820,14 +814,30 @@ function createStreetLight() {
   pole.position.y = 2; pole.castShadow = false; g.add(pole);
   const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), lampMat);
   lamp.position.y = 4; g.add(lamp);
-  // PointLight KALDIRILDI (performans için)
   g.userData.lamp = lamp;
   g.userData.isStreetLight = true;
   streetLights.push(g);
   return g;
 }
 
-function spawnSceneryItem(type) { const side = Math.random()<0.5?-1:1; const d = 8+Math.random()*25; const x = side*(ROAD_WIDTH/2+d); const z = SCENERY_SPAWN+Math.random()*SCENERY_LENGTH; let item; const r = Math.random(); if (type === 'city') { if (r<0.35) item=createBuilding(); else if (r<0.55) item=createTree(); else if (r<0.85) item=createStreetLight(); else item=createSign(); } else if (type === 'highway') { if (r<0.6) item=createStreetLight(); else if (r<0.85) item=createTree(); else item=createSign(); } else if (type === 'mountain') { if (r<0.3) item=createTree(); else if (r<0.5) item=createMountain(); else if (r<0.65) item=createRock(); else if (r<0.85) item=createStreetLight(); else item=createLake(); } else { if (r<0.3) item=createTree(); else if (r<0.5) item=createBuilding(); else if (r<0.65) item=createMountain(); else if (r<0.78) item=createLake(); else if (r<0.9) item=createRock(); else item=createSign(); } item.position.set(x,0,z); item.rotation.y = Math.random()*Math.PI*2; const sc = 0.8+Math.random()*0.6; item.scale.set(sc,sc,sc); scene.add(item); scenery.push({ mesh: item, baseX: x }); }
+function spawnSceneryItem(type) { 
+  const side = Math.random()<0.5?-1:1; 
+  const d = 8+Math.random()*25; 
+  const x = side*(ROAD_WIDTH/2+d); 
+  const z = SCENERY_SPAWN+Math.random()*SCENERY_LENGTH; 
+  let item; 
+  const r = Math.random(); 
+  if (type === 'city') { if (r<0.35) item=createBuilding(); else if (r<0.55) item=createTree(); else if (r<0.85) item=createStreetLight(); else item=createSign(); } 
+  else if (type === 'highway') { if (r<0.6) item=createStreetLight(); else if (r<0.85) item=createTree(); else item=createSign(); } 
+  else if (type === 'mountain') { if (r<0.3) item=createTree(); else if (r<0.5) item=createMountain(); else if (r<0.65) item=createRock(); else if (r<0.85) item=createStreetLight(); else item=createLake(); } 
+  else { if (r<0.3) item=createTree(); else if (r<0.5) item=createBuilding(); else if (r<0.65) item=createMountain(); else if (r<0.78) item=createLake(); else if (r<0.9) item=createRock(); else item=createSign(); } 
+  item.position.set(x,0,z); 
+  item.rotation.y = Math.random()*Math.PI*2; 
+  const sc = 0.8+Math.random()*0.6; 
+  item.scale.set(sc,sc,sc); 
+  scene.add(item); 
+  scenery.push({ mesh: item, baseX: x }); 
+}
 
 function initScenery(mapType) { 
   currentMapType = mapType||'city'; 
@@ -856,7 +866,7 @@ function scrollScenery(ma) {
   } 
 }
 
-// Sokak lambalarını gece aç/kapat
+// Sokak lambaları - sadece parlaklık değişir (performans)
 function updateStreetLights(isNight) {
   streetLights.forEach(sl => {
     try {
@@ -867,13 +877,13 @@ function updateStreetLights(isNight) {
   });
 }
 
-// Bina pencerelerini gece yak
+// Bina pencereleri - gece yanar
 function updateBuildingWindows(isNight) {
   scenery.forEach(s => {
     try {
       if (s.mesh.userData.windows) {
         s.mesh.userData.windows.forEach(w => {
-          w.material.emissiveIntensity = isNight ? 0.8 : 0;
+          w.material.emissiveIntensity = isNight ? 0.9 : 0;
         });
       }
     } catch(e) {}
@@ -910,10 +920,10 @@ function createFallbackCar(c) {
   return g; 
 }
 
-// ==================== ARABAYA FAR EKLE ====================
+// ==================== ARABAYA FAR EKLE (Hafif) ====================
 function addLightsToCar(carGroup) {
   try {
-    // Ön farlar (beyaz) - görsel
+    // Ön farlar (beyaz)
     const headlightMat = new THREE.MeshStandardMaterial({ 
       color: 0xffffdd, 
       emissive: 0xffffdd, 
@@ -941,7 +951,6 @@ function addLightsToCar(carGroup) {
     tl2.position.set(0.55, 0.5, 1.65);
     carGroup.add(tl2);
     
-    // Beam (ışık huzmesi) KALDIRILDI - görsel karışıklık için
     carGroup.userData.headlights = [hl1, hl2];
     carGroup.userData.taillights = [tl1, tl2];
   } catch(e) { console.error('addLightsToCar:', e); }
@@ -1063,31 +1072,34 @@ function applyTimeOfDay() {
   updatePlayerLights();
 }
 
-// Oyuncu far ışıklarını gece aç/kapat - SADECE GÖRSEL
+// Oyuncu far ışıklarını gece parlat (sadece görsel)
 function updatePlayerLights() {
   try {
     if (!player || !player.userData) return;
     const isNight = state.isNight;
-    // Sadece far mesh'lerinin parlaklığını artır (performans için SpotLight yok)
     if (player.userData.headlights) {
       player.userData.headlights.forEach(h => {
-        if (h.material) {
-          h.material.emissiveIntensity = isNight ? 1.5 : 0.9;
-        }
+        if (h.material) h.material.emissiveIntensity = isNight ? 1.8 : 0.9;
       });
     }
     if (player.userData.taillights) {
       player.userData.taillights.forEach(t => {
-        if (t.material) {
-          t.material.emissiveIntensity = isNight ? 1.2 : 0.7;
-        }
+        if (t.material) t.material.emissiveIntensity = isNight ? 1.4 : 0.7;
       });
     }
   } catch(e) {}
 }
-// Far pozisyonu artık gerekmiyor (SpotLight kaldırıldı)
-function updateHeadlightPosition() {}
 
+function updateWeatherBadge() { 
+  const b = document.getElementById('weatherBadge'); 
+  if (!b) return; 
+  const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; 
+  const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; 
+  const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; 
+  b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; 
+  b.classList.add('visible'); 
+}
+ 
 // ==================== DÖNGÜ ====================
 let lastTime = performance.now(); let animationRunning = false;
 function animate() {
@@ -1123,7 +1135,6 @@ function animate() {
   player.position.x = state.playerLane * (ROAD_WIDTH/3);
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   updateEngineSpeed(state.speed);
-    // updateHeadlightPosition(); // Kaldırıldı
   
   if (state.weather === 'rain') { 
     const p = rainGeo.attributes.position.array; 
@@ -1288,7 +1299,7 @@ function simulateGameOverAd() {
 // ==================== YENİDEN BAŞLA (GEÇİŞ REKLAMI) ====================
 window.restart = function() {
   try {
-    // Geçiş reklamı kontrolü - 30 saniye kuralı
+    // 30 saniye kuralı
     const now = Date.now();
     if (now - lastAdTime < AD_MIN_GAP) {
       console.log('⏸️ Geçiş reklamı atlandı (30sn kuralı)');
