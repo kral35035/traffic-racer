@@ -1074,11 +1074,37 @@ window.toggleFullscreen = function() { try { const doc = document.documentElemen
 
 // ==================== ARAÇLAR ====================
 const CARS = {
-  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15 },
-  'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18 },
-  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16 },
-  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150000, speed: 3.0, handling: 0.12 },
-  'truck': { name: 'Truck', icon: '🚚', price: 300000, speed: 3.2, handling: 0.10 }
+  // ÜCRETSİZ
+  'race-future': { name: 'Race Future', icon: '🏎️', price: 0, speed: 2.8, handling: 0.15, model: 'models/race-future.glb' },
+  
+  // EKONOMİK (50K OP)
+  'sedan': { name: 'Sedan', icon: '🚗', price: 50000, speed: 2.5, handling: 0.16, model: 'models/sedan.glb' },
+  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, model: 'models/taxi.glb' },
+  'van': { name: 'Van', icon: '🚐', price: 50000, speed: 2.4, handling: 0.14, model: 'models/van.glb' },
+  'police': { name: 'Police', icon: '🚓', price: 50000, speed: 2.6, handling: 0.18, model: 'models/police.glb' },
+  'kart-oobi': { name: 'Kart Oobi', icon: '🏁', price: 50000, speed: 2.2, handling: 0.22, model: 'models/kart-oobi.glb' },
+  
+  // ORTA (100K OP)
+  'sedan-sports': { name: 'Sports Sedan', icon: '🚗', price: 100000, speed: 2.7, handling: 0.17, model: 'models/sedan-sports.glb' },
+  'hatchback-sports': { name: 'Sports Hatchback', icon: '🚙', price: 100000, speed: 2.7, handling: 0.18, model: 'models/hatchback-sports.glb' },
+  'race': { name: 'Race', icon: '🏎️', price: 100000, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
+  '1991_honda_civic_eg6': { name: 'Honda Civic EG6', icon: '🏎️', price: 100000, speed: 2.8, handling: 0.17, model: 'models/1991_honda_civic_eg6.glb' },
+  'adodge': { name: 'Dodge', icon: '🚗', price: 100000, speed: 2.8, handling: 0.15, model: 'models/adodge.glb' },
+  
+  // PAHALI (200K OP)
+  'suv': { name: 'SUV', icon: '🚙', price: 200000, speed: 2.7, handling: 0.13, model: 'models/suv.glb' },
+  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 200000, speed: 3.0, handling: 0.12, model: 'models/suv-luxury.glb' },
+  '2001_honda_s2000': { name: 'Honda S2000', icon: '🏎️', price: 200000, speed: 3.0, handling: 0.15, model: 'models/2001_honda_s2000.glb' },
+  'ambulance': { name: 'Ambulance', icon: '🚑', price: 200000, speed: 2.6, handling: 0.12, model: 'models/ambulance.glb' },
+  'firetruck': { name: 'Fire Truck', icon: '🚒', price: 200000, speed: 2.5, handling: 0.10, model: 'models/firetruck.glb' },
+  'garbage-truck': { name: 'Garbage Truck', icon: '🚛', price: 200000, speed: 2.4, handling: 0.10, model: 'models/garbage-truck.glb' },
+  'truck': { name: 'Truck', icon: '🚚', price: 200000, speed: 3.2, handling: 0.10, model: 'models/truck.glb' },
+  'truck-flat': { name: 'Flat Truck', icon: '🚚', price: 200000, speed: 3.2, handling: 0.10, model: 'models/truck-flat.glb' },
+  'delivery': { name: 'Delivery', icon: '🚚', price: 200000, speed: 2.6, handling: 0.12, model: 'models/delivery.glb' },
+  'delivery-flat': { name: 'Delivery Flat', icon: '🚚', price: 200000, speed: 2.6, handling: 0.12, model: 'models/delivery-flat.glb' },
+  'tractor': { name: 'Tractor', icon: '🚜', price: 200000, speed: 2.0, handling: 0.20, model: 'models/tractor.glb' },
+  'tractor-police': { name: 'Police Tractor', icon: '🚜', price: 200000, speed: 2.0, handling: 0.20, model: 'models/tractor-police.glb' },
+  'tractor-shovel': { name: 'Shovel', icon: '🚜', price: 200000, speed: 1.8, handling: 0.22, model: 'models/tractor-shovel.glb' }
 };
 function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race-future'], selected: 'race-future' }; }
 function saveGarage(g) { try { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); } catch(e) {} }
@@ -1398,8 +1424,7 @@ let player = createFallbackCar(0x00cc44); player.position.set(0,0,4); addLightsT
 function loadPlayerCar(k) { 
   try { 
     const c = CARS[k]||CARS['race-future']; 
-    const mm = { 'race-future':'models/race-future.glb', 'police':'models/police.glb', 'taxi':'models/taxi.glb', 'suv-luxury':'models/suv-luxury.glb', 'truck':'models/truck.glb' }; 
-    const p = mm[k]||'models/race-future.glb'; 
+    const p = c.model || 'models/race-future.glb'; 
     loadCarModel(p, 0x00cc44).then(m => { 
       scene.remove(player); 
       m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
