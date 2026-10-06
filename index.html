@@ -369,7 +369,6 @@ const KASA_COOLDOWN_MS = 5 * 60 * 60 * 1000;
 const KASA_REWARD_OP = 2000;
 const DAILY_AD_LIMIT = 15;
 const INTERSTITIAL_EVERY_N = 3;
-const AD_MIN_GAP = 30000;
 
 const ADMOB_IDS = {
   APP_ID: 'ca-app-pub-8587230794834510~3124834622',
@@ -380,33 +379,27 @@ const ADMOB_IDS = {
 
 // ==================== GEÇİŞ REKLAMI ====================
 let interstitialCounter = parseInt(localStorage.getItem('trafficRacerInterCounter') || '0');
-let lastAdTime = 0;
 
 // ==================== ADMOB KÖPRÜSÜ ====================
 function triggerAdMob(adType) {
   try {
     console.log('🎯 Reklam isteniyor:', adType);
     if (window.Kodular && typeof window.Kodular.setWebViewString === 'function') {
-      console.log('✅ Kodular bridge');
       window.Kodular.setWebViewString(adType);
       return true;
     }
     if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') {
-      console.log('✅ AppInventor bridge');
       window.AppInventor.setWebViewString(adType);
       return true;
     }
     if (window.CustomWebView && typeof window.CustomWebView.setWebViewString === 'function') {
-      console.log('✅ CustomWebView bridge');
       window.CustomWebView.setWebViewString(adType);
       return true;
     }
     if (window.Android && typeof window.Android.setWebViewString === 'function') {
-      console.log('✅ Android bridge');
       window.Android.setWebViewString(adType);
       return true;
     }
-    console.log('⚠️ Bridge yok, URL hash kullanılıyor');
     window.location.hash = adType;
     return true;
   } catch(e) { console.error('❌ triggerAdMob:', e); return false; }
@@ -431,7 +424,7 @@ function showBigRewardPopup(amount) {
       popup.style.animation = 'rewardFade 0.5s ease-in forwards';
       setTimeout(() => { if (popup.parentNode) popup.remove(); }, 500);
     }, 2500);
-  } catch(e) { console.error('showBigRewardPopup:', e); }
+  } catch(e) {}
 }
 
 window.onKodularAdRewarded = function() {
@@ -450,8 +443,7 @@ window.onKodularAdRewarded = function() {
     if (btn) { btn.disabled = true; }
     showBigRewardPopup(KASA_REWARD_OP);
     showToast('🎁 +2000 OP' + extraMsg, 'gold');
-    lastAdTime = Date.now();
-  } catch(e) { console.error('onKodularAdRewarded:', e); }
+  } catch(e) {}
 };
 
 window.onKodularGameOverAdRewarded = function() {
@@ -478,14 +470,11 @@ window.onKodularGameOverAdRewarded = function() {
     }
     startEngine(); startBgMusic(); startAnimationLoop(); updateHUD();
     showBigRewardPopup(reward);
-    lastAdTime = Date.now();
-  } catch(e) { console.error('onKodularGameOverAdRewarded:', e); }
+  } catch(e) {}
 };
 
 window.onKodularAdClosed = function() {
   try {
-    console.log('ℹ️ Reklam kapatıldı');
-    showToast('📺 Reklam kapatıldı', 'info');
     const btn = document.getElementById('kasaClaimBtn');
     if (btn) { btn.disabled = false; }
   } catch(e) {}
@@ -493,8 +482,7 @@ window.onKodularAdClosed = function() {
 
 window.onKodularAdFailed = function() {
   try {
-    console.log('❌ Reklam yüklenemedi');
-    showToast('❌ Reklam yüklenemedi, tekrar dene', 'error');
+    showToast('❌ Reklam yüklenemedi', 'error');
     const btn = document.getElementById('kasaClaimBtn');
     if (btn) { btn.disabled = false; }
     updateKasaUI();
@@ -504,17 +492,15 @@ window.onKodularAdFailed = function() {
 window.onKodularInterstitialClosed = function() {
   try {
     console.log('✅ Kodular: Geçiş reklamı kapatıldı');
-    const goVisible = document.getElementById('gameOver') && document.getElementById('gameOver').style.display === 'flex';
-    if (goVisible) doRestart();
-  } catch(e) { console.error('onKodularInterstitialClosed:', e); }
+    doRestart();
+  } catch(e) {}
 };
 
 window.onKodularInterstitialFailed = function() {
   try {
     console.log('❌ Kodular: Geçiş reklamı yüklenemedi');
-    const goVisible = document.getElementById('gameOver') && document.getElementById('gameOver').style.display === 'flex';
-    if (goVisible) doRestart();
-  } catch(e) { console.error('onKodularInterstitialFailed:', e); }
+    doRestart();
+  } catch(e) {}
 };
 
 // ==================== ÇOKLU DİL ====================
@@ -542,15 +528,11 @@ function applyTranslations() {
     const tq = document.getElementById('tabQuests'); if (tq) tq.textContent = t('quests_tab');
     const ta = document.getElementById('tabAch'); if (ta) ta.textContent = t('ach_tab');
     document.querySelectorAll('.back-btn').forEach(b => { b.textContent = t('back'); });
-    const mv = document.getElementById('masterToggle'); if (mv) mv.textContent = settings.masterEnabled ? t('on') : t('off');
-    const mu = document.getElementById('musicToggle'); if (mu) mu.textContent = settings.musicEnabled ? t('on') : t('off');
-    const ev = document.getElementById('engineToggle'); if (ev) ev.textContent = settings.engineEnabled ? t('on') : t('off');
-    const sv = document.getElementById('sfxToggle'); if (sv) sv.textContent = settings.sfxEnabled ? t('on') : t('off');
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     const map = { tr: 'langTR', en: 'langEN', ru: 'langRU' };
     const a = document.getElementById(map[currentLang]); if (a) a.classList.add('active');
     updateKasaUI();
-  } catch(e) { console.error('applyTranslations:', e); }
+  } catch(e) {}
 }
 
 window.setLanguage = function(lang) {
@@ -760,7 +742,6 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.display = 'none';
 
-// Performans için ışıklar sadece gerekli olanlar
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.4); scene.add(ambientLight);
 const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.9); scene.add(hemiLight);
 const sunLight = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -770,7 +751,15 @@ sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
 sunLight.shadow.camera.top = 40; sunLight.shadow.camera.bottom = -40;
 sunLight.shadow.bias = -0.0005; scene.add(sunLight);
 
-// SpotLight'lar KALDIRILDI - performans için
+// Far ışığı - hafif yol önüne düşen görsel
+const headlightBeam = new THREE.Mesh(
+  new THREE.PlaneGeometry(6, 15),
+  new THREE.MeshBasicMaterial({ color: 0xffffcc, transparent: true, opacity: 0.15, depthWrite: false, side: THREE.DoubleSide })
+);
+headlightBeam.rotation.x = -Math.PI/2;
+headlightBeam.position.set(0, 0.05, 5);
+headlightBeam.visible = false;
+scene.add(headlightBeam);
 
 const fogLayer = new THREE.Mesh(new THREE.PlaneGeometry(200, 400), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
 fogLayer.position.set(0, 2, -100); fogLayer.rotation.x = -Math.PI/2; fogLayer.renderOrder = 999; scene.add(fogLayer);
@@ -804,8 +793,6 @@ function createMountain() { const g = new THREE.Group(); const h = 8+Math.random
 function createLake() { const g = new THREE.Group(); const s = 8+Math.random()*8; const lm = new THREE.MeshStandardMaterial({ color: 0x2a6bb5, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 }); const l = new THREE.Mesh(new THREE.CircleGeometry(s,16),lm); l.rotation.x=-Math.PI/2; l.position.y=-0.08; g.add(l); return g; }
 function createRock() { const s = 0.5+Math.random()*1.2; const rm = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.95, flatShading: true }); const geo = new THREE.DodecahedronGeometry(s,0); const pos = geo.attributes.position; for(let i=0;i<pos.count;i++){ pos.setXYZ(i,pos.getX(i)+(Math.random()-0.5)*0.3,pos.getY(i)+(Math.random()-0.5)*0.3,pos.getZ(i)+(Math.random()-0.5)*0.3); } geo.computeVertexNormals(); const r = new THREE.Mesh(geo,rm); r.position.y=s*0.5; r.castShadow=true; return r; }
 function createSign() { const g = new THREE.Group(); const pm = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 }); const sm = new THREE.MeshStandardMaterial({ color: 0x2196F3, emissive: 0x2196F3, emissiveIntensity: 0.3 }); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,2,6),pm); p.position.y=1; p.castShadow=true; g.add(p); const s = new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.6),sm); s.position.y=2; s.rotation.y = Math.random()<0.5?Math.PI/2:-Math.PI/2; g.add(s); return g; }
-
-// Sokak lambası - performans için sadece görsel, PointLight YOK
 function createStreetLight() {
   const g = new THREE.Group();
   const poleMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
@@ -866,7 +853,6 @@ function scrollScenery(ma) {
   } 
 }
 
-// Sokak lambaları - sadece parlaklık değişir (performans)
 function updateStreetLights(isNight) {
   streetLights.forEach(sl => {
     try {
@@ -877,7 +863,6 @@ function updateStreetLights(isNight) {
   });
 }
 
-// Bina pencereleri - gece yanar
 function updateBuildingWindows(isNight) {
   scenery.forEach(s => {
     try {
@@ -920,35 +905,37 @@ function createFallbackCar(c) {
   return g; 
 }
 
-// ==================== ARABAYA FAR EKLE (Hafif) ====================
+// ==================== ARABAYA FAR EKLE (Sadece görsel) ====================
+// Kenney Car Kit modelleri -Z yönüne doğru ön kısım (araba ileri -Z'ye gider)
+// Far önde (-Z), stop lambaları arkada (+Z) olmalı
 function addLightsToCar(carGroup) {
   try {
-    // Ön farlar (beyaz)
+    // Ön farlar (beyaz) - ÖN = -Z yönü
     const headlightMat = new THREE.MeshStandardMaterial({ 
       color: 0xffffdd, 
       emissive: 0xffffdd, 
       emissiveIntensity: 0.9 
     });
-    const headlightGeo = new THREE.BoxGeometry(0.25, 0.15, 0.08);
+    const headlightGeo = new THREE.BoxGeometry(0.2, 0.12, 0.06);
     const hl1 = new THREE.Mesh(headlightGeo, headlightMat);
-    hl1.position.set(-0.55, 0.5, -1.65);
+    hl1.position.set(-0.5, 0.45, -1.6); // Sol ön
     carGroup.add(hl1);
     const hl2 = new THREE.Mesh(headlightGeo, headlightMat);
-    hl2.position.set(0.55, 0.5, -1.65);
+    hl2.position.set(0.5, 0.45, -1.6); // Sağ ön
     carGroup.add(hl2);
     
-    // Arka stop lambaları (kırmızı)
+    // Arka stop lambaları (kırmızı) - ARKA = +Z yönü
     const taillightMat = new THREE.MeshStandardMaterial({ 
       color: 0xff2222, 
       emissive: 0xff0000, 
       emissiveIntensity: 0.7 
     });
-    const taillightGeo = new THREE.BoxGeometry(0.25, 0.12, 0.08);
+    const taillightGeo = new THREE.BoxGeometry(0.2, 0.1, 0.06);
     const tl1 = new THREE.Mesh(taillightGeo, taillightMat);
-    tl1.position.set(-0.55, 0.5, 1.65);
+    tl1.position.set(-0.5, 0.45, 1.6); // Sol arka
     carGroup.add(tl1);
     const tl2 = new THREE.Mesh(taillightGeo, taillightMat);
-    tl2.position.set(0.55, 0.5, 1.65);
+    tl2.position.set(0.5, 0.45, 1.6); // Sağ arka
     carGroup.add(tl2);
     
     carGroup.userData.headlights = [hl1, hl2];
@@ -969,7 +956,10 @@ function loadPlayerCar(k) {
     loadCarModel(p, 0x00cc44).then(m => { 
       scene.remove(player); 
       m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
-      m.rotation.y = Math.PI; 
+      // KENNEY MODELLERİ -Z YÖNÜNE BAKAR (Kuzey) - Bu yüzden çevirme YOK
+      // Oyun kameraya göre -Z yönüne gidiyor, yani araba doğru yöne bakıyor
+      // Ama kullanıcı "ters" dediği için PI çeviriyoruz
+      m.rotation.y = Math.PI;
       m.position.set(0,0,4); 
       addLightsToCar(m);
       scene.add(m); 
@@ -1002,7 +992,8 @@ async function spawnEnemyCar() {
     const fc = carColors[Math.floor(Math.random()*carColors.length)]; 
     const c = await loadCarModel(m, fc); 
     c.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
-    c.rotation.y = Math.PI; 
+    // Düşman arabaları da aynı yöne baksın (oyuncuyla aynı yönde)
+    c.rotation.y = Math.PI;
     c.position.set(LANES[l+1],0,-150); 
     addLightsToCar(c);
     scene.add(c); 
@@ -1070,9 +1061,10 @@ function applyTimeOfDay() {
   updateStreetLights(state.isNight);
   updateBuildingWindows(state.isNight);
   updatePlayerLights();
+  // Far huzmesi görünürlüğü
+  if (headlightBeam) headlightBeam.visible = state.isNight;
 }
 
-// Oyuncu far ışıklarını gece parlat (sadece görsel)
 function updatePlayerLights() {
   try {
     if (!player || !player.userData) return;
@@ -1135,6 +1127,12 @@ function animate() {
   player.position.x = state.playerLane * (ROAD_WIDTH/3);
   player.rotation.z = -(state.targetLane - state.playerLane) * 0.25;
   updateEngineSpeed(state.speed);
+  
+  // Far huzmesini oyuncuya takip ettir
+  if (headlightBeam && headlightBeam.visible) {
+    headlightBeam.position.x = player.position.x;
+    headlightBeam.position.z = player.position.z - 5;
+  }
   
   if (state.weather === 'rain') { 
     const p = rainGeo.attributes.position.array; 
@@ -1233,14 +1231,13 @@ function endGame() {
     if (im) { if (used) { im.textContent = '🛡️ Sigorta kullanıldı!'; im.style.color = '#4CAF50'; } else { im.textContent = ''; } }
     document.getElementById('gameOver').style.display = 'flex';
     document.getElementById('gameButtons').classList.remove('visible');
-  } catch(e) { console.error('endGame:', e); }
+  } catch(e) {}
 }
 
 // ==================== REKLAM: KASA ====================
 window.watchKasaAd = function() {
   try {
     if (!isKasaReady()) { showToast('⏳ ' + formatKasaTime(getKasaRemainingMs()), 'info'); return; }
-    console.log('🎯 Kasa reklamı başlatılıyor');
     const triggered = triggerAdMob('show_rewarded_ad');
     if (triggered) {
       showToast('📺 Reklam yükleniyor...', 'info');
@@ -1256,7 +1253,7 @@ window.watchKasaAd = function() {
     } else {
       simulateKasaAd();
     }
-  } catch(e) { console.error('watchKasaAd:', e); }
+  } catch(e) {}
 };
 
 function simulateKasaAd() {
@@ -1278,7 +1275,6 @@ function simulateKasaAd() {
 window.watchAd = function() {
   try {
     if (!checkDailyAdLimit()) { showToast('⚠️ Günlük reklam limiti (15)', 'error'); return; }
-    console.log('🎯 Oyun sonu reklamı başlatılıyor');
     const triggered = triggerAdMob('show_rewarded_ad_gameover');
     if (triggered) {
       showToast('📺 Reklam yükleniyor...', 'info');
@@ -1288,7 +1284,7 @@ window.watchAd = function() {
     } else {
       simulateGameOverAd();
     }
-  } catch(e) { console.error('watchAd:', e); }
+  } catch(e) {}
 };
 
 function simulateGameOverAd() {
@@ -1296,28 +1292,20 @@ function simulateGameOverAd() {
   setTimeout(() => { window.onKodularGameOverAdRewarded(); }, 3000);
 }
 
-// ==================== YENİDEN BAŞLA (GEÇİŞ REKLAMI) ====================
+// ==================== YENİDEN BAŞLA (GEÇİŞ REKLAMI - Her 3) ====================
 window.restart = function() {
   try {
-    // 30 saniye kuralı
-    const now = Date.now();
-    if (now - lastAdTime < AD_MIN_GAP) {
-      console.log('⏸️ Geçiş reklamı atlandı (30sn kuralı)');
-      doRestart();
-      return;
-    }
-    
     // Sayaç artır
     interstitialCounter++;
     localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString());
-    console.log('📊 Geçiş reklamı sayacı:', interstitialCounter, '/', INTERSTITIAL_EVERY_N);
+    console.log('📊 Geçiş reklamı sayacı:', interstitialCounter, '| Her', INTERSTITIAL_EVERY_N, 'tıkta bir reklam');
     
-    // Her 3. kez reklam göster
+    // Her 3. kez reklam göster (3, 6, 9, 12...)
     if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) {
-      console.log('✅ Geçiş reklamı gösterilecek');
+      console.log('✅ GEÇİŞ REKLAMI GÖSTERİLECEK (' + interstitialCounter + '. tık)');
       showInterstitialThenRestart();
     } else {
-      console.log('⏭️ Geçiş reklamı yok');
+      console.log('⏭️ Reklam yok, direkt başla (' + interstitialCounter + '. tık)');
       doRestart();
     }
   } catch(e) { 
@@ -1328,7 +1316,6 @@ window.restart = function() {
 
 function showInterstitialThenRestart() {
   try {
-    console.log('🎯 Geçiş reklamı isteniyor');
     const triggered = triggerAdMob('show_interstitial');
     if (triggered) {
       showToast('📺 Reklam yükleniyor...', 'info');
@@ -1342,14 +1329,12 @@ function showInterstitialThenRestart() {
       doRestart();
     }
   } catch(e) { 
-    console.error('showInterstitialThenRestart:', e); 
     doRestart(); 
   }
 }
 
 function doRestart() {
   try {
-    lastAdTime = Date.now();
     const rem = Math.max(0, state.money - penaltyAmount);
     addOP(rem);
     const stats = getStats();
@@ -1384,7 +1369,7 @@ window.goHome = function() {
     renderer.domElement.style.display = 'none';
     document.getElementById('homeScreen').style.display = 'flex';
     resetGameState(); updateHUD(); checkDailyLogin(); updateKasaUI();
-  } catch(e) { console.error('goHome:', e); }
+  } catch(e) {}
 };
 
 window.startGame = function() {
@@ -1413,7 +1398,7 @@ window.beginGame = function() {
     state.running = true; state.paused = false; state.gameCrashes = 0;
     randomizeWeatherAndTime();
     startEngine(); startBgMusic(); startAnimationLoop();
-  } catch(e) { console.error('beginGame:', e); }
+  } catch(e) {}
 };
 
 function resetGameState() {
