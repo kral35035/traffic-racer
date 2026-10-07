@@ -1001,7 +1001,7 @@ const snowParticles = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color
 
 // ==================== MODEL ====================
 const gltfLoader = new GLTFLoader(); let kenneyColormap = null;
-function getKenneyColormap() { if(kenneyColormap) return kenneyColormap; kenneyColormap = new THREE.TextureLoader().load('models/textures/colormap.png'); kenneyColormap.magFilter = THREE.NearestFilter; kenneyColormap.minFilter = THREE.NearestFilter; kenneyColormap.colorSpace = THREE.SRGBColorSpace; return kenneyColormap; }
+function getKenneyColormap() { if(kenneyColormap) return kenneyColormap; kenneyColormap = new THREE.TextureLoader().load('models/colormap.png'); kenneyColormap.magFilter = THREE.NearestFilter; kenneyColormap.minFilter = THREE.NearestFilter; kenneyColormap.colorSpace = THREE.SRGBColorSpace; return kenneyColormap; }
 function prepareModel(m) { const c = getKenneyColormap(); m.traverse(ch => { if(ch.isMesh){ ch.castShadow=true; ch.receiveShadow=true; if(ch.material){ ch.material.map=c; ch.material.needsUpdate=true; } } }); return m; }
 function loadCarModel(p, fc=0x00cc44) { return new Promise(res => { gltfLoader.load(p, g => res(prepareModel(g.scene)), undefined, () => { console.warn('Model yüklenemedi:', p); res(createFallbackCar(fc)); }); }); }
 function createFallbackCar(c) { 
