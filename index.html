@@ -1131,10 +1131,10 @@ function prepareModel(m) {
       ch.receiveShadow=true; 
       if(ch.material){ 
         ch.material.map=c; 
-        // HAFİF GECE GÖRÜNÜRLÜK
-        ch.material.emissive = new THREE.Color(0x333333);
+        // ÇOK HAFİF EMISSIVE (race arabası doğal renk için)
+        ch.material.emissive = new THREE.Color(0x222222);
         ch.material.emissiveMap = c;
-        ch.material.emissiveIntensity = 0.25;
+        ch.material.emissiveIntensity = 0.15;
         ch.material.needsUpdate=true; 
       } 
     } 
@@ -1156,16 +1156,15 @@ function loadCarModel(p, fc=0x00cc44, customTexture=null) {
     model.traverse(ch => {
       if (ch.isMesh && ch.material) {
         ch.material.map = tex;
-        // GECE GÖRÜNÜRLÜK İÇİN EMISSIVE EKLE
-        ch.material.emissive = new THREE.Color(0x333333);
-        ch.material.emissiveMap = tex;
-        ch.material.emissiveIntensity = 0.25;
+        // YENİ MODELLER: EMISSIVE YOK (doğal doku)
+        ch.material.emissive = new THREE.Color(0x000000);
+        ch.material.emissiveIntensity = 0;
         ch.material.needsUpdate = true;
         ch.castShadow = true;
         ch.receiveShadow = true;
       }
     });
-    console.log('✅ Özel doku + emissive:', customTexture);
+    console.log('✅ Özel doku (emissive yok):', customTexture);
     res(model);
   }, undefined, () => { console.warn('⚠️ Doku yüklenemedi'); res(prepareModel(model)); });
 } else {
