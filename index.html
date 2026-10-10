@@ -230,6 +230,9 @@
       <div class="task-card">
         <div class="task-title">💸 Para Çek (min 100 TL)</div>
         <div style="font-size: 11px; color: #aaa; margin: 6px 0;">100 TL'ye ulaşınca çekebilirsin</div>
+        
+        <input type="text" id="withdrawName" placeholder="👤 Ad Soyad" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
+        
         <select id="withdrawMethod" style="width: 100%; padding: 11px; margin: 5px 0; background: #1a1a2e; border: 1px solid #444; color: white; border-radius: 7px; font-size: 13px;">
           <option value="iban">🏦 IBAN</option>
           <option value="payeer">💳 Payeer</option>
@@ -351,8 +354,10 @@
 
 <div id="insuranceScreen" class="modal-screen">
   <h2>🛡️ SİGORTA</h2>
-  <div class="modal-content" id="insuranceList"></div>
-  <button class="task-btn" style="width: 280px; max-width: 85vw; margin: 12px auto; display: block; background: linear-gradient(135deg, #FF9800, #e65100); font-size: 14px; padding: 13px;" onclick="startWithoutInsurance()">🚗 SİGORTASIZ DEVAM ET</button>
+  <div class="modal-content">
+    <button class="task-btn" style="width: 100%; padding: 16px; margin: 10px 0 20px 0; background: linear-gradient(135deg, #FF9800, #e65100); font-size: 16px; font-weight: bold;" onclick="startWithoutInsurance()">🚗 SİGORTASIZ DEVAM ET</button>
+    <div id="insuranceList"></div>
+  </div>
   <button class="back-btn" onclick="goHome()">← Ana Sayfa</button>
 </div>
 
@@ -748,12 +753,8 @@ window.renderPaints = function() {
       const owned = s.owned.includes(p.id); 
       const selected = s.selected === p.id; 
       let swatchStyle = '';
-      if (p.texture) {
-        swatchStyle = `background: url('${p.texture}') center/cover;`;
-      } else {
-        const hexColor = '#' + (p.color || 0).toString(16).padStart(6, '0');
-        swatchStyle = `background: ${hexColor};`;
-      }
+      if (p.texture) { swatchStyle = `background: url('${p.texture}') center/cover;`; } 
+      else { const hexColor = '#' + (p.color || 0).toString(16).padStart(6, '0'); swatchStyle = `background: ${hexColor};`; }
       return `<div class="paint-item ${selected ? 'selected' : (owned ? 'owned' : '')}" onclick="selectPaint('${p.id}')"><div class="paint-swatch" style="${swatchStyle}"></div><div class="paint-name">${p.name}</div><div class="paint-price">${owned ? (selected ? '✅ SEÇİLİ' : 'SEÇ') : '🎮 ' + p.price.toLocaleString() + ' OP'}</div></div>`; 
     }).join(''); 
   } catch(e) {} 
@@ -811,20 +812,22 @@ window.toggleMasterFromGame = function() { toggleMaster(); };
 window.testSound = function(name) { try { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
 window.toggleFullscreen = function() { try { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) {} };
 
-// ==================== ARAÇLAR (26 ARABA) ====================
+// ==================== ARAÇLAR (TÜM ARABALAR) ====================
 const CARS = {
-  // ===== YENİ MODELLER (vehicle-*) =====
+  // Varsayılan araba - RACE
+  'race': { name: 'Race', icon: '🏎️', price: 0, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
+  
+  // Yeni vehicle modelleri
   'vehicle-vintage-racer': { name: 'Vintage Racer', icon: '🏎️', price: 0, speed: 2.9, handling: 0.16, model: 'models/vehicle-vintage-racer.glb', texture: 'models/variation-a.png' },
-  'vehicle-drag-racer': { name: 'Drag Racer', icon: '🏎️', price: 100000, speed: 3.4, handling: 0.12, model: 'models/vehicle-drag-racer.glb', texture: 'models/variation-a.png' },
   'vehicle-racer': { name: 'Racer', icon: '🏎️', price: 0, speed: 3.0, handling: 0.16, model: 'models/vehicle-racer.glb', texture: 'models/variation-a.png' },
-  'vehicle-racer-low': { name: 'Racer Low', icon: '🏎️', price: 75000, speed: 2.8, handling: 0.18, model: 'models/vehicle-racer-low.glb', texture: 'models/variation-a.png' },
+  'vehicle-drag-racer': { name: 'Drag Racer', icon: '🏎️', price: 100000, speed: 3.4, handling: 0.12, model: 'models/vehicle-drag-racer.glb', texture: 'models/variation-a.png' },
+  'vehicle-racer-low': { name: 'Racer Low', icon: '🏎️', price: 75000, speed: 2.8, handling: 0.18, model: 'models/vehicle-racer-low.glb', texture: 'models/variation-b.png' },
   'vehicle-speedster': { name: 'Speedster', icon: '🏎️', price: 150000, speed: 3.3, handling: 0.14, model: 'models/vehicle-speedster.glb', texture: 'models/variation-a.png' },
   'vehicle-monster-truck': { name: 'Monster Truck', icon: '🚙', price: 200000, speed: 2.8, handling: 0.10, model: 'models/vehicle-monster-truck.glb', texture: 'models/variation-a.png' },
-  'vehicle-suv': { name: 'Vehicle SUV', icon: '🚙', price: 100000, speed: 2.7, handling: 0.13, model: 'models/vehicle-suv.glb', texture: 'models/variation-a.png' },
+  'vehicle-suv': { name: 'Vehicle SUV', icon: '🚙', price: 100000, speed: 2.7, handling: 0.13, model: 'models/vehicle-suv.glb', texture: 'models/variation-b.png' },
   'vehicle-truck': { name: 'Vehicle Truck', icon: '🚚', price: 150000, speed: 2.9, handling: 0.10, model: 'models/vehicle-truck.glb', texture: 'models/variation-a.png' },
   
-  // ===== KENNEY MODELLERİ =====
-  'race': { name: 'Race', icon: '🏎️', price: 0, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
+  // Kenney modelleri
   'race-future': { name: 'Race Future', icon: '🏎️', price: 100000, speed: 3.0, handling: 0.15, model: 'models/race-future.glb' },
   'sedan': { name: 'Sedan', icon: '🚗', price: 50000, speed: 2.5, handling: 0.16, model: 'models/sedan.glb' },
   'sedan-sports': { name: 'Sports Sedan', icon: '🚗', price: 100000, speed: 2.7, handling: 0.17, model: 'models/sedan-sports.glb' },
@@ -847,14 +850,6 @@ const CARS = {
 
 // ==================== TRAFİK MODELLERİ ====================
 const ENEMY_MODELS = [
-  // Yeni vehicle modelleri
-  { model: 'models/vehicle-vintage-racer.glb', texture: 'models/variation-a.png' },
-  { model: 'models/vehicle-racer.glb', texture: 'models/variation-a.png' },
-  { model: 'models/vehicle-racer-low.glb', texture: 'models/variation-b.png' },
-  { model: 'models/vehicle-speedster.glb', texture: 'models/variation-a.png' },
-  { model: 'models/vehicle-suv.glb', texture: 'models/variation-b.png' },
-  { model: 'models/vehicle-truck.glb', texture: 'models/variation-a.png' },
-  // Kenney modelleri
   { model: 'models/sedan.glb' },
   { model: 'models/sedan-sports.glb' },
   { model: 'models/hatchback-sports.glb' },
@@ -866,7 +861,20 @@ const ENEMY_MODELS = [
   { model: 'models/delivery-flat.glb' },
   { model: 'models/van.glb' },
   { model: 'models/ambulance.glb' },
-  { model: 'models/truck.glb' }
+  { model: 'models/truck.glb' },
+  { model: 'models/truck-flat.glb' },
+  { model: 'models/firetruck.glb' },
+  { model: 'models/garbage-truck.glb' },
+  { model: 'models/tractor.glb' },
+  { model: 'models/tractor-police.glb' },
+  { model: 'models/race.glb' },
+  { model: 'models/race-future.glb' },
+  { model: 'models/vehicle-vintage-racer.glb', texture: 'models/variation-a.png' },
+  { model: 'models/vehicle-racer.glb', texture: 'models/variation-a.png' },
+  { model: 'models/vehicle-racer-low.glb', texture: 'models/variation-b.png' },
+  { model: 'models/vehicle-speedster.glb', texture: 'models/variation-a.png' },
+  { model: 'models/vehicle-suv.glb', texture: 'models/variation-b.png' },
+  { model: 'models/vehicle-truck.glb', texture: 'models/variation-a.png' }
 ];
 
 function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race', 'vehicle-vintage-racer', 'vehicle-racer'], selected: 'race' }; }
@@ -919,7 +927,42 @@ window.selectAvatar = function(a) { saveAvatar(a); renderProfile(); showToast('A
 window.renderWallet = function() { try { const w = getWallet(); const opEl = document.getElementById('walletOP'); if (opEl) opEl.textContent = Math.floor(w.op||0).toLocaleString(); const tlEl = document.getElementById('walletTL'); if (tlEl) tlEl.textContent = (w.tl||0).toFixed(2) + ' ₺'; const h = document.getElementById('withdrawHistory'); if (h) { if (!w.history || w.history.length === 0) h.textContent = 'Henüz çekim yok'; else h.innerHTML = w.history.slice(-5).reverse().map(x => `<div style="padding:6px 0; border-bottom:1px solid #333;">${x.method === 'iban' ? '🏦' : '💳'} ${(x.amount||0).toFixed(2)} ₺ — ${new Date(x.date).toLocaleDateString('tr-TR')} <span style="color:${x.status==='pending'?'#FF9800':'#4CAF50'}">${x.status==='pending'?'Beklemede':'Ödendi'}</span></div>`).join(''); } } catch(e) {} };
 window.showWallet = function() { try { updateKasaUI(); renderWallet(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('walletScreen').style.display='flex'; switchWalletTab('kasa'); } catch(e) {} };
 window.convertToCash = function() { try { const amount = parseInt(document.getElementById('convertAmount').value); if (isNaN(amount) || amount < OP_TO_TL_RATE) { showToast('⚠️ Minimum ' + OP_TO_TL_RATE.toLocaleString() + ' OP', 'error'); return; } const w = getWallet(); if (w.op < amount) { showToast('⚠️ Yetersiz OP', 'error'); return; } const tl = amount / OP_TO_TL_RATE; w.op -= amount; w.tl += tl; saveWallet(w); updateHUD(); renderWallet(); playSound('coin'); showToast('💱 ' + amount.toLocaleString() + ' OP → ' + tl.toFixed(2) + ' TL', 'gold'); document.getElementById('convertAmount').value = ''; } catch(e) {} };
-window.requestWithdraw = async function() { try { const method = document.getElementById('withdrawMethod').value; const account = document.getElementById('withdrawAccount').value.trim(); const amount = parseFloat(document.getElementById('withdrawAmount').value); if (!account) { alert('⚠️ Hesap bilgisi gerekli'); return; } if (isNaN(amount) || amount < MIN_WITHDRAW_TL) { alert('⚠️ Minimum çekim 100 TL'); return; } const w = getWallet(); if (amount > w.tl) { alert('⚠️ Yetersiz nakit'); return; } w.tl -= amount; w.pending += amount; w.history.push({ method, account, amount, date: new Date().toISOString(), status: 'pending' }); saveWallet(w); try { await fetch('/api/notify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ method, account, amount, username: 'user_' + Date.now() }) }); } catch(e){} alert('✅ Çekim talebiniz alındı!'); renderWallet(); updateHUD(); document.getElementById('withdrawAccount').value = ''; document.getElementById('withdrawAmount').value = ''; } catch(e) {} };
+window.requestWithdraw = async function() { 
+  try { 
+    const name = document.getElementById('withdrawName').value.trim();
+    const method = document.getElementById('withdrawMethod').value; 
+    const account = document.getElementById('withdrawAccount').value.trim(); 
+    const amount = parseFloat(document.getElementById('withdrawAmount').value); 
+    
+    if (!name) { alert('⚠️ Lütfen adınızı ve soyadınızı girin'); return; }
+    if (!account) { alert('⚠️ Hesap bilgisi gerekli'); return; } 
+    if (isNaN(amount) || amount < MIN_WITHDRAW_TL) { alert('⚠️ Minimum çekim 100 TL'); return; } 
+    
+    const w = getWallet(); 
+    if (amount > w.tl) { alert('⚠️ Yetersiz nakit'); return; } 
+    
+    w.tl -= amount; 
+    w.pending += amount; 
+    w.history.push({ name, method, account, amount, date: new Date().toISOString(), status: 'pending' }); 
+    saveWallet(w); 
+    
+    try { 
+      await fetch('/api/notify', { 
+        method:'POST', 
+        headers:{'Content-Type':'application/json'}, 
+        body: JSON.stringify({ name, method, account, amount, username: 'user_' + Date.now() }) 
+      }); 
+    } catch(e){} 
+    
+    alert('✅ Çekim talebiniz alındı!\n\nAd Soyad: ' + name + '\nYöntem: ' + (method === 'iban' ? 'IBAN' : 'Payeer') + '\nHesap: ' + account + '\nTutar: ' + amount.toFixed(2) + ' TL'); 
+    
+    renderWallet(); 
+    updateHUD(); 
+    document.getElementById('withdrawName').value = '';
+    document.getElementById('withdrawAccount').value = ''; 
+    document.getElementById('withdrawAmount').value = ''; 
+  } catch(e) {} 
+};
 window.showGarage = function() { try { renderGarage(); renderPaints(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('garageScreen').style.display='flex'; switchGarageTab('cars'); } catch(e) {} };
 window.showSettings = function() { try { updateSettingsUI(); applyTranslations(); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); document.getElementById('homeScreen').style.display='none'; document.getElementById('settingsScreen').style.display='flex'; } catch(e) {} };
 
@@ -1067,7 +1110,7 @@ for(let i=0;i<snowCount*3;i+=3){ snowPositions[i]=(Math.random()-0.5)*60; snowPo
 snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions,3));
 const snowParticles = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.8 })); snowParticles.visible = false; scene.add(snowParticles);
 
-// ==================== MODEL YÜKLEME (ÖZEL DOKU DESTEĞİ) ====================
+// ==================== MODEL YÜKLEME ====================
 const gltfLoader = new GLTFLoader(); 
 let kenneyColormap = null;
 
@@ -1095,14 +1138,12 @@ function prepareModel(m) {
   return m; 
 }
 
-// Özel doku desteği
 function loadCarModel(p, fc=0x00cc44, customTexture=null) {
   return new Promise(res => {
     gltfLoader.load(p, g => {
       const model = g.scene;
       
       if (customTexture) {
-        // Özel doku yükle (variation-a.png veya variation-b.png)
         const loader = new THREE.TextureLoader();
         loader.load(customTexture, (tex) => {
           tex.magFilter = THREE.NearestFilter;
@@ -1116,15 +1157,10 @@ function loadCarModel(p, fc=0x00cc44, customTexture=null) {
               ch.receiveShadow = true;
             }
           });
-          console.log('✅ Özel doku uygulandı:', customTexture);
+          console.log('✅ Özel doku:', customTexture);
           res(model);
-        }, undefined, () => {
-          // Doku yüklenemezse normal colormap
-          console.warn('⚠️ Özel doku yüklenemedi, normal kullanılıyor');
-          res(prepareModel(model));
-        });
+        }, undefined, () => { console.warn('⚠️ Doku yüklenemedi'); res(prepareModel(model)); });
       } else {
-        // Normal colormap.png
         res(prepareModel(model));
       }
     }, undefined, () => { 
@@ -1154,7 +1190,9 @@ function addLightsToCar(carGroup) { carGroup.userData.headlights = []; carGroup.
 // ==================== DURUM ====================
 const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race', handling: 0.16, baseMaxSpeed: 2.9, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0, isNight: false };
 const CAR_SCALE = 1.4; const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
-let player = createFallbackCar(0x00cc44); player.position.set(0,0,4); addLightsToCar(player); scene.add(player);
+
+// Başlangıçta boş group - hemen race yüklenecek
+let player = new THREE.Group(); player.position.set(0,0,4); scene.add(player);
 
 function loadPlayerCar(k) { 
   try { 
@@ -1190,10 +1228,10 @@ function loadPlayerCar(k) {
       updatePlayerLights();
       console.log('✅ Araba yüklendi:', c.name);
     }); 
-  } catch(e) { console.error('❌ loadPlayerCar hatası:', e); } 
+  } catch(e) { console.error('❌ loadPlayerCar:', e); } 
 }
 
-// Seçili arabayı yükle (race varsayılan)
+// Seçili arabayı yükle (varsayılan: race)
 (function() {
   try {
     const g = getGarage();
@@ -1216,7 +1254,324 @@ let lastTouchTime = 0;
 function handleGameTouch(cx) { if (!state.running || state.paused) return; const n = Date.now(); if (n - lastTouchTime < 150) return; lastTouchTime = n; const h = window.innerWidth/2; if (cx < h) state.targetLane = Math.max(-1, state.targetLane - 1); else state.targetLane = Math.min(1, state.targetLane + 1); }
 document.addEventListener('touchstart', e => { const tg = e.target; if (tg.tagName === 'BUTTON' || tg.tagName === 'INPUT' || tg.tagName === 'SELECT' || tg.closest('button') || tg.closest('input') || tg.closest('select')) return; if (state.running && !state.paused) handleGameTouch(e.touches[0].clientX); }, { passive: true });
 
-// ==================== TRAFİK ====================
+const carColors = [0xe74c3c,0x3498db,0x9b59b6,0xe67e22,0x1abc9c,0xf39c12,0x34495e];
+
+async function spawnEnemyCar() { 
+  try { 
+    const l = Math.floor(Math.random()*3)-1; 
+    const entry = ENEMY_MODELS[Math.floor(Math.random()*ENEMY_MODELS.length)]; 
+    const m = entry.model;
+    const tex = entry.texture || null;
+    const fc = carColors[Math.floor(Math.random()*carColors.length)]; 
+    const c = await loadCarModel(m, fc, tex); 
+    c.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
+    c.rotation.y = Math.PI;
+    c.position.set(LANES[l+1],0,-150); 
+    addLightsToCar(c);
+    scene.add(c); 
+    state.cars.push(c); 
+  } catch(e) {} 
+}
+
+function OPPerMeter() { let b = 1; if (state.distance >= 5000) b = 10; else if (state.distance >= 3000) b = 6; else if (state.distance >= 1500) b = 3; else if (state.distance >= 500) b = 1.5; if (state.weather === 'rain') b *= 1.3; if (state.weather === 'snow') b *= 1.5; if (state.weather === 'fog') b *= 1.4; if (state.isNight) b *= 1.5; b *= state.mapBonus; return b; }
+function checkCollision(a, b) { return Math.abs(a.position.x - b.position.x) < 1.2 && Math.abs(a.position.z - b.position.z) < 2.8; }
+function randomizeWeatherAndTime() { const ws = ['sunny','sunny','sunny','sunny','sunny','rain','rain','snow','fog']; state.weather = ws[Math.floor(Math.random()*ws.length)]; const ts = ['day','day','day','night','night','sunset']; state.timeOfDay = ts[Math.floor(Math.random()*ts.length)]; state.isNight = (state.timeOfDay === 'night'); applyWeather(); applyTimeOfDay(); updateWeatherBadge(); updatePlayerLights(); updateStreetLights(state.isNight); updateBuildingWindows(state.isNight); }
+
+function applyWeather() { 
+  rainParticles.visible = false; snowParticles.visible = false; fogLayer.material.opacity = 0; scene.fog.near = 90; scene.fog.far = 350; 
+  if (state.weather === 'sunny') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); state.sliding = 0; } 
+  else if (state.weather === 'rain') { scene.background = new THREE.Color(0x555566); scene.fog.color = new THREE.Color(0x555566); scene.fog.near = 40; scene.fog.far = 200; rainParticles.visible = true; state.sliding = 0.4; } 
+  else if (state.weather === 'snow') { scene.background = new THREE.Color(0xccccdd); scene.fog.color = new THREE.Color(0xccccdd); scene.fog.near = 50; scene.fog.far = 250; snowParticles.visible = true; state.sliding = 0.6; } 
+  else if (state.weather === 'fog') { scene.background = new THREE.Color(0xcccccc); scene.fog.color = new THREE.Color(0xcccccc); scene.fog.near = 15; scene.fog.far = 100; fogLayer.material.opacity = 0.4; state.sliding = 0.2; } 
+}
+
+function applyTimeOfDay() { 
+  state.isNight = (state.timeOfDay === 'night');
+  if (state.weather === 'sunny' || state.weather === 'fog') { 
+    if (state.timeOfDay === 'day') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; sunLight.color.setHex(0xffffff); sunLight.position.set(15,30,15); } 
+    else if (state.timeOfDay === 'sunset') { scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; sunLight.color.setHex(0xffaa66); sunLight.position.set(30,10,15); } 
+    else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x0a0a2e); scene.fog.color = new THREE.Color(0x0a0a2e); ambientLight.intensity = 0.35; sunLight.intensity = 0.2; hemiLight.intensity = 0.2; sunLight.color.setHex(0x4466aa); sunLight.position.set(-15,20,15); } 
+  } else { if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; } }
+  updateStreetLights(state.isNight); updateBuildingWindows(state.isNight); updatePlayerLights();
+}
+
+function updatePlayerLights() {}
+function updateWeatherBadge() { const b = document.getElementById('weatherBadge'); if (!b) return; const wi = { sunny:'☀️', rain:'🌧️', snow:'❄️', fog:'🌫️' }; const ti = { day:'☀️', sunset:'🌅', night:'🌙' }; const mi = { city:'🏙️', highway:'🛣️', mountain:'⛰️' }; b.textContent = mi[state.currentMap] + ' ' + wi[state.weather] + ' ' + ti[state.timeOfDay]; b.classList.add('visible'); }
+ 
+// ==================== SAHNE ====================
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87CEEB);
+scene.fog = new THREE.Fog(0x87CEEB, 90, 350);
+const camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 6.5, 13);
+camera.lookAt(0, 1.0, -15);
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+renderer.domElement.style.display = 'none';
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.4); scene.add(ambientLight);
+const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x2d5016, 0.9); scene.add(hemiLight);
+const sunLight = new THREE.DirectionalLight(0xffffff, 1.6);
+sunLight.position.set(15, 30, 15); sunLight.castShadow = true;
+sunLight.shadow.mapSize.width = 1024; sunLight.shadow.mapSize.height = 1024;
+sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
+sunLight.shadow.camera.top = 40; sunLight.shadow.camera.bottom = -40;
+sunLight.shadow.bias = -0.0005; scene.add(sunLight);
+
+const fogLayer = new THREE.Mesh(new THREE.PlaneGeometry(200, 400), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
+fogLayer.position.set(0, 2, -100); fogLayer.rotation.x = -Math.PI/2; fogLayer.renderOrder = 999; scene.add(fogLayer);
+
+const ROAD_WIDTH = 11; const ROAD_LENGTH = 300;
+const road = new THREE.Mesh(new THREE.PlaneGeometry(ROAD_WIDTH, ROAD_LENGTH), new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.9, metalness: 0.1 }));
+road.rotation.x = -Math.PI/2; road.position.z = -ROAD_LENGTH/2 + 20; road.receiveShadow = true; scene.add(road);
+const laneMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.4 });
+const laneDashes = [];
+for (let i = 0; i < 50; i++) {
+  const d = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 2.2), laneMat);
+  d.rotation.x = -Math.PI/2; d.position.set(-ROAD_WIDTH/6, 0.01, -i*6+20); scene.add(d); laneDashes.push(d);
+  const d2 = d.clone(); d2.position.x = ROAD_WIDTH/6; scene.add(d2); laneDashes.push(d2);
+}
+const edgeMat = new THREE.MeshStandardMaterial({ color: 0xffdd00, emissive: 0xffdd00, emissiveIntensity: 0.3 });
+const edge1 = new THREE.Mesh(new THREE.PlaneGeometry(0.35, ROAD_LENGTH), edgeMat);
+edge1.rotation.x = -Math.PI/2; edge1.position.set(-ROAD_WIDTH/2+0.4, 0.01, -ROAD_LENGTH/2+20); scene.add(edge1);
+const edge2 = edge1.clone(); edge2.position.x = ROAD_WIDTH/2-0.4; scene.add(edge2);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x2d5016, roughness: 1 });
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), groundMat);
+ground.rotation.x = -Math.PI/2; ground.position.set(0, -0.15, -100); ground.receiveShadow = true; scene.add(ground);
+
+// ==================== MANZARA ====================
+const scenery = []; const SCENERY_LENGTH = 400; const SCENERY_DESPAWN = 40; const SCENERY_SPAWN = -SCENERY_LENGTH + 20;
+const streetLights = [];
+let currentMapType = 'city';
+
+function createTree() { const g = new THREE.Group(); const tm = new THREE.MeshStandardMaterial({ color: 0x6b3d1f, roughness: 1 }); const lm = new THREE.MeshStandardMaterial({ color: 0x2d8a2d, roughness: 1 }); const lm2 = new THREE.MeshStandardMaterial({ color: 0x3da63d, roughness: 1 }); const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,1.2,6), tm); tr.position.y=0.6; tr.castShadow=true; g.add(tr); const lc = 2+Math.floor(Math.random()*2); for(let i=0;i<lc;i++){ const sz=1.4-i*0.35; const l=new THREE.Mesh(new THREE.ConeGeometry(sz,1.2,8), i%2?lm:lm2); l.position.y=1.3+i*0.7; l.castShadow=true; g.add(l);} return g; }
+function createBuilding() { const g = new THREE.Group(); const h = 4+Math.random()*8; const w = 2+Math.random()*2; const d = 2+Math.random()*2; const cs = [0x8899aa,0xaa9988,0xbbbbbb,0x7788aa,0xaabbcc,0x99aaaa]; const c = cs[Math.floor(Math.random()*cs.length)]; const bm = new THREE.MeshStandardMaterial({ color: c, roughness: 0.7, metalness: 0.1 }); const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), bm); b.position.y=h/2; b.castShadow=true; b.receiveShadow=true; g.add(b); const windows = []; for(let r=0;r<Math.floor(h/1.5);r++)for(let c2=0;c2<Math.floor(w/0.8);c2++){ if(Math.random()<0.6){ const wm = new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0xffdd88, emissiveIntensity: 0 }); const wn=new THREE.Mesh(new THREE.PlaneGeometry(0.4,0.5),wm); wn.position.set(-w/2+0.6+c2*0.8,1+r*1.5,d/2+0.01); g.add(wn); windows.push(wn);} } g.userData.windows = windows; return g; }
+function createMountain() { const g = new THREE.Group(); const h = 8+Math.random()*12; const r = 5+Math.random()*4; const mm = new THREE.MeshStandardMaterial({ color: 0x556677, roughness: 0.95 }); const sm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }); const b = new THREE.Mesh(new THREE.ConeGeometry(r,h,8), mm); b.position.y=h/2; b.castShadow=true; g.add(b); if(h>12){ const s=new THREE.Mesh(new THREE.ConeGeometry(r*0.4,h*0.25,8),sm); s.position.y=h*0.88; g.add(s);} return g; }
+function createLake() { const g = new THREE.Group(); const s = 8+Math.random()*8; const lm = new THREE.MeshStandardMaterial({ color: 0x2a6bb5, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 }); const l = new THREE.Mesh(new THREE.CircleGeometry(s,16),lm); l.rotation.x=-Math.PI/2; l.position.y=-0.08; g.add(l); return g; }
+function createRock() { const s = 0.5+Math.random()*1.2; const rm = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.95, flatShading: true }); const geo = new THREE.DodecahedronGeometry(s,0); const pos = geo.attributes.position; for(let i=0;i<pos.count;i++){ pos.setXYZ(i,pos.getX(i)+(Math.random()-0.5)*0.3,pos.getY(i)+(Math.random()-0.5)*0.3,pos.getZ(i)+(Math.random()-0.5)*0.3); } geo.computeVertexNormals(); const r = new THREE.Mesh(geo,rm); r.position.y=s*0.5; r.castShadow=true; return r; }
+function createSign() { const g = new THREE.Group(); const pm = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 }); const sm = new THREE.MeshStandardMaterial({ color: 0x2196F3, emissive: 0x2196F3, emissiveIntensity: 0.3 }); const p = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,2,6),pm); p.position.y=1; p.castShadow=true; g.add(p); const s = new THREE.Mesh(new THREE.PlaneGeometry(0.8,0.6),sm); s.position.y=2; s.rotation.y = Math.random()<0.5?Math.PI/2:-Math.PI/2; g.add(s); return g; }
+function createStreetLight() {
+  const g = new THREE.Group();
+  const poleMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
+  const lampMat = new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0xffdd88, emissiveIntensity: 0.2 });
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 4, 6), poleMat);
+  pole.position.y = 2; pole.castShadow = false; g.add(pole);
+  const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), lampMat);
+  lamp.position.y = 4; g.add(lamp);
+  g.userData.lamp = lamp;
+  g.userData.isStreetLight = true;
+  streetLights.push(g);
+  return g;
+}
+
+function spawnSceneryItem(type) { 
+  const side = Math.random()<0.5?-1:1; 
+  const d = 8+Math.random()*25; 
+  const x = side*(ROAD_WIDTH/2+d); 
+  const z = SCENERY_SPAWN+Math.random()*SCENERY_LENGTH; 
+  let item; 
+  const r = Math.random(); 
+  if (type === 'city') { if (r<0.35) item=createBuilding(); else if (r<0.55) item=createTree(); else if (r<0.85) item=createStreetLight(); else item=createSign(); } 
+  else if (type === 'highway') { if (r<0.6) item=createStreetLight(); else if (r<0.85) item=createTree(); else item=createSign(); } 
+  else if (type === 'mountain') { if (r<0.3) item=createTree(); else if (r<0.5) item=createMountain(); else if (r<0.65) item=createRock(); else if (r<0.85) item=createStreetLight(); else item=createLake(); } 
+  else { if (r<0.3) item=createTree(); else if (r<0.5) item=createBuilding(); else if (r<0.65) item=createMountain(); else if (r<0.78) item=createLake(); else if (r<0.9) item=createRock(); else item=createSign(); } 
+  item.position.set(x,0,z); 
+  item.rotation.y = Math.random()*Math.PI*2; 
+  const sc = 0.8+Math.random()*0.6; 
+  item.scale.set(sc,sc,sc); 
+  scene.add(item); 
+  scenery.push({ mesh: item, baseX: x }); 
+}
+
+function initScenery(mapType) { 
+  currentMapType = mapType||'city'; 
+  scenery.forEach(s => scene.remove(s.mesh)); 
+  scenery.length = 0; 
+  streetLights.length = 0;
+  const cnt = currentMapType==='city'?150:(currentMapType==='highway'?80:120); 
+  for(let i=0;i<cnt;i++) spawnSceneryItem(currentMapType); 
+}
+
+function scrollScenery(ma) { 
+  for(let i=scenery.length-1;i>=0;i--){ 
+    const it = scenery[i]; 
+    it.mesh.position.z += ma; 
+    if(it.mesh.position.z > SCENERY_DESPAWN){ 
+      scene.remove(it.mesh); 
+      const s = Math.random()<0.5?-1:1; 
+      const d = 8+Math.random()*25; 
+      const x = s*(ROAD_WIDTH/2+d); 
+      it.mesh.position.set(x,0,SCENERY_SPAWN+Math.random()*30); 
+      it.mesh.rotation.y = Math.random()*Math.PI*2; 
+      const sc = 0.8+Math.random()*0.6; 
+      it.mesh.scale.set(sc,sc,sc); 
+      scene.add(it.mesh); 
+    } 
+  } 
+}
+
+function updateStreetLights(isNight) { streetLights.forEach(sl => { try { if (sl.userData.lamp) { sl.userData.lamp.material.emissiveIntensity = isNight ? 2.0 : 0.2; } } catch(e) {} }); }
+function updateBuildingWindows(isNight) { scenery.forEach(s => { try { if (s.mesh.userData.windows) { s.mesh.userData.windows.forEach(w => { w.material.emissiveIntensity = isNight ? 0.9 : 0; }); } } catch(e) {} }); }
+
+// ==================== YAĞMUR/KAR ====================
+const rainCount = 500; const rainGeo = new THREE.BufferGeometry(); const rainPositions = new Float32Array(rainCount*3);
+for(let i=0;i<rainCount*3;i+=3){ rainPositions[i]=(Math.random()-0.5)*60; rainPositions[i+1]=Math.random()*40; rainPositions[i+2]=(Math.random()-0.5)*100; }
+rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions,3));
+const rainParticles = new THREE.Points(rainGeo, new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.15, transparent: true, opacity: 0.6 })); rainParticles.visible = false; scene.add(rainParticles);
+const snowCount = 300; const snowGeo = new THREE.BufferGeometry(); const snowPositions = new Float32Array(snowCount*3);
+for(let i=0;i<snowCount*3;i+=3){ snowPositions[i]=(Math.random()-0.5)*60; snowPositions[i+1]=Math.random()*40; snowPositions[i+2]=(Math.random()-0.5)*100; }
+snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions,3));
+const snowParticles = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.8 })); snowParticles.visible = false; scene.add(snowParticles);
+
+// ==================== MODEL YÜKLEME ====================
+const gltfLoader = new GLTFLoader(); 
+let kenneyColormap = null;
+
+function getKenneyColormap() { 
+  if(kenneyColormap) return kenneyColormap; 
+  kenneyColormap = new THREE.TextureLoader().load('models/colormap.png'); 
+  kenneyColormap.magFilter = THREE.NearestFilter; 
+  kenneyColormap.minFilter = THREE.NearestFilter; 
+  kenneyColormap.colorSpace = THREE.SRGBColorSpace; 
+  return kenneyColormap; 
+}
+
+function prepareModel(m) { 
+  const c = getKenneyColormap(); 
+  m.traverse(ch => { 
+    if(ch.isMesh){ 
+      ch.castShadow=true; 
+      ch.receiveShadow=true; 
+      if(ch.material){ 
+        ch.material.map=c; 
+        ch.material.needsUpdate=true; 
+      } 
+    } 
+  }); 
+  return m; 
+}
+
+function loadCarModel(p, fc=0x00cc44, customTexture=null) {
+  return new Promise(res => {
+    gltfLoader.load(p, g => {
+      const model = g.scene;
+      
+      if (customTexture) {
+        const loader = new THREE.TextureLoader();
+        loader.load(customTexture, (tex) => {
+          tex.magFilter = THREE.NearestFilter;
+          tex.minFilter = THREE.NearestFilter;
+          tex.colorSpace = THREE.SRGBColorSpace;
+          model.traverse(ch => {
+            if (ch.isMesh && ch.material) {
+              ch.material.map = tex;
+              ch.material.needsUpdate = true;
+              ch.castShadow = true;
+              ch.receiveShadow = true;
+            }
+          });
+          console.log('✅ Özel doku:', customTexture);
+          res(model);
+        }, undefined, () => { console.warn('⚠️ Doku yüklenemedi'); res(prepareModel(model)); });
+      } else {
+        res(prepareModel(model));
+      }
+    }, undefined, () => { 
+      console.warn('Model yüklenemedi:', p); 
+      res(createFallbackCar(fc)); 
+    });
+  });
+}
+
+function createFallbackCar(c) { 
+  const g = new THREE.Group(); 
+  g.userData.isFallback = true; 
+  const b = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.6,3.2), new THREE.MeshStandardMaterial({ color:c, metalness:0.7, roughness:0.3 })); 
+  b.position.y=0.5; b.castShadow=true; g.add(b); 
+  const cb = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.5,1.4), new THREE.MeshStandardMaterial({ color:0x111111, metalness:0.9, roughness:0.1, transparent:true, opacity:0.85 })); 
+  cb.position.set(0,1,-0.1); cb.castShadow=true; g.add(cb); 
+  const wg = new THREE.CylinderGeometry(0.32,0.32,0.25,16); 
+  const wm = new THREE.MeshStandardMaterial({ color:0x111111 }); 
+  [[-0.8,0.32,1],[0.8,0.32,1],[-0.8,0.32,-1],[0.8,0.32,-1]].forEach(p => { 
+    const w = new THREE.Mesh(wg,wm); w.rotation.z = Math.PI/2; w.position.set(...p); w.castShadow=true; g.add(w); 
+  }); 
+  return g; 
+}
+
+function addLightsToCar(carGroup) { carGroup.userData.headlights = []; carGroup.userData.taillights = []; }
+
+// ==================== DURUM ====================
+const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race', handling: 0.16, baseMaxSpeed: 2.9, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0, isNight: false };
+const CAR_SCALE = 1.4; const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
+
+// Başlangıçta boş group - hemen race yüklenecek
+let player = new THREE.Group(); player.position.set(0,0,4); scene.add(player);
+
+function loadPlayerCar(k) { 
+  try { 
+    const c = CARS[k] || CARS['race']; 
+    const p = c.model || 'models/race.glb'; 
+    const tex = c.texture || null;
+    console.log('🚗 Araba yükleniyor:', k, '→', p, tex ? '| Doku: ' + tex : '');
+    loadCarModel(p, 0x00cc44, tex).then(m => { 
+      scene.remove(player); 
+      m.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE); 
+      m.rotation.y = Math.PI;
+      m.position.set(0,0,4); 
+      addLightsToCar(m);
+      if (!tex) {
+        const paintState = getPaintState();
+        const paint = PAINTS.find(pp => pp.id === paintState.selected);
+        if (paint && paint.id !== 'default' && paint.color !== undefined) {
+          m.traverse(ch => {
+            if (ch.isMesh && ch.material && ch.material.color) {
+              if (ch.geometry && ch.geometry.parameters && ch.geometry.parameters.width > 1) {
+                ch.material = ch.material.clone();
+                ch.material.color.setHex(paint.color);
+              }
+            }
+          });
+        }
+      }
+      scene.add(m); 
+      player = m; 
+      state.modelLoaded = true; 
+      state.baseMaxSpeed = c.speed; 
+      state.handling = c.handling; 
+      updatePlayerLights();
+      console.log('✅ Araba yüklendi:', c.name);
+    }); 
+  } catch(e) { console.error('❌ loadPlayerCar:', e); } 
+}
+
+// Seçili arabayı yükle (varsayılan: race)
+(function() {
+  try {
+    const g = getGarage();
+    const selected = g.selected || 'race';
+    console.log('🚗 Yüklenecek araba:', selected);
+    loadPlayerCar(selected);
+  } catch(e) {
+    console.error('Araba yükleme hatası:', e);
+    loadPlayerCar('race');
+  }
+})();
+
+document.addEventListener('keydown', e => {
+  if (!state.running || state.paused) return;
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') state.targetLane = Math.max(-1, state.targetLane - 1);
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') state.targetLane = Math.min(1, state.targetLane + 1);
+  if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pauseGame();
+});
+let lastTouchTime = 0;
+function handleGameTouch(cx) { if (!state.running || state.paused) return; const n = Date.now(); if (n - lastTouchTime < 150) return; lastTouchTime = n; const h = window.innerWidth/2; if (cx < h) state.targetLane = Math.max(-1, state.targetLane - 1); else state.targetLane = Math.min(1, state.targetLane + 1); }
+document.addEventListener('touchstart', e => { const tg = e.target; if (tg.tagName === 'BUTTON' || tg.tagName === 'INPUT' || tg.tagName === 'SELECT' || tg.closest('button') || tg.closest('input') || tg.closest('select')) return; if (state.running && !state.paused) handleGameTouch(e.touches[0].clientX); }, { passive: true });
+
 const carColors = [0xe74c3c,0x3498db,0x9b59b6,0xe67e22,0x1abc9c,0xf39c12,0x34495e];
 
 async function spawnEnemyCar() { 
@@ -1347,11 +1702,9 @@ function endGame() {
     if (!stats.quests.cars3) stats.quests.cars3 = { progress: 0, claimed: false };
     stats.quests.cars3.progress = stats.carsUsed.length;
     saveStats(stats);
-    
     const tour = getTournamentState();
     tour.myDistance = (tour.myDistance || 0) + state.distance;
     saveTournamentState(tour);
-    
     checkAchievements();
     const ee = document.getElementById('earned'); if (ee) ee.textContent = Math.floor(state.money);
     const pe = document.getElementById('penalty'); if (pe) pe.textContent = penaltyAmount;
@@ -1368,9 +1721,9 @@ function simulateKasaAd() { showToast('📺 Reklam (simülasyon)...', 'info'); c
 window.watchAd = function() { try { if (!checkDailyAdLimit()) { showToast('⚠️ Günlük reklam limiti (15)', 'error'); return; } const triggered = triggerAdMob('show_rewarded_ad_gameover'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { showToast('❌ Reklam yüklenemedi', 'error'); } }, 60000); } else { simulateGameOverAd(); } } catch(e) {} };
 function simulateGameOverAd() { showToast('📺 Reklam (simülasyon)...', 'info'); setTimeout(() => { window.onKodularGameOverAdRewarded(); }, 3000); }
 
-window.restart = function() { try { interstitialCounter++; localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString()); console.log('📊 Geçiş reklamı sayacı:', interstitialCounter, '| Her', INTERSTITIAL_EVERY_N, 'tıkta bir reklam'); if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) { console.log('✅ GEÇİŞ REKLAMI GÖSTERİLECEK (' + interstitialCounter + '. tık)'); showInterstitialThenRestart(); } else { console.log('⏭️ Reklam yok, direkt başla (' + interstitialCounter + '. tık)'); doRestart(); } } catch(e) { console.error('restart:', e); doRestart(); } };
-function showInterstitialThenRestart() { try { const triggered = triggerAdMob('show_interstitial'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { console.log('⏰ Geçiş reklamı timeout'); doRestart(); } }, 15000); } else { doRestart(); } } catch(e) { doRestart(); } }
-function doRestart() { try { const rem = Math.max(0, state.money - penaltyAmount); addOP(rem); const stats = getStats(); stats.totalDistance += state.distance; if (state.distance > stats.bestDistance) stats.bestDistance = state.distance; saveStats(stats); resetGameState(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); state.running = true; state.paused = false; randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); updateHUD(); } catch(e) { console.error('doRestart:', e); } }
+window.restart = function() { try { interstitialCounter++; localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString()); console.log('📊 Geçiş reklamı:', interstitialCounter, '/', INTERSTITIAL_EVERY_N); if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) { console.log('✅ GEÇİŞ REKLAMI GÖSTERİLECEK'); showInterstitialThenRestart(); } else { console.log('⏭️ Reklam yok'); doRestart(); } } catch(e) { doRestart(); } };
+function showInterstitialThenRestart() { try { const triggered = triggerAdMob('show_interstitial'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { doRestart(); } }, 15000); } else { doRestart(); } } catch(e) { doRestart(); } }
+function doRestart() { try { const rem = Math.max(0, state.money - penaltyAmount); addOP(rem); const stats = getStats(); stats.totalDistance += state.distance; if (state.distance > stats.bestDistance) stats.bestDistance = state.distance; saveStats(stats); resetGameState(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); state.running = true; state.paused = false; randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); updateHUD(); } catch(e) {} }
 
 window.goHome = function() { try { if (state.running || state.money > 0) { const rem = Math.max(0, state.money - (state.running ? 0 : penaltyAmount)); addOP(rem); } state.running = false; state.paused = false; animationRunning = false; stopEngine(); stopBgMusic(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('hud').style.display = 'none'; document.getElementById('gameButtons').classList.remove('visible'); document.getElementById('weatherBadge').classList.remove('visible'); document.querySelectorAll('.modal-screen').forEach(s => s.style.display = 'none'); renderer.domElement.style.display = 'none'; document.getElementById('homeScreen').style.display = 'flex'; resetGameState(); updateHUD(); checkDailyLogin(); updateKasaUI(); } catch(e) {} };
 
