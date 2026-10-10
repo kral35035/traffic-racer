@@ -1131,10 +1131,10 @@ function prepareModel(m) {
       ch.receiveShadow=true; 
       if(ch.material){ 
         ch.material.map=c; 
-        // GECE GÖRÜNÜRLÜK İÇİN EMISSIVE
-        ch.material.emissive = new THREE.Color(0x666666);
+        // HAFİF GECE GÖRÜNÜRLÜK
+        ch.material.emissive = new THREE.Color(0x333333);
         ch.material.emissiveMap = c;
-        ch.material.emissiveIntensity = 0.6;
+        ch.material.emissiveIntensity = 0.25;
         ch.material.needsUpdate=true; 
       } 
     } 
@@ -1157,9 +1157,9 @@ function loadCarModel(p, fc=0x00cc44, customTexture=null) {
       if (ch.isMesh && ch.material) {
         ch.material.map = tex;
         // GECE GÖRÜNÜRLÜK İÇİN EMISSIVE EKLE
-        ch.material.emissive = new THREE.Color(0x666666);
+        ch.material.emissive = new THREE.Color(0x333333);
         ch.material.emissiveMap = tex;
-        ch.material.emissiveIntensity = 0.6;
+        ch.material.emissiveIntensity = 0.25;
         ch.material.needsUpdate = true;
         ch.castShadow = true;
         ch.receiveShadow = true;
@@ -1298,8 +1298,8 @@ function applyTimeOfDay() {
   if (state.weather === 'sunny' || state.weather === 'fog') { 
     if (state.timeOfDay === 'day') { scene.background = new THREE.Color(0x87CEEB); scene.fog.color = new THREE.Color(0x87CEEB); ambientLight.intensity = 1.4; sunLight.intensity = 1.6; hemiLight.intensity = 0.9; sunLight.color.setHex(0xffffff); sunLight.position.set(15,30,15); } 
     else if (state.timeOfDay === 'sunset') { scene.background = new THREE.Color(0xff8844); scene.fog.color = new THREE.Color(0xff8844); ambientLight.intensity = 0.9; sunLight.intensity = 1.0; hemiLight.intensity = 0.6; sunLight.color.setHex(0xffaa66); sunLight.position.set(30,10,15); } 
-    else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x1a1a3e); scene.fog.color = new THREE.Color(0x1a1a3e); ambientLight.intensity = 0.7; sunLight.intensity = 0.5; hemiLight.intensity = 0.5; sunLight.color.setHex(0x6688cc); sunLight.position.set(-15,20,15); } 
-  } else { if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.5); scene.fog.color.multiplyScalar(0.5); ambientLight.intensity = 0.8; sunLight.intensity = 0.6; } }
+    else if (state.timeOfDay === 'night') { scene.background = new THREE.Color(0x141428); scene.fog.color = new THREE.Color(0x141428); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; hemiLight.intensity = 0.4; sunLight.color.setHex(0x5566aa); sunLight.position.set(-15,20,15); } 
+  } else { if (state.timeOfDay === 'night') { scene.background.multiplyScalar(0.4); scene.fog.color.multiplyScalar(0.4); ambientLight.intensity = 0.5; sunLight.intensity = 0.35; } }
   updateStreetLights(state.isNight); updateBuildingWindows(state.isNight); updatePlayerLights();
 }
 
