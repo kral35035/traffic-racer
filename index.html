@@ -817,14 +817,6 @@ const CARS = {
   // Varsayılan araba - RACE
   'race': { name: 'Race', icon: '🏎️', price: 0, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
   
-  // Yeni vehicle modelleri
-  'vehicle-racer': { name: 'Racer', icon: '🏎️', price: 0, speed: 3.0, handling: 0.16, model: 'models/vehicle-racer.glb', texture: 'models/variation-a.png' },
-  'vehicle-racer-low': { name: 'Racer Low', icon: '🏎️', price: 75000, speed: 2.8, handling: 0.18, model: 'models/vehicle-racer-low.glb', texture: 'models/variation-b.png' },
-  'vehicle-speedster': { name: 'Speedster', icon: '🏎️', price: 150000, speed: 3.3, handling: 0.14, model: 'models/vehicle-speedster.glb', texture: 'models/variation-a.png' },
-  'vehicle-monster-truck': { name: 'Monster Truck', icon: '🚙', price: 200000, speed: 2.8, handling: 0.10, model: 'models/vehicle-monster-truck.glb', texture: 'models/variation-a.png' },
-  'vehicle-suv': { name: 'Vehicle SUV', icon: '🚙', price: 100000, speed: 2.7, handling: 0.13, model: 'models/vehicle-suv.glb', texture: 'models/variation-b.png' },
-  'vehicle-truck': { name: 'Vehicle Truck', icon: '🚚', price: 150000, speed: 2.9, handling: 0.10, model: 'models/vehicle-truck.glb', texture: 'models/variation-a.png' },
-  
   // Kenney modelleri
   'race-future': { name: 'Race Future', icon: '🏎️', price: 100000, speed: 3.0, handling: 0.15, model: 'models/race-future.glb' },
   'sedan': { name: 'Sedan', icon: '🚗', price: 50000, speed: 2.5, handling: 0.16, model: 'models/sedan.glb' },
@@ -867,12 +859,7 @@ const ENEMY_MODELS = [
   { model: 'models/tractor-police.glb' },
   { model: 'models/race.glb' },
   { model: 'models/race-future.glb' },
-  { model: 'models/vehicle-vintage-racer.glb', texture: 'models/variation-a.png' },
-  { model: 'models/vehicle-racer.glb', texture: 'models/variation-a.png' },
-  { model: 'models/vehicle-racer-low.glb', texture: 'models/variation-b.png' },
-  { model: 'models/vehicle-speedster.glb', texture: 'models/variation-a.png' },
-  { model: 'models/vehicle-suv.glb', texture: 'models/variation-b.png' },
-  { model: 'models/vehicle-truck.glb', texture: 'models/variation-a.png' }
+ 
 ];
 
 function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race', 'vehicle-vintage-racer', 'vehicle-racer'], selected: 'race' }; }
