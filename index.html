@@ -738,8 +738,7 @@ const PAINTS = [
   { id: 'orange', name: 'Turuncu', color: 0xff8800, price: PAINT_PRICE_OP }, 
   { id: 'white', name: 'Beyaz', color: 0xeeeeee, price: PAINT_PRICE_OP }, 
   { id: 'rainbow', name: 'Gökkuşağı', color: 0xff00ff, price: PAINT_PRICE_OP * 2 },
-  { id: 'variation-a', name: 'Kaplama A', texture: 'models/variation-a.png', price: PAINT_PRICE_OP * 3 },
-  { id: 'variation-b', name: 'Kaplama B', texture: 'models/variation-b.png', price: PAINT_PRICE_OP * 3 }
+
 ];
 function getPaintState() { try { const d = localStorage.getItem('trafficRacerPaints'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['default'], selected: 'default' }; }
 function savePaintState(s) { try { localStorage.setItem('trafficRacerPaints', JSON.stringify(s)); } catch(e) {} }
