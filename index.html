@@ -42,7 +42,15 @@
   .task-btn { padding: 9px 16px; background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; border: none; border-radius: 7px; font-weight: bold; cursor: pointer; margin-top: 5px; touch-action: manipulation; font-size: 13px; }
   .task-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.5; }
   .back-btn { padding: 10px 24px; background: #444; color: white; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; margin: 12px auto; display: block; touch-action: manipulation; }
-  .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 12px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
+  
+  /* ===== GARAJ ===== */
+  .tier-header { background: linear-gradient(135deg, #FF6F00, #E65100); border-radius: 12px; padding: 10px; margin: 12px 0 8px 0; text-align: center; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 12px rgba(255,111,0,0.4); }
+  .tier-header.tier-1 { background: linear-gradient(135deg, #4CAF50, #2e7d32); box-shadow: 0 4px 12px rgba(76,175,80,0.4); }
+  .tier-header.tier-2 { background: linear-gradient(135deg, #2196F3, #0d47a1); box-shadow: 0 4px 12px rgba(33,150,243,0.4); }
+  .tier-header.tier-3 { background: linear-gradient(135deg, #9C27B0, #6A1B9A); box-shadow: 0 4px 12px rgba(156,39,176,0.4); }
+  .tier-header.tier-4 { background: linear-gradient(135deg, #FF6F00, #E65100); box-shadow: 0 4px 12px rgba(255,111,0,0.4); }
+  
+  .car-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 12px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; position: relative; overflow: hidden; }
   .car-card.owned { border-color: #4CAF50; }
   .car-card.selected { border-color: #ffd93d; box-shadow: 0 0 16px rgba(255,217,61,0.5); }
   .car-card .car-icon { font-size: 36px; min-width: 50px; text-align: center; }
@@ -54,6 +62,7 @@
   .car-action.buy { background: linear-gradient(135deg, #4CAF50, #2e7d32); color: white; }
   .car-action.select { background: linear-gradient(135deg, #2196F3, #0d47a1); color: white; }
   .car-action.selected { background: linear-gradient(135deg, #ffd93d, #FF6F00); color: #000; }
+  
   .insurance-card { background: linear-gradient(135deg, #2d3561, #1e2749); border-radius: 12px; padding: 14px; margin: 8px 0; border: 2px solid rgba(255,255,255,0.1); }
   .insurance-card.active { border-color: #4CAF50; box-shadow: 0 0 16px rgba(76,175,80,0.4); }
   .insurance-card h3 { color: #ffd93d; font-size: 15px; margin-bottom: 8px; text-align: center; }
@@ -158,6 +167,7 @@
   .paint-swatch { width: 60px; height: 60px; border-radius: 10px; margin: 0 auto 8px; border: 2px solid rgba(255,255,255,0.3); background-size: cover; background-position: center; }
   .paint-name { font-size: 11px; color: #fff; font-weight: bold; margin-bottom: 4px; }
   .paint-price { font-size: 11px; color: #FFD700; font-weight: bold; }
+  .paint-bonus { font-size: 10px; color: #4CAF50; font-weight: bold; margin-top: 3px; }
   @media (max-width: 600px) {
     #homeScreen h1 { font-size: 22px; }
     .home-btn { font-size: 12px; padding: 10px 22px; }
@@ -168,6 +178,7 @@
     .game-icon-btn { width: 38px; height: 38px; font-size: 16px; }
     .kasa-icon { font-size: 50px; }
     .kasa-timer { font-size: 18px; }
+    .paint-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -344,7 +355,7 @@
     <div class="tab-content" id="tabContentPaints">
       <div class="task-card">
         <div class="task-title">🎨 Araba Kaplamaları</div>
-        <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Her kaplama OP ile alınır. Satın al ve seç!</div>
+        <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Her kaplama OP ile alınır ve <b>araba özelliklerine bonus verir</b>!</div>
       </div>
       <div class="paint-grid" id="paintGrid"></div>
     </div>
@@ -466,7 +477,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ==================== SABITLER ====================
 const OP_TO_TL_RATE = 100000;
 const MIN_WITHDRAW_TL = 100;
 const KASA_COOLDOWN_MS = 5 * 60 * 60 * 1000;
@@ -727,18 +737,17 @@ window.copyReferralCode = function() { try { const s = getReferralState(); if (n
 window.useReferralCode = function() { try { const s = getReferralState(); if (s.usedCode) { showToast('⚠️ Zaten bir davet kodu kullandın', 'info'); return; } const input = document.getElementById('referralInput'); const code = (input.value || '').toUpperCase().trim(); if (!code) { showToast('⚠️ Kod gir', 'error'); return; } if (code === s.code) { showToast('❌ Kendi kodunu kullanamazsın', 'error'); return; } if (!code.startsWith('TR')) { showToast('❌ Geçersiz kod', 'error'); return; } s.usedCode = code; saveReferralState(s); addTL(REFERRAL_JOIN_BONUS); playSound('coin'); showToast('🎁 +' + REFERRAL_JOIN_BONUS + ' TL kazandın!', 'gold'); input.value = ''; renderReferral(); } catch(e) {} };
 window.renderReferral = function() { try { const s = getReferralState(); const codeEl = document.getElementById('myReferralCode'); if (codeEl) codeEl.textContent = s.code; const totalEl = document.getElementById('refTotal'); if (totalEl) totalEl.textContent = (s.invitedUsers || []).length; const earnedEl = document.getElementById('refEarned'); if (earnedEl) earnedEl.textContent = (s.totalEarned || 0).toFixed(2) + ' ₺'; } catch(e) {} };
 
-// ==================== KAPLAMALAR ====================
+// ==================== KAPLAMALAR (ÖZELLİKLİ) ====================
 const PAINTS = [ 
-  { id: 'default', name: 'Standart', color: 0x00cc44, price: 0 }, 
-  { id: 'red', name: 'Kırmızı', color: 0xff3333, price: PAINT_PRICE_OP }, 
-  { id: 'blue', name: 'Mavi', color: 0x3366ff, price: PAINT_PRICE_OP }, 
-  { id: 'yellow', name: 'Sarı', color: 0xffdd00, price: PAINT_PRICE_OP }, 
-  { id: 'purple', name: 'Mor', color: 0x9933ff, price: PAINT_PRICE_OP }, 
-  { id: 'black', name: 'Siyah', color: 0x222222, price: PAINT_PRICE_OP }, 
-  { id: 'orange', name: 'Turuncu', color: 0xff8800, price: PAINT_PRICE_OP }, 
-  { id: 'white', name: 'Beyaz', color: 0xeeeeee, price: PAINT_PRICE_OP }, 
-  { id: 'rainbow', name: 'Gökkuşağı', color: 0xff00ff, price: PAINT_PRICE_OP * 2 },
-
+  { id: 'default', name: 'Standart', color: 0x00cc44, price: 0, speedBonus: 0, handlingBonus: 0, desc: 'Bonus yok' }, 
+  { id: 'red', name: 'Kırmızı', color: 0xff3333, price: 100000, speedBonus: 0.1, handlingBonus: 0, desc: 'Hız +0.1' }, 
+  { id: 'blue', name: 'Mavi', color: 0x3366ff, price: 150000, speedBonus: 0, handlingBonus: 0.03, desc: 'Kontrol +0.03' }, 
+  { id: 'yellow', name: 'Sarı', color: 0xffdd00, price: 200000, speedBonus: 0.15, handlingBonus: 0.02, desc: 'Hız +0.15, Kontrol +0.02' }, 
+  { id: 'purple', name: 'Mor', color: 0x9933ff, price: 300000, speedBonus: 0.2, handlingBonus: 0.03, desc: 'Hız +0.2, Kontrol +0.03' }, 
+  { id: 'black', name: 'Siyah', color: 0x222222, price: 400000, speedBonus: 0.25, handlingBonus: 0.05, desc: 'Hız +0.25, Kontrol +0.05' }, 
+  { id: 'orange', name: 'Turuncu', color: 0xff8800, price: 500000, speedBonus: 0.3, handlingBonus: 0.05, desc: 'Hız +0.3, Kontrol +0.05' }, 
+  { id: 'white', name: 'Beyaz', color: 0xeeeeee, price: 750000, speedBonus: 0.35, handlingBonus: 0.07, desc: 'Hız +0.35, Kontrol +0.07' }, 
+  { id: 'rainbow', name: 'Gökkuşağı', color: 0xff00ff, price: 1500000, speedBonus: 0.5, handlingBonus: 0.1, desc: 'Maksimum güç!' }
 ];
 function getPaintState() { try { const d = localStorage.getItem('trafficRacerPaints'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['default'], selected: 'default' }; }
 function savePaintState(s) { try { localStorage.setItem('trafficRacerPaints', JSON.stringify(s)); } catch(e) {} }
@@ -754,7 +763,10 @@ window.renderPaints = function() {
       let swatchStyle = '';
       if (p.texture) { swatchStyle = `background: url('${p.texture}') center/cover;`; } 
       else { const hexColor = '#' + (p.color || 0).toString(16).padStart(6, '0'); swatchStyle = `background: ${hexColor};`; }
-      return `<div class="paint-item ${selected ? 'selected' : (owned ? 'owned' : '')}" onclick="selectPaint('${p.id}')"><div class="paint-swatch" style="${swatchStyle}"></div><div class="paint-name">${p.name}</div><div class="paint-price">${owned ? (selected ? '✅ SEÇİLİ' : 'SEÇ') : '🎮 ' + p.price.toLocaleString() + ' OP'}</div></div>`; 
+      const bonusText = p.speedBonus || p.handlingBonus ? 
+        (p.speedBonus ? '⚡ +' + p.speedBonus : '') + (p.handlingBonus ? ' 🎯 +' + p.handlingBonus : '') : 
+        '—';
+      return `<div class="paint-item ${selected ? 'selected' : (owned ? 'owned' : '')}" onclick="selectPaint('${p.id}')"><div class="paint-swatch" style="${swatchStyle}"></div><div class="paint-name">${p.name}</div><div class="paint-bonus">${bonusText}</div><div class="paint-price">${owned ? (selected ? '✅ SEÇİLİ' : 'SEÇ') : '🎮 ' + p.price.toLocaleString() + ' OP'}</div></div>`; 
     }).join(''); 
   } catch(e) {} 
 };
@@ -772,11 +784,27 @@ window.selectPaint = function(id) {
     s.selected = id; 
     savePaintState(s); 
     if (paint.texture) { applyTextureToPlayer(paint.texture); } 
-    else if (paint.color !== undefined) { applyPaintToPlayer(paint.color); }
+    else if (paint.color !== undefined) { applyPaintToPlayer(paint.color, paint.speedBonus || 0, paint.handlingBonus || 0); }
     renderPaints(); 
   } catch(e) {} 
 };
-function applyPaintToPlayer(color) { try { if (!player) return; player.traverse(c => { if (c.isMesh && c.material && c.geometry && c.geometry.parameters && c.geometry.parameters.width > 1) { c.material = c.material.clone(); c.material.color.setHex(color); } }); } catch(e) {} }
+function applyPaintToPlayer(color, speedBonus = 0, handlingBonus = 0) { 
+  try { 
+    if (!player) return; 
+    player.traverse(c => { 
+      if (c.isMesh && c.material && c.geometry && c.geometry.parameters && c.geometry.parameters.width > 1) { 
+        c.material = c.material.clone(); 
+        c.material.color.setHex(color); 
+      } 
+    }); 
+    if (state.playerCar && CARS[state.playerCar]) {
+      const baseCar = CARS[state.playerCar];
+      state.baseMaxSpeed = baseCar.speed + speedBonus;
+      state.handling = baseCar.handling + handlingBonus;
+      console.log('🎨 Kaplama bonusu: Hız +' + speedBonus + ', Kontrol +' + handlingBonus);
+    }
+  } catch(e) {} 
+}
 function applyTextureToPlayer(texturePath) { try { if (!player) return; const loader = new THREE.TextureLoader(); loader.load(texturePath, (tex) => { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; tex.colorSpace = THREE.SRGBColorSpace; player.traverse(c => { if (c.isMesh && c.material) { c.material.map = tex; c.material.needsUpdate = true; } }); }); } catch(e) {} }
 
 // ==================== TOAST ====================
@@ -811,30 +839,34 @@ window.toggleMasterFromGame = function() { toggleMaster(); };
 window.testSound = function(name) { try { unlockAudio(); const s = sounds[name]; if (!s) { showToast('❌', 'error'); return; } const v = getEffectiveVolume(name); s.currentTime = 0; s.volume = v > 0 ? v : 0.5; const p = s.play(); if (p) { p.then(() => { if (name === 'engine' || name === 'bgmusic') setTimeout(() => { s.pause(); s.currentTime = 0; }, 3000); }).catch(() => {}); } } catch (e) {} };
 window.toggleFullscreen = function() { try { const doc = document.documentElement; if (!document.fullscreenElement && !document.webkitFullscreenElement) { if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {}); else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) {} };
 
-// ==================== ARAÇLAR (TÜM ARABALAR) ====================
+// ==================== ARAÇLAR (21 ARABA) ====================
 const CARS = {
-  // Varsayılan araba - RACE
-  'race': { name: 'Race', icon: '🏎️', price: 0, speed: 2.9, handling: 0.16, model: 'models/race.glb' },
+  // ===== TIER 1 - ÜCRETSİZ =====
+  'race': { name: '🏁 Race', icon: '🏎️', price: 0, speed: 2.4, handling: 0.14, model: 'models/race.glb', tier: 1, desc: 'Başlangıç' },
   
-  // Kenney modelleri
-  'race-future': { name: 'Race Future', icon: '🏎️', price: 100000, speed: 3.0, handling: 0.15, model: 'models/race-future.glb' },
-  'sedan': { name: 'Sedan', icon: '🚗', price: 50000, speed: 2.5, handling: 0.16, model: 'models/sedan.glb' },
-  'sedan-sports': { name: 'Sports Sedan', icon: '🚗', price: 100000, speed: 2.7, handling: 0.17, model: 'models/sedan-sports.glb' },
-  'hatchback-sports': { name: 'Sports Hatchback', icon: '🚙', price: 100000, speed: 2.7, handling: 0.18, model: 'models/hatchback-sports.glb' },
-  'taxi': { name: 'Taxi', icon: '🚕', price: 50000, speed: 2.5, handling: 0.16, model: 'models/taxi.glb' },
-  'police': { name: 'Police', icon: '🚓', price: 75000, speed: 2.6, handling: 0.18, model: 'models/police.glb' },
-  'ambulance': { name: 'Ambulance', icon: '🚑', price: 150000, speed: 2.6, handling: 0.12, model: 'models/ambulance.glb' },
-  'delivery': { name: 'Delivery', icon: '🚚', price: 100000, speed: 2.6, handling: 0.12, model: 'models/delivery.glb' },
-  'delivery-flat': { name: 'Delivery Flat', icon: '🚚', price: 100000, speed: 2.6, handling: 0.12, model: 'models/delivery-flat.glb' },
-  'truck': { name: 'Truck', icon: '🚚', price: 150000, speed: 3.2, handling: 0.10, model: 'models/truck.glb' },
-  'truck-flat': { name: 'Flat Truck', icon: '🚚', price: 150000, speed: 3.2, handling: 0.10, model: 'models/truck-flat.glb' },
-  'suv': { name: 'SUV', icon: '🚙', price: 100000, speed: 2.7, handling: 0.13, model: 'models/suv.glb' },
-  'suv-luxury': { name: 'SUV Luxury', icon: '🚙', price: 150000, speed: 3.0, handling: 0.12, model: 'models/suv-luxury.glb' },
-  'firetruck': { name: 'Fire Truck', icon: '🚒', price: 200000, speed: 2.5, handling: 0.10, model: 'models/firetruck.glb' },
-  'garbage-truck': { name: 'Garbage Truck', icon: '🚛', price: 200000, speed: 2.4, handling: 0.10, model: 'models/garbage-truck.glb' },
-  'van': { name: 'Van', icon: '🚐', price: 75000, speed: 2.4, handling: 0.14, model: 'models/van.glb' },
-  'tractor': { name: 'Tractor', icon: '🚜', price: 50000, speed: 2.0, handling: 0.20, model: 'models/tractor.glb' },
-  'tractor-police': { name: 'Police Tractor', icon: '🚜', price: 100000, speed: 2.0, handling: 0.20, model: 'models/tractor-police.glb' }
+  // ===== TIER 2 - EKONOMİK =====
+  'sedan': { name: '🚗 Sedan', icon: '🚗', price: 25000, speed: 2.5, handling: 0.16, model: 'models/sedan.glb', tier: 2, desc: 'Dengeli' },
+  'taxi': { name: '🚕 Taxi', icon: '🚕', price: 35000, speed: 2.55, handling: 0.17, model: 'models/taxi.glb', tier: 2, desc: 'Şehir içi' },
+  'van': { name: '🚐 Van', icon: '🚐', price: 45000, speed: 2.6, handling: 0.14, model: 'models/van.glb', tier: 2, desc: 'Geniş' },
+  'tractor': { name: '🚜 Tractor', icon: '🚜', price: 50000, speed: 2.2, handling: 0.22, model: 'models/tractor.glb', tier: 2, desc: 'Çevik' },
+  'hatchback-sports': { name: '🚙 Sports Hatchback', icon: '🚙', price: 65000, speed: 2.65, handling: 0.18, model: 'models/hatchback-sports.glb', tier: 2, desc: 'Kompakt' },
+  'delivery': { name: '🚚 Delivery', icon: '🚚', price: 75000, speed: 2.6, handling: 0.13, model: 'models/delivery.glb', tier: 2, desc: 'Kurye' },
+  
+  // ===== TIER 3 - ORTA =====
+  'delivery-flat': { name: '🚚 Delivery Flat', icon: '🚚', price: 100000, speed: 2.7, handling: 0.13, model: 'models/delivery-flat.glb', tier: 3, desc: 'Gelişmiş kurye' },
+  'sedan-sports': { name: '🏎️ Sports Sedan', icon: '🏎️', price: 110000, speed: 2.8, handling: 0.17, model: 'models/sedan-sports.glb', tier: 3, desc: 'Spor sedan' },
+  'police': { name: '🚓 Police', icon: '🚓', price: 125000, speed: 2.85, handling: 0.19, model: 'models/police.glb', tier: 3, desc: 'Hızlı polis' },
+  'tractor-police': { name: '🚜 Police Tractor', icon: '🚜', price: 130000, speed: 2.3, handling: 0.21, model: 'models/tractor-police.glb', tier: 3, desc: 'Polis traktör' },
+  'suv': { name: '🚙 SUV', icon: '🚙', price: 140000, speed: 2.75, handling: 0.14, model: 'models/suv.glb', tier: 3, desc: 'Güçlü SUV' },
+  'ambulance': { name: '🚑 Ambulance', icon: '🚑', price: 150000, speed: 2.8, handling: 0.13, model: 'models/ambulance.glb', tier: 3, desc: 'Acil' },
+  'truck-flat': { name: '🚚 Flat Truck', icon: '🚚', price: 160000, speed: 2.9, handling: 0.11, model: 'models/truck-flat.glb', tier: 3, desc: 'Düz kasa' },
+  'suv-luxury': { name: '🚙 SUV Luxury', icon: '🚙', price: 175000, speed: 2.9, handling: 0.13, model: 'models/suv-luxury.glb', tier: 3, desc: 'Lüks SUV' },
+  
+  // ===== TIER 4 - YÜKSEK =====
+  'truck': { name: '🚛 Truck', icon: '🚛', price: 200000, speed: 3.0, handling: 0.11, model: 'models/truck.glb', tier: 4, desc: 'Ağır kamyon' },
+  'firetruck': { name: '🚒 Fire Truck', icon: '🚒', price: 225000, speed: 2.9, handling: 0.10, model: 'models/firetruck.glb', tier: 4, desc: 'İtfaiye' },
+  'garbage-truck': { name: '🚛 Garbage Truck', icon: '🚛', price: 250000, speed: 2.7, handling: 0.10, model: 'models/garbage-truck.glb', tier: 4, desc: 'Çöp kamyonu' },
+  'race-future': { name: '🏎️ Race Future', icon: '🏎️', price: 300000, speed: 3.1, handling: 0.16, model: 'models/race-future.glb', tier: 4, desc: 'Fütüristik' }
 };
 
 // ==================== TRAFİK MODELLERİ ====================
@@ -857,11 +889,10 @@ const ENEMY_MODELS = [
   { model: 'models/tractor.glb' },
   { model: 'models/tractor-police.glb' },
   { model: 'models/race.glb' },
-  { model: 'models/race-future.glb' },
- 
+  { model: 'models/race-future.glb' }
 ];
 
-function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race', 'vehicle-vintage-racer', 'vehicle-racer'], selected: 'race' }; }
+function getGarage() { try { const d = localStorage.getItem('trafficRacerGarage'); if (d) return JSON.parse(d); } catch(e) {} return { owned: ['race'], selected: 'race' }; }
 function saveGarage(g) { try { localStorage.setItem('trafficRacerGarage', JSON.stringify(g)); } catch(e) {} }
 const MAPS = { city: { name: '🏙️ Şehir', bonus: 1.0 }, highway: { name: '🛣️ Otoban', bonus: 1.1 }, mountain: { name: '⛰️ Dağ', bonus: 1.3 } };
 const AVATARS = ['🏎️','🚗','🚓','🚕','🚙','🚚','🏁','🏆','👑','⭐','🔥','⚡','🎯','💎','🚀','🐎'];
@@ -959,10 +990,73 @@ window.claimQuest = function(qk) { try { const stats = getStats(); const q = sta
 window.renderQuests = function() { try { const stats = getStats(); const list = document.getElementById('questsList'); if (!list) return; const qs = [{ key:'distance5000', title:'📏 5000m', max:5000, reward:3000 }, { key:'ads5', title:'📺 5 reklam', max:5, reward:2000 }, { key:'cars3', title:'🚗 3 araba', max:3, reward:1500 }]; list.innerHTML = qs.map(q => { const quest = stats.quests[q.key] || { progress:0, claimed:false }; const p = Math.min(quest.progress||0, q.max); const pc = (p/q.max)*100; const isC = p >= q.max; const isCl = quest.claimed; return `<div class="task-card ${isCl?'claimed':(isC?'completed':'')}"><div class="task-title">${q.title}</div><div class="task-progress"><div class="task-progress-bar" style="width: ${pc}%"></div></div><div class="task-reward">💰 ${q.reward} OP (${p}/${q.max})</div><button class="task-btn" onclick="claimQuest('${q.key}')" ${(!isC||isCl)?'disabled':''}>${isCl?'✅':(isC?'🎁':'...')}</button></div>`; }).join(''); } catch(e) {} };
 window.renderAchievements = function() { try { const stats = getStats(); const list = document.getElementById('achievementsList'); if (!list) return; const achs = [{ key:'first1000', title:'🥇 1000m', reward:5000 }, { key:'noCrash5000', title:'🛡️ 5000m kazasız', reward:20000 }, { key:'total10000', title:'🏁 10.000m', reward:10000 }]; list.innerHTML = achs.map(a => { const u = stats.achievements[a.key]; return `<div class="task-card ${u?'completed':''}"><div class="task-title">${a.title}</div><div class="task-reward">💰 ${a.reward} OP</div><div style="margin-top:6px;font-size:12px;color:${u?'#4CAF50':'#888'}">${u?'✅':'🔒'}</div></div>`; }).join(''); } catch(e) {} };
 
-// ==================== GARAJ ====================
-window.renderGarage = function() { try { const garage = getGarage(); const list = document.getElementById('garageList'); if (!list) return; list.innerHTML = Object.keys(CARS).map(key => { const car = CARS[key]; const owned = garage.owned.includes(key); const selected = garage.selected === key; let actionBtn = selected ? '<button class="car-action selected">✅</button>' : (owned ? `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>` : `<button class="car-action buy" onclick="buyCar('${key}')">AL</button>`); return `<div class="car-card ${selected?'selected':(owned?'owned':'')}"><div class="car-icon">${car.icon}</div><div class="car-info"><div class="car-name">${car.name}</div><div class="car-stats">⚡ ${car.speed} | 🎯 ${(car.handling*100).toFixed(0)}%</div>${!owned?`<div class="car-price">🎮 ${car.price.toLocaleString()} OP</div>`:''}</div>${actionBtn}</div>`; }).join(''); } catch(e) {} };
+// ==================== GARAJ (TIER'LI) ====================
+window.renderGarage = function() { 
+  try { 
+    const garage = getGarage(); 
+    const list = document.getElementById('garageList'); 
+    if (!list) return; 
+    
+    const tiers = [
+      { id: 1, name: '🏁 BAŞLANGIÇ ARABALARI', class: 'tier-1' },
+      { id: 2, name: '🚗 EKONOMİK ARABALAR (25K-75K OP)', class: 'tier-2' },
+      { id: 3, name: '🏎️ ORTA SEVİYE ARABALAR (100K-175K OP)', class: 'tier-3' },
+      { id: 4, name: '🏆 YÜKSEK SEVİYE ARABALAR (200K-300K OP)', class: 'tier-4' }
+    ];
+    
+    let html = '';
+    tiers.forEach(tier => {
+      const tierCars = Object.keys(CARS).filter(k => CARS[k].tier === tier.id).sort((a, b) => CARS[a].price - CARS[b].price);
+      if (tierCars.length === 0) return;
+      
+      html += `<div class="tier-header ${tier.class}">${tier.name}</div>`;
+      html += tierCars.map(key => {
+        const car = CARS[key];
+        const owned = garage.owned.includes(key);
+        const selected = garage.selected === key;
+        let actionBtn = selected ? '<button class="car-action selected">✅</button>' : 
+          (owned ? `<button class="car-action select" onclick="selectCar('${key}')">SEÇ</button>` : 
+          `<button class="car-action buy" onclick="buyCar('${key}')">AL</button>`);
+        return `<div class="car-card ${selected?'selected':(owned?'owned':'')}">
+          <div class="car-icon">${car.icon}</div>
+          <div class="car-info">
+            <div class="car-name">${car.name}</div>
+            <div class="car-stats">⚡ Hız: ${car.speed} | 🎯 Kontrol: ${(car.handling*100).toFixed(0)}%</div>
+            <div class="car-stats">${car.desc}</div>
+            ${!owned?`<div class="car-price">🎮 ${car.price.toLocaleString()} OP</div>`:''}
+          </div>
+          ${actionBtn}
+        </div>`;
+      }).join('');
+    });
+    
+    list.innerHTML = html;
+  } catch(e) { console.error(e); } 
+};
 window.buyCar = function(key) { try { const car = CARS[key]; const g = getGarage(); if (g.owned.includes(key)) return; if (!spendOP(car.price)) { showToast('❌ ' + car.price.toLocaleString() + ' OP gerekli', 'error'); return; } g.owned.push(key); saveGarage(g); playSound('coin'); showToast('✅ ' + car.name, 'gold'); renderGarage(); } catch(e) {} };
-window.selectCar = function(key) { try { const g = getGarage(); if (!g.owned.includes(key)) return; g.selected = key; saveGarage(g); loadPlayerCar(key); state.playerCar = key; showToast('🚗 ' + CARS[key].name, 'info'); renderGarage(); } catch(e) {} };
+window.selectCar = function(key) { 
+  try { 
+    const g = getGarage(); 
+    if (!g.owned.includes(key)) return; 
+    g.selected = key; 
+    saveGarage(g); 
+    state.playerCar = key; 
+    loadPlayerCar(key); 
+    
+    // Mevcut kaplamayı bonuslu şekilde uygula
+    const paintState = getPaintState();
+    const paint = PAINTS.find(p => p.id === paintState.selected);
+    if (paint && paint.id !== 'default') {
+      setTimeout(() => {
+        if (paint.texture) applyTextureToPlayer(paint.texture);
+        else if (paint.color !== undefined) applyPaintToPlayer(paint.color, paint.speedBonus || 0, paint.handlingBonus || 0);
+      }, 500);
+    }
+    
+    showToast('🚗 ' + CARS[key].name, 'info'); 
+    renderGarage(); 
+  } catch(e) {} 
+};
  
 // ==================== SAHNE ====================
 const scene = new THREE.Scene();
@@ -1115,7 +1209,6 @@ function prepareModel(m) {
       ch.receiveShadow=true; 
       if(ch.material){ 
         ch.material.map=c; 
-        // ÇOK HAFİF EMISSIVE (race arabası doğal renk için)
         ch.material.emissive = new THREE.Color(0x222222);
         ch.material.emissiveMap = c;
         ch.material.emissiveIntensity = 0.15;
@@ -1132,28 +1225,26 @@ function loadCarModel(p, fc=0x00cc44, customTexture=null) {
       const model = g.scene;
       
       if (customTexture) {
-  const loader = new THREE.TextureLoader();
-  loader.load(customTexture, (tex) => {
-    tex.magFilter = THREE.NearestFilter;
-    tex.minFilter = THREE.NearestFilter;
-    tex.colorSpace = THREE.SRGBColorSpace;
-    model.traverse(ch => {
-      if (ch.isMesh && ch.material) {
-        ch.material.map = tex;
-        // YENİ MODELLER: EMISSIVE YOK (doğal doku)
-        ch.material.emissive = new THREE.Color(0x000000);
-        ch.material.emissiveIntensity = 0;
-        ch.material.needsUpdate = true;
-        ch.castShadow = true;
-        ch.receiveShadow = true;
+        const loader = new THREE.TextureLoader();
+        loader.load(customTexture, (tex) => {
+          tex.magFilter = THREE.NearestFilter;
+          tex.minFilter = THREE.NearestFilter;
+          tex.colorSpace = THREE.SRGBColorSpace;
+          model.traverse(ch => {
+            if (ch.isMesh && ch.material) {
+              ch.material.map = tex;
+              ch.material.emissive = new THREE.Color(0x000000);
+              ch.material.emissiveIntensity = 0;
+              ch.material.needsUpdate = true;
+              ch.castShadow = true;
+              ch.receiveShadow = true;
+            }
+          });
+          res(model);
+        }, undefined, () => { res(prepareModel(model)); });
+      } else {
+        res(prepareModel(model));
       }
-    });
-    console.log('✅ Özel doku (emissive yok):', customTexture);
-    res(model);
-  }, undefined, () => { console.warn('⚠️ Doku yüklenemedi'); res(prepareModel(model)); });
-} else {
-  res(prepareModel(model));
-}
     }, undefined, () => { 
       console.warn('Model yüklenemedi:', p); 
       res(createFallbackCar(fc)); 
@@ -1179,10 +1270,9 @@ function createFallbackCar(c) {
 function addLightsToCar(carGroup) { carGroup.userData.headlights = []; carGroup.userData.taillights = []; }
 
 // ==================== DURUM ====================
-const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race', handling: 0.16, baseMaxSpeed: 2.9, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0, isNight: false };
+const state = { running: false, paused: false, money: 0, distance: 0, speed: 0.4, maxSpeed: 2.8, cars: [], lastSpawn: 0, playerLane: 0, targetLane: 0, shake: 0, modelLoaded: false, coinTimer: 0, gameCrashes: 0, playerCar: 'race', handling: 0.14, baseMaxSpeed: 2.4, weather: 'sunny', timeOfDay: 'day', timeAccumulator: 0, weatherAccumulator: 0, sliding: 0, currentMap: 'city', mapBonus: 1.0, isNight: false };
 const CAR_SCALE = 1.4; const LANES = [-ROAD_WIDTH/3, 0, ROAD_WIDTH/3];
 
-// Başlangıçta boş group - hemen race yüklenecek
 let player = new THREE.Group(); player.position.set(0,0,4); scene.add(player);
 
 function loadPlayerCar(k) { 
@@ -1200,15 +1290,17 @@ function loadPlayerCar(k) {
       if (!tex) {
         const paintState = getPaintState();
         const paint = PAINTS.find(pp => pp.id === paintState.selected);
-        if (paint && paint.id !== 'default' && paint.color !== undefined) {
-          m.traverse(ch => {
-            if (ch.isMesh && ch.material && ch.material.color) {
-              if (ch.geometry && ch.geometry.parameters && ch.geometry.parameters.width > 1) {
-                ch.material = ch.material.clone();
-                ch.material.color.setHex(paint.color);
+        if (paint && paint.id !== 'default') {
+          if (paint.color !== undefined) {
+            m.traverse(ch => {
+              if (ch.isMesh && ch.material && ch.material.color) {
+                if (ch.geometry && ch.geometry.parameters && ch.geometry.parameters.width > 1) {
+                  ch.material = ch.material.clone();
+                  ch.material.color.setHex(paint.color);
+                }
               }
-            }
-          });
+            });
+          }
         }
       }
       scene.add(m); 
@@ -1222,7 +1314,6 @@ function loadPlayerCar(k) {
   } catch(e) { console.error('❌ loadPlayerCar:', e); } 
 }
 
-// Seçili arabayı yükle (varsayılan: race)
 (function() {
   try {
     const g = getGarage();
@@ -1394,7 +1485,7 @@ function simulateKasaAd() { showToast('📺 Reklam (simülasyon)...', 'info'); c
 window.watchAd = function() { try { if (!checkDailyAdLimit()) { showToast('⚠️ Günlük reklam limiti (15)', 'error'); return; } const triggered = triggerAdMob('show_rewarded_ad_gameover'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { showToast('❌ Reklam yüklenemedi', 'error'); } }, 60000); } else { simulateGameOverAd(); } } catch(e) {} };
 function simulateGameOverAd() { showToast('📺 Reklam (simülasyon)...', 'info'); setTimeout(() => { window.onKodularGameOverAdRewarded(); }, 3000); }
 
-window.restart = function() { try { interstitialCounter++; localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString()); console.log('📊 Geçiş reklamı:', interstitialCounter, '/', INTERSTITIAL_EVERY_N); if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) { console.log('✅ GEÇİŞ REKLAMI GÖSTERİLECEK'); showInterstitialThenRestart(); } else { console.log('⏭️ Reklam yok'); doRestart(); } } catch(e) { doRestart(); } };
+window.restart = function() { try { interstitialCounter++; localStorage.setItem('trafficRacerInterCounter', interstitialCounter.toString()); if (interstitialCounter % INTERSTITIAL_EVERY_N === 0) { showInterstitialThenRestart(); } else { doRestart(); } } catch(e) { doRestart(); } };
 function showInterstitialThenRestart() { try { const triggered = triggerAdMob('show_interstitial'); if (triggered) { showToast('📺 Reklam yükleniyor...', 'info'); setTimeout(() => { if (!state.running) { doRestart(); } }, 15000); } else { doRestart(); } } catch(e) { doRestart(); } }
 function doRestart() { try { const rem = Math.max(0, state.money - penaltyAmount); addOP(rem); const stats = getStats(); stats.totalDistance += state.distance; if (state.distance > stats.bestDistance) stats.bestDistance = state.distance; saveStats(stats); resetGameState(); document.getElementById('gameOver').style.display = 'none'; document.getElementById('gameButtons').classList.add('visible'); state.running = true; state.paused = false; randomizeWeatherAndTime(); startEngine(); startBgMusic(); startAnimationLoop(); updateHUD(); } catch(e) {} }
 
